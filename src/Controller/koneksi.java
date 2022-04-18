@@ -19,7 +19,7 @@ public static Connection getKoneksi(){
     if(koneksi==null){
         try{
             String url;
-            url="jdbc:mysql://localhost:3306/uas";
+            url="jdbc:mysql://localhost:3306/presensi";
             String username ="root";
             String password = "";
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());

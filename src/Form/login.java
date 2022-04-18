@@ -5,11 +5,15 @@
  */
 package Form;
 
+import Controller.koneksi;
 import javax.swing.JOptionPane;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,6 +22,10 @@ import java.util.logging.Logger;
  * @author Anjayani
  */
 public class login extends javax.swing.JFrame {
+    
+            Connection conn = koneksi.getKoneksi();
+ResultSet rs = null;
+PreparedStatement pst = null;
 
     /**
      * Creates new form login
@@ -25,6 +33,8 @@ public class login extends javax.swing.JFrame {
     public login() {
         initComponents();
         jLabel7.setVisible(false);
+        
+
     }
 
     /**
@@ -43,7 +53,7 @@ public class login extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         txt_user = new javax.swing.JTextField();
-        txt_password = new javax.swing.JPasswordField();
+        txt_pass = new javax.swing.JPasswordField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -107,9 +117,9 @@ public class login extends javax.swing.JFrame {
         txt_user.setBorder(null);
         jPanel1.add(txt_user, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 170, 220, 30));
 
-        txt_password.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        txt_password.setBorder(null);
-        jPanel1.add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 265, 210, -1));
+        txt_pass.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txt_pass.setBorder(null);
+        jPanel1.add(txt_pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 265, 210, -1));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Form_Jpg/3.PNG"))); // NOI18N
         jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -177,13 +187,13 @@ public class login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel8MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MousePressed
-        txt_password.setEchoChar('●');
+        txt_pass.setEchoChar('●');
         jLabel9.setVisible(true);
         jLabel8.setVisible(false);
     }//GEN-LAST:event_jLabel8MousePressed
 
     private void jLabel9MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MousePressed
-        txt_password.setEchoChar((char)0);
+        txt_pass.setEchoChar((char)0);
         jLabel9.setVisible(false);
         jLabel8.setVisible(true);
     }//GEN-LAST:event_jLabel9MousePressed
@@ -203,19 +213,35 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel6MousePressed
 
     private void jLabel10MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MousePressed
-       if(txt_user.getText().equals("")|| txt_password.getText().equals("")){
+        try{
+           String sql = "select * from tb_karyawan where username='" + txt_user.getText() + "'and password='" + txt_pass.getText()+"'";
+           java.sql.Connection conn=(Connection)koneksi.getKoneksi();
+           java.sql.PreparedStatement pst = conn.prepareCall(sql);
+           java.sql.ResultSet rs=pst.executeQuery();
+          
+           if(rs.next()){
+           
+           if(txt_user.getText().equals("")|| txt_pass.getText().equals("")){
             JOptionPane.showMessageDialog(this, "User atau Password Tidak Boleh Kosong", "Peringatan", JOptionPane.ERROR_MESSAGE);
             txt_user.setText(null);
-            txt_password.setText(null);
-        }else if(txt_user.getText().equals("1")&& txt_password.getText().equals("1")){
-            JOptionPane.showMessageDialog(this, "Anda Berhasil Login Sebagai Admin", "Pesan", JOptionPane.INFORMATION_MESSAGE);
-            this.setVisible(false);
-            new dashboard().setVisible(true);
-        }else{
-            JOptionPane.showMessageDialog(this, "User dan Password Yang Anda Masukkan Salah", "Peringatan", JOptionPane.ERROR_MESSAGE);
-            txt_user.setText(null);
-            txt_password.setText(null);
-        }
+            txt_pass.setText(null);
+           }
+           else if(txt_user.getText().equals(rs.getString("username")) || txt_pass.getText().equals(rs.getString("password"))){
+                   JOptionPane.showMessageDialog(null, "Sukses Login");
+                   this.setVisible(false);
+                   new dashboard().setVisible(true);
+               }
+               
+       }else{
+                   JOptionPane.showMessageDialog(null, "Gagal Login");
+                   txt_user.setText("");
+                   txt_pass.setText("");
+               }
+       }catch (Exception e){
+           JOptionPane.showMessageDialog(this, e.getMessage());
+       }
+        
+       
     }//GEN-LAST:event_jLabel10MousePressed
 
     private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
@@ -316,7 +342,7 @@ public class login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField txt_password;
+    private javax.swing.JPasswordField txt_pass;
     private javax.swing.JTextField txt_user;
     // End of variables declaration//GEN-END:variables
 }

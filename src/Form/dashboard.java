@@ -5,7 +5,11 @@
  */
 package Form;
 
+import Controller.koneksi;
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -21,6 +25,10 @@ public class dashboard extends javax.swing.JFrame {
     public dashboard() {
         initComponents();
         btn_dashboard.setVisible(false);
+        
+        Connection conn = koneksi.getKoneksi();
+ResultSet rs = null;
+PreparedStatement pst = null;
        
     }
     
