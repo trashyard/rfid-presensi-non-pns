@@ -134,29 +134,12 @@ PreparedStatement pst = null;
         jLabel23 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTable5 = new javax.swing.JTable();
-        jLabel40 = new javax.swing.JLabel();
-        jLabel41 = new javax.swing.JLabel();
-        jLabel42 = new javax.swing.JLabel();
-        jLabel43 = new javax.swing.JLabel();
-        jLabel44 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
         jLabel47 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
         jPanel9 = new javax.swing.JPanel();
         jLabel74 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
-        jPanel14 = new javax.swing.JPanel();
-        jLabel46 = new javax.swing.JLabel();
-        jLabel49 = new javax.swing.JLabel();
-        jLabel50 = new javax.swing.JLabel();
-        jLabel51 = new javax.swing.JLabel();
-        jLabel52 = new javax.swing.JLabel();
-        jLabel53 = new javax.swing.JLabel();
         jLabel45 = new javax.swing.JLabel();
-        jLabel48 = new javax.swing.JLabel();
+        jLabel46 = new javax.swing.JLabel();
         karyawan = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
@@ -164,25 +147,12 @@ PreparedStatement pst = null;
         jLabel26 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
         jTable6 = new javax.swing.JTable();
-        jLabel75 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jLabel76 = new javax.swing.JLabel();
-        jTextField9 = new javax.swing.JTextField();
-        jLabel77 = new javax.swing.JLabel();
-        jComboBox8 = new javax.swing.JComboBox<>();
-        jLabel78 = new javax.swing.JLabel();
-        jComboBox9 = new javax.swing.JComboBox<>();
         jPanel10 = new javax.swing.JPanel();
         jLabel83 = new javax.swing.JLabel();
         jTextField14 = new javax.swing.JTextField();
-        jPanel15 = new javax.swing.JPanel();
-        jLabel80 = new javax.swing.JLabel();
-        jLabel87 = new javax.swing.JLabel();
-        jLabel82 = new javax.swing.JLabel();
-        jLabel81 = new javax.swing.JLabel();
-        jLabel93 = new javax.swing.JLabel();
-        jLabel94 = new javax.swing.JLabel();
-        jLabel95 = new javax.swing.JLabel();
+        jLabel48 = new javax.swing.JLabel();
+        jLabel49 = new javax.swing.JLabel();
+        jLabel50 = new javax.swing.JLabel();
         jadwal = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
@@ -190,25 +160,12 @@ PreparedStatement pst = null;
         jLabel29 = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
         jTable7 = new javax.swing.JTable();
-        jLabel84 = new javax.swing.JLabel();
-        jTextField17 = new javax.swing.JTextField();
-        jLabel85 = new javax.swing.JLabel();
-        jTextField18 = new javax.swing.JTextField();
-        jLabel86 = new javax.swing.JLabel();
-        jComboBox10 = new javax.swing.JComboBox<>();
-        jLabel88 = new javax.swing.JLabel();
-        jTextField20 = new javax.swing.JTextField();
         jPanel11 = new javax.swing.JPanel();
         jLabel92 = new javax.swing.JLabel();
         jTextField22 = new javax.swing.JTextField();
-        jPanel16 = new javax.swing.JPanel();
-        jLabel91 = new javax.swing.JLabel();
-        jLabel97 = new javax.swing.JLabel();
-        jLabel98 = new javax.swing.JLabel();
-        jLabel99 = new javax.swing.JLabel();
-        jLabel90 = new javax.swing.JLabel();
-        jLabel96 = new javax.swing.JLabel();
-        jLabel89 = new javax.swing.JLabel();
+        jLabel51 = new javax.swing.JLabel();
+        jLabel52 = new javax.swing.JLabel();
+        jLabel53 = new javax.swing.JLabel();
         report = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel30 = new javax.swing.JLabel();
@@ -1149,41 +1106,7 @@ PreparedStatement pst = null;
         ));
         jScrollPane5.setViewportView(jTable5);
 
-        presensi.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 650, 480));
-
-        jLabel40.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
-        jLabel40.setForeground(new java.awt.Color(82, 80, 80));
-        jLabel40.setText("TANGGAL      :");
-        presensi.add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 350, 110, 20));
-
-        jLabel41.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
-        jLabel41.setForeground(new java.awt.Color(82, 80, 80));
-        jLabel41.setText("NIK                 : ");
-        presensi.add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 190, 110, 20));
-
-        jLabel42.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
-        jLabel42.setForeground(new java.awt.Color(82, 80, 80));
-        jLabel42.setText("NAMA            :");
-        presensi.add(jLabel42, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 230, 110, 20));
-
-        jLabel43.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
-        jLabel43.setForeground(new java.awt.Color(82, 80, 80));
-        jLabel43.setText("STATUS         :");
-        presensi.add(jLabel43, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 270, 110, 20));
-
-        jLabel44.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
-        jLabel44.setForeground(new java.awt.Color(82, 80, 80));
-        jLabel44.setText("JABATAN      :");
-        presensi.add(jLabel44, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 310, 110, 20));
-
-        jTextField1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        presensi.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 350, 170, -1));
-
-        jTextField2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        presensi.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 190, 170, -1));
-
-        jTextField3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        presensi.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 230, 170, -1));
+        presensi.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 1040, 480));
 
         jLabel47.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-delete-25.png"))); // NOI18N
         jLabel47.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1191,17 +1114,7 @@ PreparedStatement pst = null;
                 jLabel47MousePressed(evt);
             }
         });
-        presensi.add(jLabel47, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 390, 30, 30));
-
-        jComboBox1.setForeground(new java.awt.Color(82, 80, 80));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.setBorder(null);
-        presensi.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 310, 170, 20));
-
-        jComboBox2.setForeground(new java.awt.Color(82, 80, 80));
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.setBorder(null);
-        presensi.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 270, 170, 20));
+        presensi.add(jLabel47, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 130, 30, 30));
 
         jPanel9.setBackground(new java.awt.Color(255, 255, 255));
         jPanel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(85, 65, 118)));
@@ -1228,8 +1141,13 @@ PreparedStatement pst = null;
 
         presensi.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 190, 30));
 
-        jPanel14.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel14.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(82, 80, 80)));
+        jLabel45.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-edit-25.png"))); // NOI18N
+        jLabel45.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel45MousePressed(evt);
+            }
+        });
+        presensi.add(jLabel45, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 130, 30, 30));
 
         jLabel46.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-add-25.png"))); // NOI18N
         jLabel46.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1237,76 +1155,7 @@ PreparedStatement pst = null;
                 jLabel46MousePressed(evt);
             }
         });
-
-        jLabel49.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-id-card-25.png"))); // NOI18N
-
-        jLabel50.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-name-25.png"))); // NOI18N
-
-        jLabel51.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-check-all-25.png"))); // NOI18N
-
-        jLabel52.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-employee-25.png"))); // NOI18N
-
-        jLabel53.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-calendar-13-25.png"))); // NOI18N
-
-        jLabel45.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-edit-25.png"))); // NOI18N
-        jLabel45.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel45MousePressed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
-        jPanel14.setLayout(jPanel14Layout);
-        jPanel14Layout.setHorizontalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel14Layout.createSequentialGroup()
-                .addContainerGap(183, Short.MAX_VALUE)
-                .addComponent(jLabel46)
-                .addGap(49, 49, 49)
-                .addComponent(jLabel45)
-                .addGap(66, 66, 66))
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel49)
-                    .addComponent(jLabel50)
-                    .addComponent(jLabel51)
-                    .addComponent(jLabel52)
-                    .addComponent(jLabel53))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel14Layout.setVerticalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel14Layout.createSequentialGroup()
-                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel14Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel45))
-                    .addGroup(jPanel14Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(jLabel49)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel50)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel51, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel52)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                        .addComponent(jLabel46)))
-                .addContainerGap())
-        );
-
-        presensi.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 170, 350, 260));
-
-        jLabel48.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons_DDL/icons8-edit-30.png"))); // NOI18N
-        jLabel48.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel48MousePressed(evt);
-            }
-        });
-        presensi.add(jLabel48, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 390, -1, -1));
+        presensi.add(jLabel46, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 130, -1, 30));
 
         main.add(presensi, "card2");
 
@@ -1343,43 +1192,7 @@ PreparedStatement pst = null;
         ));
         jScrollPane6.setViewportView(jTable6);
 
-        karyawan.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 650, 480));
-
-        jLabel75.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
-        jLabel75.setForeground(new java.awt.Color(82, 80, 80));
-        jLabel75.setText("NIK                 : ");
-        karyawan.add(jLabel75, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 190, 110, 20));
-
-        jTextField5.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        karyawan.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 190, 170, 20));
-
-        jLabel76.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
-        jLabel76.setForeground(new java.awt.Color(82, 80, 80));
-        jLabel76.setText("NAMA            :");
-        karyawan.add(jLabel76, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 230, 110, 20));
-
-        jTextField9.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        karyawan.add(jTextField9, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 230, 170, 20));
-
-        jLabel77.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
-        jLabel77.setForeground(new java.awt.Color(82, 80, 80));
-        jLabel77.setText("J. KELAMIN   :");
-        karyawan.add(jLabel77, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 270, 110, 20));
-
-        jComboBox8.setForeground(new java.awt.Color(82, 80, 80));
-        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox8.setBorder(null);
-        karyawan.add(jComboBox8, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 270, 170, 20));
-
-        jLabel78.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
-        jLabel78.setForeground(new java.awt.Color(82, 80, 80));
-        jLabel78.setText("JABATAN      :");
-        karyawan.add(jLabel78, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 310, 110, 20));
-
-        jComboBox9.setForeground(new java.awt.Color(82, 80, 80));
-        jComboBox9.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox9.setBorder(null);
-        karyawan.add(jComboBox9, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 310, 170, 20));
+        karyawan.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 1040, 480));
 
         jPanel10.setBackground(new java.awt.Color(255, 255, 255));
         jPanel10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(85, 65, 118)));
@@ -1406,67 +1219,29 @@ PreparedStatement pst = null;
 
         karyawan.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 190, 30));
 
-        jPanel15.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel15.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(82, 80, 80)));
-        jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel80.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-id-card-25.png"))); // NOI18N
-        jLabel80.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel48.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-delete-25.png"))); // NOI18N
+        jLabel48.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel80MousePressed(evt);
+                jLabel48MousePressed(evt);
             }
         });
-        jPanel15.add(jLabel80, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 21, -1, -1));
+        karyawan.add(jLabel48, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 130, 30, 30));
 
-        jLabel87.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-add-25.png"))); // NOI18N
-        jLabel87.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel49.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-edit-25.png"))); // NOI18N
+        jLabel49.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel87MousePressed(evt);
+                jLabel49MousePressed(evt);
             }
         });
-        jPanel15.add(jLabel87, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 180, -1, -1));
+        karyawan.add(jLabel49, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 130, 30, 30));
 
-        jLabel82.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-edit-25.png"))); // NOI18N
-        jLabel82.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel50.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-add-25.png"))); // NOI18N
+        jLabel50.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel82MousePressed(evt);
+                jLabel50MousePressed(evt);
             }
         });
-        jPanel15.add(jLabel82, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 180, -1, -1));
-
-        jLabel81.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-delete-25.png"))); // NOI18N
-        jLabel81.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel81MousePressed(evt);
-            }
-        });
-        jPanel15.add(jLabel81, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 180, 30, -1));
-
-        jLabel93.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-name-25.png"))); // NOI18N
-        jLabel93.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel93MousePressed(evt);
-            }
-        });
-        jPanel15.add(jLabel93, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 57, -1, -1));
-
-        jLabel94.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-gender-25.png"))); // NOI18N
-        jLabel94.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel94MousePressed(evt);
-            }
-        });
-        jPanel15.add(jLabel94, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 100, -1, -1));
-
-        jLabel95.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-employee-25.png"))); // NOI18N
-        jLabel95.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel95MousePressed(evt);
-            }
-        });
-        jPanel15.add(jLabel95, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 131, -1, 47));
-
-        karyawan.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 170, 380, 230));
+        karyawan.add(jLabel50, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 130, -1, 30));
 
         main.add(karyawan, "card2");
 
@@ -1503,41 +1278,7 @@ PreparedStatement pst = null;
         ));
         jScrollPane7.setViewportView(jTable7);
 
-        jadwal.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 650, 480));
-
-        jLabel84.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
-        jLabel84.setForeground(new java.awt.Color(82, 80, 80));
-        jLabel84.setText("ID                   : ");
-        jadwal.add(jLabel84, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 180, 110, 20));
-
-        jTextField17.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jadwal.add(jTextField17, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 180, 170, -1));
-
-        jLabel85.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
-        jLabel85.setForeground(new java.awt.Color(82, 80, 80));
-        jLabel85.setText("HARI              :");
-        jadwal.add(jLabel85, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 220, 110, 20));
-
-        jTextField18.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jadwal.add(jTextField18, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 220, 170, -1));
-
-        jLabel86.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
-        jLabel86.setForeground(new java.awt.Color(82, 80, 80));
-        jLabel86.setText("STATUS         :");
-        jadwal.add(jLabel86, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 300, 110, 20));
-
-        jComboBox10.setForeground(new java.awt.Color(82, 80, 80));
-        jComboBox10.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox10.setBorder(null);
-        jadwal.add(jComboBox10, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 300, 170, 20));
-
-        jLabel88.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
-        jLabel88.setForeground(new java.awt.Color(82, 80, 80));
-        jLabel88.setText("TANGGAL     :");
-        jadwal.add(jLabel88, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 260, 110, 20));
-
-        jTextField20.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jadwal.add(jTextField20, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 260, 170, -1));
+        jadwal.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 1040, 480));
 
         jPanel11.setBackground(new java.awt.Color(255, 255, 255));
         jPanel11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(85, 65, 118)));
@@ -1564,67 +1305,29 @@ PreparedStatement pst = null;
 
         jadwal.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 190, 30));
 
-        jPanel16.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel16.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(82, 80, 80)));
-        jPanel16.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel91.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-key-25.png"))); // NOI18N
-        jLabel91.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel51.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-delete-25.png"))); // NOI18N
+        jLabel51.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel91MousePressed(evt);
+                jLabel51MousePressed(evt);
             }
         });
-        jPanel16.add(jLabel91, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 1, -1, 41));
+        jadwal.add(jLabel51, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 130, 30, 30));
 
-        jLabel97.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-plus-1-day-25.png"))); // NOI18N
-        jLabel97.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel52.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-edit-25.png"))); // NOI18N
+        jLabel52.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel97MousePressed(evt);
+                jLabel52MousePressed(evt);
             }
         });
-        jPanel16.add(jLabel97, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 48, -1, -1));
+        jadwal.add(jLabel52, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 130, 30, 30));
 
-        jLabel98.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-calendar-13-25.png"))); // NOI18N
-        jLabel98.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel53.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-add-25.png"))); // NOI18N
+        jLabel53.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel98MousePressed(evt);
+                jLabel53MousePressed(evt);
             }
         });
-        jPanel16.add(jLabel98, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 84, 30, 40));
-
-        jLabel99.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-check-all-25.png"))); // NOI18N
-        jLabel99.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel99MousePressed(evt);
-            }
-        });
-        jPanel16.add(jLabel99, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 130, 30, -1));
-
-        jLabel90.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-delete-25.png"))); // NOI18N
-        jLabel90.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel90MousePressed(evt);
-            }
-        });
-        jPanel16.add(jLabel90, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 170, 30, -1));
-
-        jLabel96.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-edit-25.png"))); // NOI18N
-        jLabel96.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel96MousePressed(evt);
-            }
-        });
-        jPanel16.add(jLabel96, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 170, -1, -1));
-
-        jLabel89.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-add-25.png"))); // NOI18N
-        jLabel89.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel89MousePressed(evt);
-            }
-        });
-        jPanel16.add(jLabel89, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 170, -1, -1));
-
-        jadwal.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 170, 350, 220));
+        jadwal.add(jLabel53, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 130, -1, 30));
 
         main.add(jadwal, "card2");
 
@@ -2009,8 +1712,7 @@ PreparedStatement pst = null;
     }//GEN-LAST:event_btn_menu6MousePressed
 
     private void jLabel46MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel46MousePressed
-       int dialogbtn = JOptionPane.YES_NO_OPTION;
-       int dialogresult = JOptionPane.showConfirmDialog(this, "Anda Yakin?", "Warning", dialogbtn);
+       new edit_presensi().setVisible(true);
     }//GEN-LAST:event_jLabel46MousePressed
 
     private void jLabel47MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel47MousePressed
@@ -2027,66 +1729,6 @@ PreparedStatement pst = null;
         int dialogbtn = JOptionPane.YES_NO_OPTION;
        int dialogresult = JOptionPane.showConfirmDialog(this, "Anda Yakin?", "Warning", dialogbtn);
     }//GEN-LAST:event_jLabel72MousePressed
-
-    private void jLabel80MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel80MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel80MousePressed
-
-    private void jLabel81MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel81MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel81MousePressed
-
-    private void jLabel82MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel82MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel82MousePressed
-
-    private void jLabel89MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel89MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel89MousePressed
-
-    private void jLabel90MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel90MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel90MousePressed
-
-    private void jLabel91MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel91MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel91MousePressed
-
-    private void jLabel48MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel48MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel48MousePressed
-
-    private void jLabel87MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel87MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel87MousePressed
-
-    private void jLabel93MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel93MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel93MousePressed
-
-    private void jLabel94MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel94MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel94MousePressed
-
-    private void jLabel95MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel95MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel95MousePressed
-
-    private void jLabel96MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel96MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel96MousePressed
-
-    private void jLabel97MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel97MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel97MousePressed
-
-    private void jLabel98MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel98MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel98MousePressed
-
-    private void jLabel99MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel99MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel99MousePressed
 
     private void btn_dashboardMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dashboardMouseEntered
         btn_dashboard.setBackground(new Color(239,239,239));
@@ -2252,6 +1894,30 @@ btn_menu6.setBackground(new Color(255,255,255));
     
     }//GEN-LAST:event_bg_mn6MousePressed
 
+    private void jLabel48MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel48MousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel48MousePressed
+
+    private void jLabel49MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel49MousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel49MousePressed
+
+    private void jLabel50MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel50MousePressed
+        new edit_karyawan().setVisible(true);
+    }//GEN-LAST:event_jLabel50MousePressed
+
+    private void jLabel51MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel51MousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel51MousePressed
+
+    private void jLabel52MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel52MousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel52MousePressed
+
+    private void jLabel53MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel53MousePressed
+        new edit_jadwal().setVisible(true);
+    }//GEN-LAST:event_jLabel53MousePressed
+
     /**
      * @param args the command line arguments
      */
@@ -2277,6 +1943,8 @@ btn_menu6.setBackground(new Color(255,255,255));
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -2318,12 +1986,7 @@ btn_menu6.setBackground(new Color(255,255,255));
     private javax.swing.JPanel hover_report1;
     private javax.swing.JPanel hover_setting;
     private javax.swing.JPanel hover_setting1;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox10;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox8;
-    private javax.swing.JComboBox<String> jComboBox9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel101;
@@ -2359,11 +2022,6 @@ btn_menu6.setBackground(new Color(255,255,255));
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel40;
-    private javax.swing.JLabel jLabel41;
-    private javax.swing.JLabel jLabel42;
-    private javax.swing.JLabel jLabel43;
-    private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
     private javax.swing.JLabel jLabel47;
@@ -2395,40 +2053,15 @@ btn_menu6.setBackground(new Color(255,255,255));
     private javax.swing.JLabel jLabel72;
     private javax.swing.JLabel jLabel73;
     private javax.swing.JLabel jLabel74;
-    private javax.swing.JLabel jLabel75;
-    private javax.swing.JLabel jLabel76;
-    private javax.swing.JLabel jLabel77;
-    private javax.swing.JLabel jLabel78;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel80;
-    private javax.swing.JLabel jLabel81;
-    private javax.swing.JLabel jLabel82;
     private javax.swing.JLabel jLabel83;
-    private javax.swing.JLabel jLabel84;
-    private javax.swing.JLabel jLabel85;
-    private javax.swing.JLabel jLabel86;
-    private javax.swing.JLabel jLabel87;
-    private javax.swing.JLabel jLabel88;
-    private javax.swing.JLabel jLabel89;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JLabel jLabel90;
-    private javax.swing.JLabel jLabel91;
     private javax.swing.JLabel jLabel92;
-    private javax.swing.JLabel jLabel93;
-    private javax.swing.JLabel jLabel94;
-    private javax.swing.JLabel jLabel95;
-    private javax.swing.JLabel jLabel96;
-    private javax.swing.JLabel jLabel97;
-    private javax.swing.JLabel jLabel98;
-    private javax.swing.JLabel jLabel99;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel14;
-    private javax.swing.JPanel jPanel15;
-    private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -2447,20 +2080,12 @@ btn_menu6.setBackground(new Color(255,255,255));
     private javax.swing.JTable jTable6;
     private javax.swing.JTable jTable7;
     private javax.swing.JTable jTable8;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField14;
-    private javax.swing.JTextField jTextField17;
-    private javax.swing.JTextField jTextField18;
     private javax.swing.JTextField jTextField19;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField20;
     private javax.swing.JTextField jTextField21;
     private javax.swing.JTextField jTextField22;
     private javax.swing.JTextField jTextField26;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JPanel jadwal;
     private javax.swing.JPanel karyawan;
     private javax.swing.JPanel main;

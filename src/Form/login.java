@@ -249,7 +249,7 @@ PreparedStatement pst = null;
         int dialogresult = JOptionPane.showConfirmDialog(this, "Anda Yakin Ingin Keluar?", "Warning", dialogbtn);
 
         if (dialogresult == 0){
-            new auth().setVisible(true);
+            new dashboard().setVisible(true);
             this.setVisible(false);
 
         }
@@ -315,6 +315,7 @@ PreparedStatement pst = null;
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
