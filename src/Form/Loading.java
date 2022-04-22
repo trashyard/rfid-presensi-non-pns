@@ -131,13 +131,11 @@ public class Loading extends javax.swing.JFrame {
              
          }
          
-     }catch (Exception e){
-         JOptionPane.showMessageDialog(null, e.getMessage());
-         
-         
-         
-     }
-    }
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+
+		}
+	}
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private javax.swing.JLabel jLabel1;
