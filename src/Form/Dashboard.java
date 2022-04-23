@@ -32,6 +32,7 @@ public class Dashboard extends javax.swing.JFrame {
 		initComponents();
 		this.conn = Koneksi.getKoneksi();
 		btn_dashboard.setVisible(false);
+		getCount();
 	}
 
 	void setHover(JPanel panel) {
@@ -43,8 +44,92 @@ public class Dashboard extends javax.swing.JFrame {
 		panel.setBackground(new Color(255, 255, 255));
 	}
 
+	void getCount() {
+		try {
+			String sql = "select count(*) from tb_karyawan where status = 'user'";
+			pst = conn.prepareStatement(sql);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				karyawanCount.setText(rs.getString(1));
+			}
+			sql = "select count(*) from tb_karyawan where status = 'admin'";
+			pst = conn.prepareStatement(sql);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				adminCount.setText(rs.getString(1));
+			}
+		} catch (SQLException ex) {
+		}
+	}
+
 	public void tablePresensi() {
 		DefaultTableModel model = new DefaultTableModel();
+		model.addColumn("NIK");
+		model.addColumn("NAMA");
+		model.addColumn("STATUS");
+		model.addColumn("JABATAN");
+		model.addColumn("TANGGAL");
+		try {
+
+			String sql = "select tbk.id, tbk.nama, tdp.keterangan, tbj.nama, tdp.tanggal from tb_detail_presensi as tdp join tb_karyawan as tbk on tbk.id = tdp.id_karyawan join tb_jabatan as tbj on tbk.id_jabatan = tbj.id join tb_jadwal as jadwal on tdp.id_jadwal = jadwal.id order by tdp.tanggal desc";
+			pst = conn.prepareStatement(sql);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				model.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)});
+			}
+			jTable5.setModel(model);
+		} catch (SQLException ex) {
+			model.addRow(new Object[]{});
+			jTable5.setModel(model);
+		}
+	}
+
+	public void tableKaryawan() {
+		DefaultTableModel model = new DefaultTableModel();
+		model.addColumn("NIK");
+		model.addColumn("NAMA");
+		model.addColumn("JENIS KELAMIN");
+		model.addColumn("JABATAN");
+		try {
+
+			String sql = "select tbk.id, tbk.nama, jenis_kelamin, tbj.nama as jabatan from tb_karyawan as tbk join tb_jabatan as tbj on tbk.id_jabatan = tbj.id";
+			pst = conn.prepareStatement(sql);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				model.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)});
+			}
+			jTable6.setModel(model);
+		} catch (SQLException ex) {
+			model.addRow(new Object[]{});
+			jTable6.setModel(model);
+		}
+	}
+
+	public void tableJadwal() {
+		DefaultTableModel model = new DefaultTableModel();
+		model.addColumn("ID");
+		model.addColumn("HARI");
+		model.addColumn("TANGGAL");
+		model.addColumn("STATUS");
+		try {
+
+			String sql = "select id, hari, tanggal, status from tb_jadwal";
+			pst = conn.prepareStatement(sql);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				model.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)});
+			}
+			jTable7.setModel(model);
+		} catch (SQLException ex) {
+			model.addRow(new Object[]{});
+			jTable7.setModel(model);
+		}
+	}
+
+	public void tableReport() {
+		DefaultTableModel model = new DefaultTableModel();
+		int number = 1;
+		model.addColumn("NO");
 		model.addColumn("NIK");
 		model.addColumn("NAMA");
 		model.addColumn("STATUS");
@@ -56,12 +141,12 @@ public class Dashboard extends javax.swing.JFrame {
 			pst = conn.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
-				model.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)});
+				model.addRow(new Object[]{number++, rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)});
 			}
-			jTable5.setModel(model);
+			jTable8.setModel(model);
 		} catch (SQLException ex) {
 			model.addRow(new Object[]{});
-			jTable5.setModel(model);
+			jTable8.setModel(model);
 		}
 	}
 
@@ -144,9 +229,11 @@ public class Dashboard extends javax.swing.JFrame {
                 jPanel7 = new javax.swing.JPanel();
                 jLabel36 = new javax.swing.JLabel();
                 jLabel37 = new javax.swing.JLabel();
+                karyawanCount = new java.awt.Label();
                 jPanel8 = new javax.swing.JPanel();
                 jLabel38 = new javax.swing.JLabel();
                 jLabel39 = new javax.swing.JLabel();
+                adminCount = new java.awt.Label();
                 presensi = new javax.swing.JPanel();
                 jPanel2 = new javax.swing.JPanel();
                 jLabel21 = new javax.swing.JLabel();
@@ -154,11 +241,9 @@ public class Dashboard extends javax.swing.JFrame {
                 jLabel23 = new javax.swing.JLabel();
                 jScrollPane5 = new javax.swing.JScrollPane();
                 jTable5 = new javax.swing.JTable();
-                jLabel47 = new javax.swing.JLabel();
                 jPanel9 = new javax.swing.JPanel();
                 jLabel74 = new javax.swing.JLabel();
                 jTextField4 = new javax.swing.JTextField();
-                jLabel45 = new javax.swing.JLabel();
                 jLabel46 = new javax.swing.JLabel();
                 karyawan = new javax.swing.JPanel();
                 jPanel3 = new javax.swing.JPanel();
@@ -170,8 +255,6 @@ public class Dashboard extends javax.swing.JFrame {
                 jPanel10 = new javax.swing.JPanel();
                 jLabel83 = new javax.swing.JLabel();
                 jTextField14 = new javax.swing.JTextField();
-                jLabel48 = new javax.swing.JLabel();
-                jLabel49 = new javax.swing.JLabel();
                 jLabel50 = new javax.swing.JLabel();
                 jadwal = new javax.swing.JPanel();
                 jPanel4 = new javax.swing.JPanel();
@@ -183,8 +266,6 @@ public class Dashboard extends javax.swing.JFrame {
                 jPanel11 = new javax.swing.JPanel();
                 jLabel92 = new javax.swing.JLabel();
                 jTextField22 = new javax.swing.JTextField();
-                jLabel51 = new javax.swing.JLabel();
-                jLabel52 = new javax.swing.JLabel();
                 jLabel53 = new javax.swing.JLabel();
                 report = new javax.swing.JPanel();
                 jPanel5 = new javax.swing.JPanel();
@@ -202,14 +283,6 @@ public class Dashboard extends javax.swing.JFrame {
                 jLabel33 = new javax.swing.JLabel();
                 jLabel34 = new javax.swing.JLabel();
                 jLabel35 = new javax.swing.JLabel();
-                jTextField21 = new javax.swing.JTextField();
-                jTextField19 = new javax.swing.JTextField();
-                jPasswordField4 = new javax.swing.JPasswordField();
-                jPasswordField3 = new javax.swing.JPasswordField();
-                jLabel73 = new javax.swing.JLabel();
-                jLabel70 = new javax.swing.JLabel();
-                jLabel71 = new javax.swing.JLabel();
-                jLabel72 = new javax.swing.JLabel();
 
                 jLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
                 jLabel4.setForeground(new java.awt.Color(82, 80, 80));
@@ -477,6 +550,11 @@ public class Dashboard extends javax.swing.JFrame {
                 jLabel8.setText("Karyawan");
 
                 hover_karyawan.setBackground(new java.awt.Color(255, 255, 255));
+                hover_karyawan.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                hover_karyawanMouseClicked(evt);
+                        }
+                });
 
                 javax.swing.GroupLayout hover_karyawanLayout = new javax.swing.GroupLayout(hover_karyawan);
                 hover_karyawan.setLayout(hover_karyawanLayout);
@@ -1066,29 +1144,40 @@ public class Dashboard extends javax.swing.JFrame {
                 jPanel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(64, 43, 100)));
                 jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-                jLabel36.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+                jLabel36.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
                 jLabel36.setForeground(new java.awt.Color(255, 255, 255));
                 jLabel36.setText("Karyawan");
-                jPanel7.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 180, 72, 30));
+                jPanel7.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 100, 40));
 
                 jLabel37.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/icons8-employee-70.png"))); // NOI18N
-                jPanel7.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 102, 80, 90));
+                jPanel7.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 80, 90));
 
-                dashboard.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 170, 310, 310));
+                karyawanCount.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+                karyawanCount.setForeground(new java.awt.Color(255, 255, 255));
+                karyawanCount.setText("label1");
+                jPanel7.add(karyawanCount, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 110, 50));
+
+                dashboard.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, 420, 120));
 
                 jPanel8.setBackground(new java.awt.Color(85, 65, 118));
                 jPanel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(64, 43, 100)));
+                jPanel8.setMinimumSize(new java.awt.Dimension(172, 100));
                 jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-                jLabel38.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+                jLabel38.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
                 jLabel38.setForeground(new java.awt.Color(255, 255, 255));
                 jLabel38.setText("Admin");
-                jPanel8.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 190, 72, -1));
+                jPanel8.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, 100, 40));
 
                 jLabel39.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/icons8-user-70.png"))); // NOI18N
-                jPanel8.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(117, 104, 80, 82));
+                jPanel8.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 80, 82));
 
-                dashboard.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 170, 310, 310));
+                adminCount.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+                adminCount.setForeground(new java.awt.Color(255, 255, 255));
+                adminCount.setText("label2");
+                jPanel8.add(adminCount, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 110, 50));
+
+                dashboard.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 120, 470, 120));
 
                 main.add(dashboard, "card2");
 
@@ -1127,14 +1216,6 @@ public class Dashboard extends javax.swing.JFrame {
 
                 presensi.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 1040, 480));
 
-                jLabel47.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-delete-25.png"))); // NOI18N
-                jLabel47.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mousePressed(java.awt.event.MouseEvent evt) {
-                                jLabel47MousePressed(evt);
-                        }
-                });
-                presensi.add(jLabel47, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 130, 30, 30));
-
                 jPanel9.setBackground(new java.awt.Color(255, 255, 255));
                 jPanel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(85, 65, 118)));
 
@@ -1160,21 +1241,13 @@ public class Dashboard extends javax.swing.JFrame {
 
                 presensi.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 190, 30));
 
-                jLabel45.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-edit-25.png"))); // NOI18N
-                jLabel45.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mousePressed(java.awt.event.MouseEvent evt) {
-                                jLabel45MousePressed(evt);
-                        }
-                });
-                presensi.add(jLabel45, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 130, 30, 30));
-
                 jLabel46.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-add-25.png"))); // NOI18N
                 jLabel46.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mousePressed(java.awt.event.MouseEvent evt) {
                                 jLabel46MousePressed(evt);
                         }
                 });
-                presensi.add(jLabel46, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 130, -1, 30));
+                presensi.add(jLabel46, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 130, -1, 30));
 
                 main.add(presensi, "card2");
 
@@ -1238,29 +1311,13 @@ public class Dashboard extends javax.swing.JFrame {
 
                 karyawan.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 190, 30));
 
-                jLabel48.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-delete-25.png"))); // NOI18N
-                jLabel48.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mousePressed(java.awt.event.MouseEvent evt) {
-                                jLabel48MousePressed(evt);
-                        }
-                });
-                karyawan.add(jLabel48, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 130, 30, 30));
-
-                jLabel49.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-edit-25.png"))); // NOI18N
-                jLabel49.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mousePressed(java.awt.event.MouseEvent evt) {
-                                jLabel49MousePressed(evt);
-                        }
-                });
-                karyawan.add(jLabel49, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 130, 30, 30));
-
                 jLabel50.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-add-25.png"))); // NOI18N
                 jLabel50.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mousePressed(java.awt.event.MouseEvent evt) {
                                 jLabel50MousePressed(evt);
                         }
                 });
-                karyawan.add(jLabel50, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 130, -1, 30));
+                karyawan.add(jLabel50, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 130, -1, 30));
 
                 main.add(karyawan, "card2");
 
@@ -1324,29 +1381,13 @@ public class Dashboard extends javax.swing.JFrame {
 
                 jadwal.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 190, 30));
 
-                jLabel51.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-delete-25.png"))); // NOI18N
-                jLabel51.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mousePressed(java.awt.event.MouseEvent evt) {
-                                jLabel51MousePressed(evt);
-                        }
-                });
-                jadwal.add(jLabel51, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 130, 30, 30));
-
-                jLabel52.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-edit-25.png"))); // NOI18N
-                jLabel52.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mousePressed(java.awt.event.MouseEvent evt) {
-                                jLabel52MousePressed(evt);
-                        }
-                });
-                jadwal.add(jLabel52, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 130, 30, 30));
-
                 jLabel53.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-add-25.png"))); // NOI18N
                 jLabel53.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mousePressed(java.awt.event.MouseEvent evt) {
                                 jLabel53MousePressed(evt);
                         }
                 });
-                jadwal.add(jLabel53, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 130, -1, 30));
+                jadwal.add(jLabel53, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 130, -1, 30));
 
                 main.add(jadwal, "card2");
 
@@ -1412,7 +1453,7 @@ public class Dashboard extends javax.swing.JFrame {
 
                 jComboBox3.setForeground(new java.awt.Color(82, 80, 80));
                 jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-                report.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 120, 160, 30));
+                report.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 120, 160, 30));
 
                 main.add(report, "card2");
 
@@ -1434,35 +1475,6 @@ public class Dashboard extends javax.swing.JFrame {
                 jPanel6.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 70, 540, 20));
 
                 setting.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 90));
-
-                jTextField21.setBorder(null);
-                setting.add(jTextField21, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 220, 210, 20));
-
-                jTextField19.setBorder(null);
-                setting.add(jTextField19, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 300, 210, 30));
-
-                jPasswordField4.setBorder(null);
-                setting.add(jPasswordField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 390, 220, 30));
-
-                jPasswordField3.setBorder(null);
-                setting.add(jPasswordField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 480, 220, 20));
-
-                jLabel73.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Form_Jpg/10.PNG"))); // NOI18N
-                setting.add(jLabel73, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 170, -1, -1));
-
-                jLabel70.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Form_Jpg/8.PNG"))); // NOI18N
-                setting.add(jLabel70, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 250, -1, -1));
-
-                jLabel71.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Form_Jpg/9.PNG"))); // NOI18N
-                setting.add(jLabel71, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 430, -1, -1));
-
-                jLabel72.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons3/icons8-edit-25.png"))); // NOI18N
-                jLabel72.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mousePressed(java.awt.event.MouseEvent evt) {
-                                jLabel72MousePressed(evt);
-                        }
-                });
-                setting.add(jLabel72, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 540, -1, -1));
 
                 main.add(setting, "card2");
 
@@ -1498,6 +1510,7 @@ public class Dashboard extends javax.swing.JFrame {
 	    main.add(dashboard);
 	    main.repaint();
 	    main.revalidate();
+	    getCount();
     }//GEN-LAST:event_btn_dashboardMousePressed
 
     private void btn_menu1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_menu1MousePressed
@@ -1557,6 +1570,7 @@ public class Dashboard extends javax.swing.JFrame {
 	    main.add(karyawan);
 	    main.repaint();
 	    main.revalidate();
+	    tableKaryawan();
     }//GEN-LAST:event_btn_menu2MousePressed
 
     private void btn_menu3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_menu3MousePressed
@@ -1586,6 +1600,7 @@ public class Dashboard extends javax.swing.JFrame {
 	    main.add(jadwal);
 	    main.repaint();
 	    main.revalidate();
+	    tableJadwal();
     }//GEN-LAST:event_btn_menu3MousePressed
 
     private void btn_menu4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_menu4MousePressed
@@ -1615,6 +1630,7 @@ public class Dashboard extends javax.swing.JFrame {
 	    main.add(report);
 	    main.repaint();
 	    main.revalidate();
+	    tableReport();
     }//GEN-LAST:event_btn_menu4MousePressed
 
     private void btn_menu5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_menu5MousePressed
@@ -1679,23 +1695,8 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_menu6MousePressed
 
     private void jLabel46MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel46MousePressed
-	    new edit_presensi().setVisible(true);
+	    new PopUp_Presensi().setVisible(true);
     }//GEN-LAST:event_jLabel46MousePressed
-
-    private void jLabel47MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel47MousePressed
-	    int dialogbtn = JOptionPane.YES_NO_OPTION;
-	    int dialogresult = JOptionPane.showConfirmDialog(this, "Anda Yakin?", "Warning", dialogbtn);
-    }//GEN-LAST:event_jLabel47MousePressed
-
-    private void jLabel45MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel45MousePressed
-	    int dialogbtn = JOptionPane.YES_NO_OPTION;
-	    int dialogresult = JOptionPane.showConfirmDialog(this, "Anda Yakin?", "Warning", dialogbtn);
-    }//GEN-LAST:event_jLabel45MousePressed
-
-    private void jLabel72MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel72MousePressed
-	    int dialogbtn = JOptionPane.YES_NO_OPTION;
-	    int dialogresult = JOptionPane.showConfirmDialog(this, "Anda Yakin?", "Warning", dialogbtn);
-    }//GEN-LAST:event_jLabel72MousePressed
 
     private void btn_dashboardMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dashboardMouseEntered
 	    btn_dashboard.setBackground(new Color(239, 239, 239));
@@ -1859,33 +1860,21 @@ public class Dashboard extends javax.swing.JFrame {
 
     }//GEN-LAST:event_bg_mn6MousePressed
 
-    private void jLabel48MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel48MousePressed
-	    // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel48MousePressed
-
-    private void jLabel49MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel49MousePressed
-	    // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel49MousePressed
-
     private void jLabel50MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel50MousePressed
-	    new edit_karyawan().setVisible(true);
+	    new PopUp_Karyawan().setVisible(true);
     }//GEN-LAST:event_jLabel50MousePressed
 
-    private void jLabel51MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel51MousePressed
-	    // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel51MousePressed
-
-    private void jLabel52MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel52MousePressed
-	    // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel52MousePressed
-
     private void jLabel53MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel53MousePressed
-	    new edit_jadwal().setVisible(true);
+	    new PopUp_Jadwal().setVisible(true);
     }//GEN-LAST:event_jLabel53MousePressed
 
         private void hover_presensi1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hover_presensi1MouseClicked
 		// TODO add your handling code here:
         }//GEN-LAST:event_hover_presensi1MouseClicked
+
+        private void hover_karyawanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hover_karyawanMouseClicked
+		// TODO add your handling code here:
+        }//GEN-LAST:event_hover_karyawanMouseClicked
 
 	/**
 	 * @param args the command line arguments
@@ -1930,6 +1919,7 @@ public class Dashboard extends javax.swing.JFrame {
 	}
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
+        private java.awt.Label adminCount;
         private javax.swing.JPanel bg_db;
         private javax.swing.JPanel bg_mn1;
         private javax.swing.JPanel bg_mn2;
@@ -1995,15 +1985,9 @@ public class Dashboard extends javax.swing.JFrame {
         private javax.swing.JLabel jLabel38;
         private javax.swing.JLabel jLabel39;
         private javax.swing.JLabel jLabel4;
-        private javax.swing.JLabel jLabel45;
         private javax.swing.JLabel jLabel46;
-        private javax.swing.JLabel jLabel47;
-        private javax.swing.JLabel jLabel48;
-        private javax.swing.JLabel jLabel49;
         private javax.swing.JLabel jLabel5;
         private javax.swing.JLabel jLabel50;
-        private javax.swing.JLabel jLabel51;
-        private javax.swing.JLabel jLabel52;
         private javax.swing.JLabel jLabel53;
         private javax.swing.JLabel jLabel54;
         private javax.swing.JLabel jLabel55;
@@ -2021,10 +2005,6 @@ public class Dashboard extends javax.swing.JFrame {
         private javax.swing.JLabel jLabel66;
         private javax.swing.JLabel jLabel67;
         private javax.swing.JLabel jLabel7;
-        private javax.swing.JLabel jLabel70;
-        private javax.swing.JLabel jLabel71;
-        private javax.swing.JLabel jLabel72;
-        private javax.swing.JLabel jLabel73;
         private javax.swing.JLabel jLabel74;
         private javax.swing.JLabel jLabel8;
         private javax.swing.JLabel jLabel83;
@@ -2043,8 +2023,6 @@ public class Dashboard extends javax.swing.JFrame {
         private javax.swing.JPanel jPanel7;
         private javax.swing.JPanel jPanel8;
         private javax.swing.JPanel jPanel9;
-        private javax.swing.JPasswordField jPasswordField3;
-        private javax.swing.JPasswordField jPasswordField4;
         private javax.swing.JScrollPane jScrollPane5;
         private javax.swing.JScrollPane jScrollPane6;
         private javax.swing.JScrollPane jScrollPane7;
@@ -2054,13 +2032,12 @@ public class Dashboard extends javax.swing.JFrame {
         private javax.swing.JTable jTable7;
         private javax.swing.JTable jTable8;
         private javax.swing.JTextField jTextField14;
-        private javax.swing.JTextField jTextField19;
-        private javax.swing.JTextField jTextField21;
         private javax.swing.JTextField jTextField22;
         private javax.swing.JTextField jTextField26;
         private javax.swing.JTextField jTextField4;
         private javax.swing.JPanel jadwal;
         private javax.swing.JPanel karyawan;
+        private java.awt.Label karyawanCount;
         private javax.swing.JPanel main;
         private javax.swing.JPanel menu;
         private javax.swing.JPanel presensi;
