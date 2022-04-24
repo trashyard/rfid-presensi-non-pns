@@ -1,16 +1,15 @@
-
 package com.presensikeun.form;
 
 import javax.swing.JOptionPane;
 
 public class Loading extends javax.swing.JFrame {
 
-    public Loading() {
-        initComponents();
-        
-    }
+	public Loading() {
+		initComponents();
 
-    @SuppressWarnings("unchecked")
+	}
+
+	@SuppressWarnings("unchecked")
         // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
         private void initComponents() {
 
@@ -80,42 +79,42 @@ public class Loading extends javax.swing.JFrame {
                 setLocationRelativeTo(null);
         }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-         Loading apes = new Loading();
-        apes.setVisible(true);
-        
-                  try{
-         
-         for(int i = 0; i <= 100; i++){
-             Thread.sleep(5);
-             apes.loading_value.setText(i + "%");
-             
-             if(i==10){
-                 apes.loading_label.setText("Memuat Component...");
-             }
-             if(i==20){
-                 apes.loading_label.setText("Membuat Tampilan...");
-             }
-             if(i==50){
-                 apes.loading_label.setText("Memuat Component Berhasil");
-             }
-             if(i==70){
-                 apes.loading_label.setText("Memuat Tampilan Berhasil");
-             }
-             if(i==80){
-                 apes.loading_label.setText("Memuat Aplikasi Berhasil");
-             }
-             if(i==100){
-                 new Auth().setVisible(true);
-                 apes.setVisible(false);
-             }
-             apes.loading_bar.setValue(i);
-             
-         }
-         
+	/**
+	 * @param args the command line arguments
+	 */
+	public static void main(String args[]) {
+		Loading apes = new Loading();
+		apes.setVisible(true);
+
+		try {
+
+			for (int i = 0; i <= 100; i++) {
+				Thread.sleep(3);
+				apes.loading_value.setText(i + "%");
+
+				if (i == 10) {
+					apes.loading_label.setText("Memuat Component...");
+				}
+				if (i == 20) {
+					apes.loading_label.setText("Membuat Tampilan...");
+				}
+				if (i == 50) {
+					apes.loading_label.setText("Memuat Component Berhasil");
+				}
+				if (i == 70) {
+					apes.loading_label.setText("Memuat Tampilan Berhasil");
+				}
+				if (i == 80) {
+					apes.loading_label.setText("Memuat Aplikasi Berhasil");
+				}
+				if (i == 100) {
+					new Auth().setVisible(true);
+					apes.setVisible(false);
+				}
+				apes.loading_bar.setValue(i);
+
+			}
+
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 

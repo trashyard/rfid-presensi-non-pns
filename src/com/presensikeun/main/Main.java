@@ -1,13 +1,13 @@
-
 package com.presensikeun.main;
 
+import com.presensikeun.event.EventMenu;
 import java.awt.Color;
 
 public class Main extends javax.swing.JFrame {
 
 	public Main() {
 		initComponents();
-		setBackground(new Color(0,0,0,0));
+		setBackground(new Color(0, 0, 0, 0));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -20,6 +20,11 @@ public class Main extends javax.swing.JFrame {
 
                 setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
                 setUndecorated(true);
+                addWindowListener(new java.awt.event.WindowAdapter() {
+                        public void windowOpened(java.awt.event.WindowEvent evt) {
+                                formWindowOpened(evt);
+                        }
+                });
 
                 menu1.setBorder(null);
 
@@ -63,6 +68,16 @@ public class Main extends javax.swing.JFrame {
                 pack();
                 setLocationRelativeTo(null);
         }// </editor-fold>//GEN-END:initComponents
+
+        private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+		// TODO add your handling code here:
+		menu1.addEvent(new EventMenu() {
+			@Override
+			public void menuIndexChange(int index) {
+				System.out.println(index);
+			}
+		});
+        }//GEN-LAST:event_formWindowOpened
 
 	public static void main(String args[]) {
 		java.awt.EventQueue.invokeLater(new Runnable() {
