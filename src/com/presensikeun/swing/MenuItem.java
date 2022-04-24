@@ -38,29 +38,32 @@ public class MenuItem extends javax.swing.JPanel {
                 lbIcon = new javax.swing.JLabel();
                 lbName = new javax.swing.JLabel();
 
-                lbName.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+                lbName.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
                 lbName.setForeground(new java.awt.Color(102, 102, 102));
                 lbName.setText("Menu Item");
+                lbName.setMaximumSize(new java.awt.Dimension(84, 20));
+                lbName.setMinimumSize(new java.awt.Dimension(84, 20));
+                lbName.setPreferredSize(new java.awt.Dimension(84, 20));
 
                 javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
                 this.setLayout(layout);
                 layout.setHorizontalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(lbIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lbName)
-                                .addGap(0, 0, 0))
+                                .addGap(20, 20, 20)
+                                .addComponent(lbIcon)
+                                .addGap(18, 18, 18)
+                                .addComponent(lbName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
                 );
                 layout.setVerticalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addGap(5, 5, 5)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, 0)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(lbIcon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lbName, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE))
-                                .addGap(5, 5, 5))
+                                        .addComponent(lbName, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
+                                .addGap(0, 0, 0))
                 );
         }// </editor-fold>//GEN-END:initComponents
 
