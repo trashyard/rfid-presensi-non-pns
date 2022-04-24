@@ -24,7 +24,6 @@ public class Login extends javax.swing.JFrame {
 	 */
 	public Login() {
 		initComponents();
-		jLabel7.setVisible(false);
 	}
 
 	public void loginDek() {
@@ -66,15 +65,10 @@ public class Login extends javax.swing.JFrame {
         private void initComponents() {
 
                 jPanel1 = new javax.swing.JPanel();
-                jButton1 = new javax.swing.JButton();
-                jLabel7 = new javax.swing.JLabel();
-                jLabel6 = new javax.swing.JLabel();
                 jLabel8 = new javax.swing.JLabel();
                 jLabel9 = new javax.swing.JLabel();
                 txt_user = new javax.swing.JTextField();
                 txt_pass = new javax.swing.JPasswordField();
-                jLabel3 = new javax.swing.JLabel();
-                jLabel4 = new javax.swing.JLabel();
                 jLabel1 = new javax.swing.JLabel();
                 jLabel5 = new javax.swing.JLabel();
                 jLabel14 = new javax.swing.JLabel();
@@ -97,32 +91,6 @@ public class Login extends javax.swing.JFrame {
 
                 jPanel1.setBackground(new java.awt.Color(255, 255, 255));
                 jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-                jButton1.setBackground(new java.awt.Color(255, 255, 255));
-                jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-                jButton1.setText("X");
-                jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mousePressed(java.awt.event.MouseEvent evt) {
-                                jButton1MousePressed(evt);
-                        }
-                });
-                jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 0, -1, -1));
-
-                jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/login/6.PNG"))); // NOI18N
-                jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mousePressed(java.awt.event.MouseEvent evt) {
-                                jLabel7MousePressed(evt);
-                        }
-                });
-                jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, -1, -1));
-
-                jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/login/5.PNG"))); // NOI18N
-                jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mousePressed(java.awt.event.MouseEvent evt) {
-                                jLabel6MousePressed(evt);
-                        }
-                });
-                jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, -1, -1));
 
                 jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-hide-20.png"))); // NOI18N
                 jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -152,17 +120,6 @@ public class Login extends javax.swing.JFrame {
                         }
                 });
                 jPanel1.add(txt_pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 265, 210, -1));
-
-                jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/login/3.PNG"))); // NOI18N
-                jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mousePressed(java.awt.event.MouseEvent evt) {
-                                jLabel3MousePressed(evt);
-                        }
-                });
-                jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 310, -1, 40));
-
-                jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/login/2.PNG"))); // NOI18N
-                jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, -1, 20));
 
                 jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/login/1.PNG"))); // NOI18N
                 jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -199,7 +156,7 @@ public class Login extends javax.swing.JFrame {
                 jLabel11.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
                 jLabel11.setForeground(new java.awt.Color(102, 102, 102));
                 jLabel11.setText("@2022 - SMKN 8 Jember. All Reserved.");
-                jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 440, 230, -1));
+                jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 380, 230, -1));
 
                 jPanel2.setBackground(new java.awt.Color(53, 33, 89));
                 jPanel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -224,7 +181,7 @@ public class Login extends javax.swing.JFrame {
                 jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/login.png"))); // NOI18N
                 jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(141, 0, 43, 40));
 
-                jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 370, 240, 40));
+                jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 320, 240, 40));
 
                 getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 340, 660));
 
@@ -246,33 +203,6 @@ public class Login extends javax.swing.JFrame {
 		jLabel9.setVisible(false);
 		jLabel8.setVisible(true);
     }//GEN-LAST:event_jLabel9MousePressed
-
-    private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
-		JOptionPane.showMessageDialog(this, "Silahkan Menghubungi Teknisi", "Pesan", JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_jLabel3MousePressed
-
-    private void jLabel7MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MousePressed
-		jLabel6.setVisible(true);
-		jLabel7.setVisible(false);
-    }//GEN-LAST:event_jLabel7MousePressed
-
-    private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
-		jLabel6.setVisible(false);
-		jLabel7.setVisible(true);
-    }//GEN-LAST:event_jLabel6MousePressed
-
-    private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
-		int dialogbtn = JOptionPane.YES_NO_OPTION;
-		int dialogresult = JOptionPane.showConfirmDialog(this, "Anda Yakin Ingin Keluar?", "Warning", dialogbtn);
-
-		if (dialogresult == 0) {
-			new Auth().setVisible(true);
-			this.setVisible(false);
-
-		} else {
-
-		}
-    }//GEN-LAST:event_jButton1MousePressed
 
     private void jLabel15MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MousePressed
 
@@ -372,7 +302,6 @@ public class Login extends javax.swing.JFrame {
 	}
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
-        private javax.swing.JButton jButton1;
         private javax.swing.JLabel jLabel1;
         private javax.swing.JLabel jLabel11;
         private javax.swing.JLabel jLabel12;
@@ -381,11 +310,7 @@ public class Login extends javax.swing.JFrame {
         private javax.swing.JLabel jLabel15;
         private javax.swing.JLabel jLabel16;
         private javax.swing.JLabel jLabel2;
-        private javax.swing.JLabel jLabel3;
-        private javax.swing.JLabel jLabel4;
         private javax.swing.JLabel jLabel5;
-        private javax.swing.JLabel jLabel6;
-        private javax.swing.JLabel jLabel7;
         private javax.swing.JLabel jLabel8;
         private javax.swing.JLabel jLabel9;
         private javax.swing.JPanel jPanel1;
