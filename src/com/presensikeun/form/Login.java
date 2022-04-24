@@ -1,11 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.presensikeun.form;
 
 import com.presensikeun.controller.Koneksi;
+import com.presensikeun.main.Main;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 import java.awt.Desktop;
@@ -17,10 +14,6 @@ import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Anjayani
- */
 public class Login extends javax.swing.JFrame {
 
 	Connection conn = Koneksi.getKoneksi();
@@ -51,7 +44,7 @@ public class Login extends javax.swing.JFrame {
 				} else if (txt_user.getText().equals(rs.getString("username")) || txt_pass.getText().equals(rs.getString("password"))) {
 					JOptionPane.showMessageDialog(null, "Anda Berhasil Masuk");
 					this.setVisible(false);
-//					new Dashboard().setVisible(true);
+					new Main().setVisible(true);
 				}
 
 			} else {
