@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Form;
+package com.presensikeun.form;
 
-import Controller.Koneksi;
+import com.presensikeun.controller.Koneksi;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 import java.awt.Desktop;
@@ -51,7 +51,7 @@ public class Login extends javax.swing.JFrame {
 				} else if (txt_user.getText().equals(rs.getString("username")) || txt_pass.getText().equals(rs.getString("password"))) {
 					JOptionPane.showMessageDialog(null, "Anda Berhasil Masuk");
 					this.setVisible(false);
-					new Dashboard().setVisible(true);
+//					new Dashboard().setVisible(true);
 				}
 
 			} else {
@@ -115,7 +115,7 @@ public class Login extends javax.swing.JFrame {
                 });
                 jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 0, -1, -1));
 
-                jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Form_Jpg/6.PNG"))); // NOI18N
+                jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/login/6.PNG"))); // NOI18N
                 jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mousePressed(java.awt.event.MouseEvent evt) {
                                 jLabel7MousePressed(evt);
@@ -123,7 +123,7 @@ public class Login extends javax.swing.JFrame {
                 });
                 jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, -1, -1));
 
-                jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Form_Jpg/5.PNG"))); // NOI18N
+                jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/login/5.PNG"))); // NOI18N
                 jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mousePressed(java.awt.event.MouseEvent evt) {
                                 jLabel6MousePressed(evt);
@@ -131,7 +131,7 @@ public class Login extends javax.swing.JFrame {
                 });
                 jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, -1, -1));
 
-                jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/icons8-hide-20.png"))); // NOI18N
+                jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-hide-20.png"))); // NOI18N
                 jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mousePressed(java.awt.event.MouseEvent evt) {
                                 jLabel8MousePressed(evt);
@@ -139,7 +139,7 @@ public class Login extends javax.swing.JFrame {
                 });
                 jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 260, -1, -1));
 
-                jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/icons8-eye-20.png"))); // NOI18N
+                jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-eye-20.png"))); // NOI18N
                 jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mousePressed(java.awt.event.MouseEvent evt) {
                                 jLabel9MousePressed(evt);
@@ -160,7 +160,7 @@ public class Login extends javax.swing.JFrame {
                 });
                 jPanel1.add(txt_pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 265, 210, -1));
 
-                jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Form_Jpg/3.PNG"))); // NOI18N
+                jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/login/3.PNG"))); // NOI18N
                 jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mousePressed(java.awt.event.MouseEvent evt) {
                                 jLabel3MousePressed(evt);
@@ -168,10 +168,10 @@ public class Login extends javax.swing.JFrame {
                 });
                 jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 310, -1, 40));
 
-                jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Form_Jpg/2.PNG"))); // NOI18N
+                jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/login/2.PNG"))); // NOI18N
                 jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, -1, 20));
 
-                jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Form_Jpg/1.PNG"))); // NOI18N
+                jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/login/1.PNG"))); // NOI18N
                 jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
                 jLabel5.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
@@ -179,7 +179,7 @@ public class Login extends javax.swing.JFrame {
                 jLabel5.setText("Sosial Media");
                 jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 580, 70, -1));
 
-                jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/icons8-youtube-20.png"))); // NOI18N
+                jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-youtube-20.png"))); // NOI18N
                 jLabel14.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mousePressed(java.awt.event.MouseEvent evt) {
                                 jLabel14MousePressed(evt);
@@ -187,7 +187,7 @@ public class Login extends javax.swing.JFrame {
                 });
                 jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 600, -1, -1));
 
-                jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/icons8-facebook-20.png"))); // NOI18N
+                jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-facebook-20.png"))); // NOI18N
                 jLabel15.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mousePressed(java.awt.event.MouseEvent evt) {
                                 jLabel15MousePressed(evt);
@@ -195,7 +195,7 @@ public class Login extends javax.swing.JFrame {
                 });
                 jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 600, -1, -1));
 
-                jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/icons8-instagram-20.png"))); // NOI18N
+                jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-instagram-20.png"))); // NOI18N
                 jLabel16.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mousePressed(java.awt.event.MouseEvent evt) {
                                 jLabel16MousePressed(evt);
@@ -228,14 +228,14 @@ public class Login extends javax.swing.JFrame {
                 jLabel12.setText("Log In");
                 jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(86, 0, -1, 40));
 
-                jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/login.png"))); // NOI18N
+                jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/login.png"))); // NOI18N
                 jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(141, 0, 43, 40));
 
                 jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 370, 240, 40));
 
                 getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 340, 660));
 
-                jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Form_Jpg/background login.PNG"))); // NOI18N
+                jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/login/background login.PNG"))); // NOI18N
                 getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 0, 990, 660));
 
                 pack();

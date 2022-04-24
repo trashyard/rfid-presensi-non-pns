@@ -66,7 +66,7 @@
         <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Form_Jpg/6.PNG"/>
+              <Image iconType="3" name="/com/presensikeun/images/login/6.PNG"/>
             </Property>
           </Properties>
           <Events>
@@ -81,7 +81,7 @@
         <Component class="javax.swing.JLabel" name="jLabel6">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Form_Jpg/5.PNG"/>
+              <Image iconType="3" name="/com/presensikeun/images/login/5.PNG"/>
             </Property>
           </Properties>
           <Events>
@@ -96,7 +96,7 @@
         <Component class="javax.swing.JLabel" name="jLabel8">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Icons/icons8-hide-20.png"/>
+              <Image iconType="3" name="/com/presensikeun/images/icons/icons8-hide-20.png"/>
             </Property>
           </Properties>
           <Events>
@@ -111,7 +111,7 @@
         <Component class="javax.swing.JLabel" name="jLabel9">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Icons/icons8-eye-20.png"/>
+              <Image iconType="3" name="/com/presensikeun/images/icons/icons8-eye-20.png"/>
             </Property>
           </Properties>
           <Events>
@@ -159,7 +159,7 @@
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Form_Jpg/3.PNG"/>
+              <Image iconType="3" name="/com/presensikeun/images/login/3.PNG"/>
             </Property>
           </Properties>
           <Events>
@@ -174,7 +174,7 @@
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Form_Jpg/2.PNG"/>
+              <Image iconType="3" name="/com/presensikeun/images/login/2.PNG"/>
             </Property>
           </Properties>
           <Constraints>
@@ -186,7 +186,7 @@
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Form_Jpg/1.PNG"/>
+              <Image iconType="3" name="/com/presensikeun/images/login/1.PNG"/>
             </Property>
           </Properties>
           <Constraints>
@@ -214,7 +214,7 @@
         <Component class="javax.swing.JLabel" name="jLabel14">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Icons/icons8-youtube-20.png"/>
+              <Image iconType="3" name="/com/presensikeun/images/icons/icons8-youtube-20.png"/>
             </Property>
           </Properties>
           <Events>
@@ -229,7 +229,7 @@
         <Component class="javax.swing.JLabel" name="jLabel15">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Icons/icons8-facebook-20.png"/>
+              <Image iconType="3" name="/com/presensikeun/images/icons/icons8-facebook-20.png"/>
             </Property>
           </Properties>
           <Events>
@@ -244,7 +244,7 @@
         <Component class="javax.swing.JLabel" name="jLabel16">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Icons/icons8-instagram-20.png"/>
+              <Image iconType="3" name="/com/presensikeun/images/icons/icons8-instagram-20.png"/>
             </Property>
           </Properties>
           <Events>
@@ -315,7 +315,7 @@
             <Component class="javax.swing.JLabel" name="jLabel13">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Icons/login.png"/>
+                  <Image iconType="3" name="/com/presensikeun/images/icons/login.png"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -331,7 +331,7 @@
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Form_Jpg/background login.PNG"/>
+          <Image iconType="3" name="/com/presensikeun/images/login/background login.PNG"/>
         </Property>
       </Properties>
       <Constraints>

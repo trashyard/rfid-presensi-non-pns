@@ -78,7 +78,7 @@
                       <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel17" min="-2" pref="164" max="-2" attributes="0"/>
-                      <EmptySpace pref="13" max="32767" attributes="0"/>
+                      <EmptySpace pref="14" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -109,7 +109,7 @@
             <Component class="javax.swing.JLabel" name="jLabel18">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Icons/key.png"/>
+                  <Image iconType="3" name="/com/presensikeun/images/icons/key.png"/>
                 </Property>
               </Properties>
             </Component>
@@ -118,7 +118,7 @@
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Form_Jpg/apaini.PNG"/>
+              <Image iconType="3" name="/com/presensikeun/images/login/apaini.PNG"/>
             </Property>
           </Properties>
           <Events>
@@ -133,7 +133,7 @@
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Form_Jpg/auth new.PNG"/>
+              <Image iconType="3" name="/com/presensikeun/images/login/auth new.PNG"/>
             </Property>
           </Properties>
           <Constraints>

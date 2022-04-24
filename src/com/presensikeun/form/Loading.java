@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package Form;
+package com.presensikeun.form;
 
 import javax.swing.JOptionPane;
 
@@ -39,7 +39,7 @@ public class Loading extends javax.swing.JFrame {
 
                 jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-                jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Form_Jpg/7.PNG"))); // NOI18N
+                jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/login/7.PNG"))); // NOI18N
 
                 loading_label.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
                 loading_label.setText("Loading ...");
@@ -71,7 +71,7 @@ public class Loading extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(123, 123, 123)
                                 .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 225, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(loading_label)
                                         .addComponent(loading_value))

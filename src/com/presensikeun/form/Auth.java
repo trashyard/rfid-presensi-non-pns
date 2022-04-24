@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Form;
+package com.presensikeun.form;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
@@ -75,7 +75,7 @@ public class Auth extends javax.swing.JFrame {
                 jLabel17.setForeground(new java.awt.Color(255, 255, 255));
                 jLabel17.setText("Login Sebagai Admin");
 
-                jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/key.png"))); // NOI18N
+                jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/key.png"))); // NOI18N
 
                 javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
                 jPanel3.setLayout(jPanel3Layout);
@@ -86,7 +86,7 @@ public class Auth extends javax.swing.JFrame {
                                 .addComponent(jLabel18)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(13, Short.MAX_VALUE))
+                                .addContainerGap(14, Short.MAX_VALUE))
                 );
                 jPanel3Layout.setVerticalGroup(
                         jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,7 +99,7 @@ public class Auth extends javax.swing.JFrame {
 
                 jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 290, 240, 40));
 
-                jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Form_Jpg/apaini.PNG"))); // NOI18N
+                jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/login/apaini.PNG"))); // NOI18N
                 jLabel3.addKeyListener(new java.awt.event.KeyAdapter() {
                         public void keyPressed(java.awt.event.KeyEvent evt) {
                                 jLabel3KeyPressed(evt);
@@ -107,7 +107,7 @@ public class Auth extends javax.swing.JFrame {
                 });
                 jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 0, -1, -1));
 
-                jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Form_Jpg/auth new.PNG"))); // NOI18N
+                jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/login/auth new.PNG"))); // NOI18N
                 jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 980, -1));
 
                 javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
