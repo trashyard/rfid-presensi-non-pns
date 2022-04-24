@@ -1,4 +1,3 @@
-
 package com.presensikeun.form;
 
 import com.presensikeun.controller.Koneksi;
@@ -88,6 +87,7 @@ public class Login extends javax.swing.JFrame {
                 jLabel2 = new javax.swing.JLabel();
 
                 setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+                setUndecorated(true);
                 addKeyListener(new java.awt.event.KeyAdapter() {
                         public void keyPressed(java.awt.event.KeyEvent evt) {
                                 formKeyPressed(evt);
@@ -236,86 +236,86 @@ public class Login extends javax.swing.JFrame {
         }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel8MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MousePressed
-	    txt_pass.setEchoChar('●');
-	    jLabel9.setVisible(true);
-	    jLabel8.setVisible(false);
+		txt_pass.setEchoChar('●');
+		jLabel9.setVisible(true);
+		jLabel8.setVisible(false);
     }//GEN-LAST:event_jLabel8MousePressed
 
     private void jLabel9MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MousePressed
-	    txt_pass.setEchoChar((char) 0);
-	    jLabel9.setVisible(false);
-	    jLabel8.setVisible(true);
+		txt_pass.setEchoChar((char) 0);
+		jLabel9.setVisible(false);
+		jLabel8.setVisible(true);
     }//GEN-LAST:event_jLabel9MousePressed
 
     private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
-	    JOptionPane.showMessageDialog(this, "Silahkan Menghubungi Teknisi", "Pesan", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(this, "Silahkan Menghubungi Teknisi", "Pesan", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jLabel3MousePressed
 
     private void jLabel7MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MousePressed
-	    jLabel6.setVisible(true);
-	    jLabel7.setVisible(false);
+		jLabel6.setVisible(true);
+		jLabel7.setVisible(false);
     }//GEN-LAST:event_jLabel7MousePressed
 
     private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
-	    jLabel6.setVisible(false);
-	    jLabel7.setVisible(true);
+		jLabel6.setVisible(false);
+		jLabel7.setVisible(true);
     }//GEN-LAST:event_jLabel6MousePressed
 
     private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
-	    int dialogbtn = JOptionPane.YES_NO_OPTION;
-	    int dialogresult = JOptionPane.showConfirmDialog(this, "Anda Yakin Ingin Keluar?", "Warning", dialogbtn);
+		int dialogbtn = JOptionPane.YES_NO_OPTION;
+		int dialogresult = JOptionPane.showConfirmDialog(this, "Anda Yakin Ingin Keluar?", "Warning", dialogbtn);
 
-	    if (dialogresult == 0) {
-		    new Auth().setVisible(true);
-		    this.setVisible(false);
+		if (dialogresult == 0) {
+			new Auth().setVisible(true);
+			this.setVisible(false);
 
-	    } else {
+		} else {
 
-	    }
+		}
     }//GEN-LAST:event_jButton1MousePressed
 
     private void jLabel15MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MousePressed
 
-	    Desktop d = Desktop.getDesktop();
+		Desktop d = Desktop.getDesktop();
 
-	    try {
-		    d.browse(java.net.URI.create("https://www.facebook.com/OFFICIALSMKN8JEMBER/"));
-	    } catch (IOException ex) {
-		    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-	    }
+		try {
+			d.browse(java.net.URI.create("https://www.facebook.com/OFFICIALSMKN8JEMBER/"));
+		} catch (IOException ex) {
+			Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+		}
 
     }//GEN-LAST:event_jLabel15MousePressed
 
     private void jLabel16MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MousePressed
-	    Desktop d = Desktop.getDesktop();
+		Desktop d = Desktop.getDesktop();
 
-	    try {
-		    d.browse(java.net.URI.create("https://www.instagram.com/smkn8_official/"));
-	    } catch (IOException ex) {
-		    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-	    }
+		try {
+			d.browse(java.net.URI.create("https://www.instagram.com/smkn8_official/"));
+		} catch (IOException ex) {
+			Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+		}
     }//GEN-LAST:event_jLabel16MousePressed
 
     private void jLabel14MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MousePressed
-	    Desktop d = Desktop.getDesktop();
+		Desktop d = Desktop.getDesktop();
 
-	    try {
-		    d.browse(java.net.URI.create("https://www.youtube.com/channel/UCOiaOwoFk5farZPwhgrsr6A"));
-	    } catch (IOException ex) {
-		    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-	    }
+		try {
+			d.browse(java.net.URI.create("https://www.youtube.com/channel/UCOiaOwoFk5farZPwhgrsr6A"));
+		} catch (IOException ex) {
+			Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+		}
     }//GEN-LAST:event_jLabel14MousePressed
 
     private void jPanel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseEntered
-	    jPanel2.setBackground(new Color(28, 8, 64));
+		jPanel2.setBackground(new Color(28, 8, 64));
     }//GEN-LAST:event_jPanel2MouseEntered
 
     private void jPanel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseExited
-	    jPanel2.setBackground(new Color(53, 33, 89));
+		jPanel2.setBackground(new Color(53, 33, 89));
     }//GEN-LAST:event_jPanel2MouseExited
 
     private void jPanel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MousePressed
-	    loginDek();
+		loginDek();
     }//GEN-LAST:event_jPanel2MousePressed
 
         private void txt_passKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_passKeyPressed

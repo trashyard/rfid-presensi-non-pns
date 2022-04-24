@@ -15,13 +15,19 @@ public class Profile extends javax.swing.JPanel {
                 jLabel1 = new javax.swing.JLabel();
                 jLabel2 = new javax.swing.JLabel();
 
+                setBackground(new java.awt.Color(53, 33, 89));
+
+                imageAvatar1.setBackground(new java.awt.Color(255, 255, 255));
+                imageAvatar1.setForeground(new java.awt.Color(255, 255, 255));
                 imageAvatar1.setBorderSize(2);
                 imageAvatar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/urmom.jpg"))); // NOI18N
 
                 jLabel1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+                jLabel1.setForeground(new java.awt.Color(255, 255, 255));
                 jLabel1.setText("Raihan");
 
                 jLabel2.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
+                jLabel2.setForeground(new java.awt.Color(255, 255, 255));
                 jLabel2.setText("Anggep aja admin");
 
                 javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

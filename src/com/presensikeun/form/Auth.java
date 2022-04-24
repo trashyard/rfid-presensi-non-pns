@@ -26,6 +26,7 @@ public class Auth extends javax.swing.JFrame {
                 jLabel2 = new javax.swing.JLabel();
 
                 setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+                setUndecorated(true);
                 addKeyListener(new java.awt.event.KeyAdapter() {
                         public void keyPressed(java.awt.event.KeyEvent evt) {
                                 formKeyPressed(evt);
@@ -109,15 +110,15 @@ public class Auth extends javax.swing.JFrame {
         }// </editor-fold>//GEN-END:initComponents
 
     private void jPanel3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseEntered
-	    jPanel3.setBackground(new Color(28, 8, 64));
+		jPanel3.setBackground(new Color(28, 8, 64));
     }//GEN-LAST:event_jPanel3MouseEntered
 
     private void jPanel3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseExited
-	    jPanel3.setBackground(new Color(53, 33, 89));
+		jPanel3.setBackground(new Color(53, 33, 89));
     }//GEN-LAST:event_jPanel3MouseExited
 
     private void jPanel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MousePressed
-	enterLog();
+		enterLog();
     }//GEN-LAST:event_jPanel3MousePressed
 
         private void jLabel3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel3KeyPressed
@@ -125,14 +126,14 @@ public class Auth extends javax.swing.JFrame {
         }//GEN-LAST:event_jLabel3KeyPressed
 
         private void jPanel1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel1KeyPressed
-                // TODO add your handling code here:
+		// TODO add your handling code here:
 		if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 			enterLog();
 		}
         }//GEN-LAST:event_jPanel1KeyPressed
 
         private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-                // TODO add your handling code here:
+		// TODO add your handling code here:
 		enterLog();
         }//GEN-LAST:event_formKeyPressed
 

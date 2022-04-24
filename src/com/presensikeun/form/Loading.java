@@ -20,6 +20,7 @@ public class Loading extends javax.swing.JFrame {
                 loading_bar = new javax.swing.JProgressBar();
 
                 setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+                setUndecorated(true);
 
                 jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
