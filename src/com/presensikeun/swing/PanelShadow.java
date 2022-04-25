@@ -1,6 +1,6 @@
 package com.presensikeun.swing;
 
-import com.raven.shadow.ShadowBorder;
+import com.presensikeun.shadow.ShadowBorder;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;

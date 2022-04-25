@@ -29,7 +29,7 @@ public class Card extends PanelShadow {
                 lbName = new javax.swing.JLabel();
                 lbValues = new javax.swing.JLabel();
 
-                panelShadow1.setShadowType(com.raven.shadow.ShadowBorder.ShadowType.IN_SHADOW);
+                panelShadow1.setShadowType(com.presensikeun.shadow.ShadowBorder.ShadowType.IN_SHADOW);
 
                 lbIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
