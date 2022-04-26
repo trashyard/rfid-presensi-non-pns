@@ -1,12 +1,10 @@
 package com.presensikeun.form;
 
 import com.presensikeun.controller.Koneksi;
-import com.presensikeun.swing.ScrollBar;
-import java.awt.Color;
+import com.presensikeun.popup.PopUpEditPresensi;
+import com.presensikeun.popup.PopUpPresensi;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 public final class Presensi extends javax.swing.JPanel {
 
@@ -79,6 +77,11 @@ public final class Presensi extends javax.swing.JPanel {
                                 "Title 1", "Title 2", "Title 3", "Title 4"
                         }
                 ));
+                table1.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                table1MouseClicked(evt);
+                        }
+                });
                 jScrollPane1.setViewportView(table1);
 
                 javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
@@ -99,13 +102,18 @@ public final class Presensi extends javax.swing.JPanel {
                 );
 
                 jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icon/add.png"))); // NOI18N
+                jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mousePressed(java.awt.event.MouseEvent evt) {
+                                jLabel2MousePressed(evt);
+                        }
+                });
 
                 javax.swing.GroupLayout panelShadow2Layout = new javax.swing.GroupLayout(panelShadow2);
                 panelShadow2.setLayout(panelShadow2Layout);
                 panelShadow2Layout.setHorizontalGroup(
                         panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow2Layout.createSequentialGroup()
-                                .addGap(0, 142, Short.MAX_VALUE)
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jLabel2))
                 );
                 panelShadow2Layout.setVerticalGroup(
@@ -137,6 +145,18 @@ public final class Presensi extends javax.swing.JPanel {
                                 .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 );
         }// </editor-fold>//GEN-END:initComponents
+
+        private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
+		// TODO add your handling code here:
+		new PopUpPresensi().setVisible(true);
+        }//GEN-LAST:event_jLabel2MousePressed
+
+        private void table1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table1MouseClicked
+		// TODO add your handling code here:
+		int row = table1.rowAtPoint(evt.getPoint());
+		String id = table1.getValueAt(row, 0).toString();
+		new PopUpEditPresensi(id).setVisible(true);
+        }//GEN-LAST:event_table1MouseClicked
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private javax.swing.JLabel jLabel1;

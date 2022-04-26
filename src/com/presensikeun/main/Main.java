@@ -10,7 +10,7 @@ import com.presensikeun.form.Report;
 import java.awt.Color;
 import java.awt.Component;
 
-public class Main extends javax.swing.JFrame {
+public final class Main extends javax.swing.JFrame {
 
 	public Main() {
 		initComponents();
@@ -93,24 +93,28 @@ public class Main extends javax.swing.JFrame {
         private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
 		// TODO add your handling code here:
 		menu1.setSelectedIndex(0);
-		menu1.addEvent(new EventMenu() {
-			@Override
-			public void menuIndexChange(int index) {
-				System.out.println(index);
-				if (index == 0) {
+		menu1.addEvent((int index) -> {
+			switch (index) {
+				case 0:
 					showForm(new Dashboard());
-				} else if (index == 1) {
+					break;
+				case 1:
 					showForm(new Presensi());
-				} else if (index == 2) {
+					break;
+				case 2:
 					showForm(new Karyawan());
-				} else if (index == 3) {
+					break;
+				case 3:
 					showForm(new Jadwal());
-				} else if (index == 4) {
+					break;
+				case 4:
 					showForm(new Report());
-				} else if (index == 5) {
+					break;
+				case 5:
 					logout();
-				}
-
+					break;
+				default:
+					break;
 			}
 		});
         }//GEN-LAST:event_formWindowOpened

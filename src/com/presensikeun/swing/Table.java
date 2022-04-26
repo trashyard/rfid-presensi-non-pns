@@ -58,4 +58,10 @@ public class Table extends JTable {
 		panel.setBackground(new Color(85, 65, 118));
 		jspane.setCorner(JScrollPane.UPPER_RIGHT_CORNER, panel);
 	}
+
+	@Override
+	public boolean isCellEditable(int row, int column) {
+		return false;
+	}
+;
 }
