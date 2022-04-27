@@ -126,6 +126,9 @@
                   </Table>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="table1MousePressed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -155,6 +158,9 @@
               <Image iconType="3" name="/com/presensikeun/images/icon/add.png"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel2MousePressed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
