@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 28, 2022 at 09:15 AM
+-- Generation Time: Apr 28, 2022 at 12:41 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -24,15 +24,26 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_detail_presensi`
+-- Table structure for table `tb_detail_jadwal`
 --
 
-CREATE TABLE `tb_detail_presensi` (
-  `keterangan` varchar(25) NOT NULL,
+CREATE TABLE `tb_detail_jadwal` (
+  `id` int(11) NOT NULL,
+  `id_jadwal` int(11) NOT NULL,
   `tanggal` datetime NOT NULL,
-  `id_jadwal` int(11) DEFAULT NULL,
-  `id_karyawan` int(11) DEFAULT NULL
+  `jam` int(1) NOT NULL,
+  `status` enum('hadir','ijin','sakit','alpa','?') NOT NULL DEFAULT '?',
+  `id_karyawan` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tb_detail_jadwal`
+--
+
+INSERT INTO `tb_detail_jadwal` (`id`, `id_jadwal`, `tanggal`, `jam`, `status`, `id_karyawan`) VALUES
+(1, 1, '2022-04-28 17:00:00', 2, '?', 6),
+(2, 2, '2022-04-29 16:13:29', 2, '?', 7),
+(3, 1, '2022-04-28 16:39:52', 2, '?', 6);
 
 -- --------------------------------------------------------
 
@@ -64,9 +75,7 @@ INSERT INTO `tb_jabatan` (`id`, `id_jabatan`, `nama`) VALUES
 
 CREATE TABLE `tb_jadwal` (
   `id` int(11) NOT NULL,
-  `hari` varchar(6) NOT NULL,
-  `tanggal` datetime NOT NULL,
-  `status` enum('datang','mengajar','pulang','') NOT NULL,
+  `status` enum('datang','mengajar','pulang') NOT NULL,
   `id_mapel` int(11) DEFAULT NULL,
   `id_kelas` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -75,12 +84,10 @@ CREATE TABLE `tb_jadwal` (
 -- Dumping data for table `tb_jadwal`
 --
 
-INSERT INTO `tb_jadwal` (`id`, `hari`, `tanggal`, `status`, `id_mapel`, `id_kelas`) VALUES
-(1, 'Senin', '2022-03-28 05:19:07', 'datang', 6, 2),
-(2, 'Selasa', '2022-03-28 05:19:07', 'mengajar', 5, 4),
-(3, 'Rabu', '2022-03-28 05:19:56', 'pulang', 3, 5),
-(4, 'Kamis', '2022-03-28 05:19:56', 'datang', 2, 1),
-(5, 'Jumat', '2022-03-28 05:21:10', 'mengajar', 1, 3);
+INSERT INTO `tb_jadwal` (`id`, `status`, `id_mapel`, `id_kelas`) VALUES
+(1, 'mengajar', 6, 1),
+(2, 'mengajar', 5, 1),
+(3, 'mengajar', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -130,12 +137,11 @@ INSERT INTO `tb_karyawan` (`id`, `username`, `password`, `nama`, `status`, `jeni
 (3, 'ADM003', 'admin3', 'Yunanda', 'admin', 'L', 3),
 (4, 'ADM004', 'admin4', 'Supriyadi', 'admin', 'L', 4),
 (5, 'ADM005', 'admin5', 'Anggun ', 'admin', 'P', 1),
-(6, 'r', 'r', 'Raihan', 'user', 'L', 1),
-(7, '', '', 'Ananda', 'user', 'L', 2),
+(6, 'r', 'r', 'Raihan', 'user', 'L', 4),
+(7, 'a', 'a', 'Andini <3', 'user', 'P', 4),
 (8, '', '', 'Farhan', 'user', 'L', 4),
 (9, '', '', 'Ayunda', 'user', 'P', 4),
-(10, '', '', 'Sulis', 'user', 'P', 2),
-(11, 'a', 'a', 'Andini <3', 'user', 'P', 1);
+(10, 'x', 'x', 'Samsul', 'admin', 'L', 2);
 
 -- --------------------------------------------------------
 
@@ -145,8 +151,8 @@ INSERT INTO `tb_karyawan` (`id`, `username`, `password`, `nama`, `status`, `jeni
 
 CREATE TABLE `tb_kelas` (
   `id` int(11) NOT NULL,
-  `nama` varchar(50) NOT NULL,
-  `angkatan` varchar(2) NOT NULL,
+  `nama` varchar(10) NOT NULL,
+  `angkatan` enum('1','2','3') NOT NULL,
   `id_ruang` int(11) DEFAULT NULL,
   `id_jurusan` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -156,11 +162,8 @@ CREATE TABLE `tb_kelas` (
 --
 
 INSERT INTO `tb_kelas` (`id`, `nama`, `angkatan`, `id_ruang`, `id_jurusan`) VALUES
-(1, 'RPL1', '10', 1, 1),
-(2, 'RPL 2', '10', 2, 1),
-(3, 'TKJ 1', '10', 3, 2),
-(4, 'TKJ 2', '10', 4, 2),
-(5, 'MM 1', '10', 5, 6);
+(1, 'RPL 1', '1', 1, 1),
+(2, 'RPL 2', '1', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -181,10 +184,10 @@ CREATE TABLE `tb_mapel` (
 INSERT INTO `tb_mapel` (`id`, `id_mapel`, `nama`) VALUES
 (1, 'MATDAS', 'Matematika Dasar'),
 (2, 'PEMDAS', 'Pemrograman Dasar'),
-(3, 'FSK', 'Fisika'),
+(3, 'FISIKA', 'Fisika'),
 (4, 'SEJINDO', 'Sejarah Indonesia'),
-(5, 'BI', 'Bahasa Indonesia'),
-(6, 'al', 'Algoritma');
+(5, 'BINDO', 'Bahasa Indonesia'),
+(6, 'ALGO', 'Algoritma');
 
 -- --------------------------------------------------------
 
@@ -202,22 +205,23 @@ CREATE TABLE `tb_ruang` (
 --
 
 INSERT INTO `tb_ruang` (`id`, `nama`) VALUES
-(1, 'RPL1'),
-(2, 'RPL2'),
-(3, 'TKJ1'),
-(4, 'TKJ2'),
-(5, 'MM1');
+(1, '3.1'),
+(2, '3.2'),
+(3, '3.4'),
+(4, '3.5'),
+(5, '5.5');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `tb_detail_presensi`
+-- Indexes for table `tb_detail_jadwal`
 --
-ALTER TABLE `tb_detail_presensi`
-  ADD KEY `id_jadwal` (`id_jadwal`),
-  ADD KEY `id_karyawan` (`id_karyawan`);
+ALTER TABLE `tb_detail_jadwal`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_karyawan` (`id_karyawan`),
+  ADD KEY `id_jadwal` (`id_jadwal`);
 
 --
 -- Indexes for table `tb_jabatan`
@@ -271,6 +275,24 @@ ALTER TABLE `tb_ruang`
 --
 
 --
+-- AUTO_INCREMENT for table `tb_detail_jadwal`
+--
+ALTER TABLE `tb_detail_jadwal`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tb_jadwal`
+--
+ALTER TABLE `tb_jadwal`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tb_kelas`
+--
+ALTER TABLE `tb_kelas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `tb_mapel`
 --
 ALTER TABLE `tb_mapel`
@@ -281,19 +303,19 @@ ALTER TABLE `tb_mapel`
 --
 
 --
--- Constraints for table `tb_detail_presensi`
+-- Constraints for table `tb_detail_jadwal`
 --
-ALTER TABLE `tb_detail_presensi`
-  ADD CONSTRAINT `tb_detail_presensi_ibfk_3` FOREIGN KEY (`id_karyawan`) REFERENCES `tb_karyawan` (`id`),
-  ADD CONSTRAINT `tb_detail_presensi_ibfk_4` FOREIGN KEY (`id_jadwal`) REFERENCES `tb_jadwal` (`id`),
-  ADD CONSTRAINT `tb_detail_presensi_ibfk_5` FOREIGN KEY (`id_karyawan`) REFERENCES `tb_karyawan` (`id`);
+ALTER TABLE `tb_detail_jadwal`
+  ADD CONSTRAINT `tb_detail_jadwal_ibfk_1` FOREIGN KEY (`id_karyawan`) REFERENCES `tb_karyawan` (`id`),
+  ADD CONSTRAINT `tb_detail_jadwal_ibfk_2` FOREIGN KEY (`id_jadwal`) REFERENCES `tb_jadwal` (`id`);
 
 --
 -- Constraints for table `tb_jadwal`
 --
 ALTER TABLE `tb_jadwal`
-  ADD CONSTRAINT `tb_jadwal_ibfk_4` FOREIGN KEY (`id_kelas`) REFERENCES `tb_kelas` (`id`),
-  ADD CONSTRAINT `tb_jadwal_ibfk_6` FOREIGN KEY (`id_mapel`) REFERENCES `tb_mapel` (`id`);
+  ADD CONSTRAINT `tb_jadwal_ibfk_6` FOREIGN KEY (`id_mapel`) REFERENCES `tb_mapel` (`id`),
+  ADD CONSTRAINT `tb_jadwal_ibfk_7` FOREIGN KEY (`id_mapel`) REFERENCES `tb_mapel` (`id`),
+  ADD CONSTRAINT `tb_jadwal_ibfk_8` FOREIGN KEY (`id_kelas`) REFERENCES `tb_kelas` (`id`);
 
 --
 -- Constraints for table `tb_karyawan`
