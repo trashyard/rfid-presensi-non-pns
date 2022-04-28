@@ -36,13 +36,23 @@ public final class Presensi extends javax.swing.JPanel {
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
-				model.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)});
+				model.addRow(new Object[]{rs.getString(1), rs.getString(2), getStatus(rs.getString(3)), rs.getString(4), rs.getString(5)});
 			}
 			table.setModel(model);
 		} catch (SQLException ex) {
 			model.addRow(new Object[]{});
 			table.setModel(model);
 		}
+	}
+
+	public String getStatus(String status) {
+		String string;
+		if (status.equals("?")) {
+			string = "Submit Attendance";
+		} else {
+			string = status;
+		}
+		return string;
 	}
 
 	@SuppressWarnings("unchecked")
