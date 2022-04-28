@@ -1,8 +1,20 @@
 package com.presensikeun.component;
 
+import com.presensikeun.controller.Koneksi;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 public class Profile extends javax.swing.JPanel {
 
+	Connection con;
+	PreparedStatement pst;
+	ResultSet rs;
+
 	public Profile() {
+		this.con = Koneksi.getKoneksi();
 		initComponents();
 		setOpaque(false);
 	}
@@ -24,11 +36,11 @@ public class Profile extends javax.swing.JPanel {
 
                 jLabel1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
                 jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-                jLabel1.setText("Raihan");
+                jLabel1.setText("SMKN 8 Jember");
 
                 jLabel2.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
                 jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-                jLabel2.setText("Anggep aja admin");
+                jLabel2.setText("Dashboard Presensi");
 
                 javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
                 this.setLayout(layout);

@@ -2,22 +2,37 @@ package com.presensikeun.form.user;
 
 import com.presensikeun.chart.ModelChart;
 import com.presensikeun.chart.ModelPolarAreaChart;
+import com.presensikeun.controller.Koneksi;
 import com.presensikeun.model.ModelCard;
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.ImageIcon;
 
-public class Dashboard extends javax.swing.JPanel {
+public final class Dashboard extends javax.swing.JPanel {
+
+	Connection con = null;
+	ResultSet rs = null;
+	PreparedStatement pst = null;
 
 	public Dashboard() {
+		this.con = Koneksi.getKoneksi();
 		initComponents();
-		setData();
+		setData("1");
 	}
 
-	public void setData() {
-		// card
-		card1.setData(new ModelCard(new ImageIcon(getClass().getResource("/com/presensikeun/images/icon/presensi.png")), "Total Presensi", "10"));
-		card2.setData(new ModelCard(new ImageIcon(getClass().getResource("/com/presensikeun/images/icon/karyawan.png")), "Karyawan", "9"));
-		card3.setData(new ModelCard(new ImageIcon(getClass().getResource("/com/presensikeun/images/icon/admin.png")), "Admin", "1"));
+	public Dashboard(String id) {
+		this.con = Koneksi.getKoneksi();
+		initComponents();
+		setData(id);
+	}
+
+	public void setData(String id) {
+		// initial welcome
+		jLabel1.setText("Selamat Datang, " + getName(id));
+
 		// chart 
 		chart.addLegend("Minggu 1", new Color(245, 189, 135));
 		chart.addLegend("Minggu 2", new Color(135, 189, 245));
@@ -37,15 +52,27 @@ public class Dashboard extends javax.swing.JPanel {
 		polarAreaChart1.start();
 	}
 
+	public String getName(String id) {
+		String nama = "kontolmemekangsa";
+		try {
+			String sql = "select nama from tb_karyawan where id = " + id;
+			System.out.println(sql);
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				nama = rs.getString(1);
+			}
+		} catch (SQLException ex) {
+		}
+		return nama;
+	}
+
 //	public void get 
 	@SuppressWarnings("unchecked")
         // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
         private void initComponents() {
 
                 jLabel1 = new javax.swing.JLabel();
-                card1 = new com.presensikeun.component.Card();
-                card2 = new com.presensikeun.component.Card();
-                card3 = new com.presensikeun.component.Card();
                 panelShadow1 = new com.presensikeun.swing.PanelShadow();
                 chart = new com.presensikeun.chart.Chart();
                 panelShadow2 = new com.presensikeun.swing.PanelShadow();
@@ -54,7 +81,7 @@ public class Dashboard extends javax.swing.JPanel {
                 setBackground(new java.awt.Color(242, 246, 253));
 
                 jLabel1.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
-                jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
                 jLabel1.setText("Dashboard");
                 jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
 
@@ -81,7 +108,7 @@ public class Dashboard extends javax.swing.JPanel {
                 panelShadow2.setLayout(panelShadow2Layout);
                 panelShadow2Layout.setHorizontalGroup(
                         panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(polarAreaChart1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(polarAreaChart1, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
                 );
                 panelShadow2Layout.setVerticalGroup(
                         panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -96,31 +123,20 @@ public class Dashboard extends javax.swing.JPanel {
                 layout.setHorizontalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                                .addComponent(card1, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(card2, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(card3, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
                                 .addComponent(panelShadow1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(panelShadow2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
                 );
                 layout.setVerticalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(jLabel1)
-                                .addGap(17, 17, 17)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(card2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(card1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(card3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
+                                .addGap(0, 0, 0)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(panelShadow2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -128,9 +144,6 @@ public class Dashboard extends javax.swing.JPanel {
         }// </editor-fold>//GEN-END:initComponents
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
-        private com.presensikeun.component.Card card1;
-        private com.presensikeun.component.Card card2;
-        private com.presensikeun.component.Card card3;
         private com.presensikeun.chart.Chart chart;
         private javax.swing.JLabel jLabel1;
         private com.presensikeun.swing.PanelShadow panelShadow1;

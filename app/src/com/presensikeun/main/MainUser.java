@@ -1,17 +1,27 @@
 package com.presensikeun.main;
 
-import com.presensikeun.event.EventMenu;
+import com.presensikeun.component.Profile;
 import com.presensikeun.form.Login;
-import com.presensikeun.form.user.Dashboard;
+import com.presensikeun.form.user.*;
 import java.awt.Color;
 import java.awt.Component;
 
 public final class MainUser extends javax.swing.JFrame {
 
+	Profile profile = new Profile();
+	String id = "1";
+
 	public MainUser() {
 		initComponents();
 		setBackground(new Color(0, 0, 0, 0));
 		showForm(new Dashboard());
+	}
+
+	public MainUser(String id) {
+		this.id = id;
+		initComponents();
+		setBackground(new Color(0, 0, 0, 0));
+		showForm(new Dashboard(id));
 	}
 
 	public void showForm(Component com) {
@@ -92,7 +102,10 @@ public final class MainUser extends javax.swing.JFrame {
 		menu1.addEvent((int index) -> {
 			switch (index) {
 				case 0:
-					showForm(new Dashboard());
+					showForm(new Dashboard(id));
+					break;
+				case 1:
+					showForm(new Presensi(id));
 					break;
 				default:
 					break;

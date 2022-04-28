@@ -1,5 +1,6 @@
 package com.presensikeun.form;
 
+import com.presensikeun.component.Profile;
 import com.presensikeun.controller.Koneksi;
 import com.presensikeun.main.Main;
 import com.presensikeun.main.MainUser;
@@ -44,7 +45,7 @@ public class Login extends javax.swing.JFrame {
 				} else if (txt_user.getText().equals(rs.getString("username")) && txt_pass.getText().equals(rs.getString("password")) && rs.getString("status").equals("user")) {
 					JOptionPane.showMessageDialog(null, "pler");
 					this.setVisible(false);
-					new MainUser().setVisible(true);
+					new MainUser(rs.getString("id")).setVisible(true);
 				}
 
 			} else {
