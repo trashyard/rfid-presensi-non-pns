@@ -1,7 +1,6 @@
 package com.presensikeun.popup;
 
 import com.presensikeun.controller.Koneksi;
-import com.presensikeun.form.Presensi;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
