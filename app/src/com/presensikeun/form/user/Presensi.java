@@ -29,7 +29,7 @@ public final class Presensi extends javax.swing.JPanel {
 		model.addColumn("Jam Mengajar");
 		model.addColumn("Status");
 		model.addColumn("Nama");
-		model.addColumn("Mapel");
+		model.addColumn("Mata Pelajaran");
 		try {
 
 			String sql = "select dj.tanggal as \"Date\", CONCAT(dj.jam, \" Jam\") as \"Jam Mengajar\", dj.status as \"Status\", k.nama as \"Nama Guru\", m.nama as \"Nama Mapel\" from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id where k.id = " + id;
@@ -68,22 +68,22 @@ public final class Presensi extends javax.swing.JPanel {
                                 "Title 1", "Title 2", "Title 3", "Title 4"
                         }
                 ));
+                table.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                tableMouseClicked(evt);
+                        }
+                });
                 jScrollPane1.setViewportView(table);
 
                 javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
                 panelShadow1.setLayout(panelShadow1Layout);
                 panelShadow1Layout.setHorizontalGroup(
                         panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(panelShadow1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 752, Short.MAX_VALUE)
-                                .addContainerGap())
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 764, Short.MAX_VALUE)
                 );
                 panelShadow1Layout.setVerticalGroup(
                         panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createSequentialGroup()
-                                .addGap(0, 6, Short.MAX_VALUE)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE)
                 );
 
                 javax.swing.GroupLayout panelShadow2Layout = new javax.swing.GroupLayout(panelShadow2);
@@ -127,6 +127,17 @@ public final class Presensi extends javax.swing.JPanel {
                         .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 );
         }// </editor-fold>//GEN-END:initComponents
+
+        private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
+		// TODO add your handling code here:
+		int row = table.rowAtPoint(evt.getPoint());
+		String status = table.getValueAt(row, 2).toString();
+		if (status.equals("?")) {
+			System.out.println("yoi");
+		} else {
+			System.out.println("ga boleh ngabsss");
+		}
+        }//GEN-LAST:event_tableMouseClicked
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private javax.swing.JScrollPane jScrollPane1;

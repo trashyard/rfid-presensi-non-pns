@@ -107,6 +107,12 @@ public final class MainUser extends javax.swing.JFrame {
 				case 1:
 					showForm(new Presensi(id));
 					break;
+				case 2:
+					showForm(new MataPelajaran(id));
+					break;
+				case 3:
+					logout();
+					break;
 				default:
 					break;
 			}

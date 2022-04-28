@@ -46,9 +46,9 @@ public final class Dashboard extends javax.swing.JPanel {
 		chart.addData(new ModelChart("Juni", new double[]{1, 35, 4, 20}));
 
 		// telat hadir sakit izin alpa
-		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(52, 148, 203), "Januari", 60));
-		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(175, 67, 237), "Maret", 50));
-		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(87, 218, 137), "Juni", 30));
+		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(52, 148, 203), "Hadir", 15));
+		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(175, 67, 237), "Sakit", 4));
+		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(87, 218, 137), "Telat", 8));
 		polarAreaChart1.start();
 	}
 
@@ -56,7 +56,6 @@ public final class Dashboard extends javax.swing.JPanel {
 		String nama = "kontolmemekangsa";
 		try {
 			String sql = "select nama from tb_karyawan where id = " + id;
-			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			if (rs.next()) {
