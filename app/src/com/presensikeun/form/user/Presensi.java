@@ -2,7 +2,18 @@ package com.presensikeun.form.user;
 
 import com.presensikeun.controller.Koneksi;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Hours;
+import org.joda.time.Period;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public final class Presensi extends javax.swing.JPanel {
 
@@ -25,18 +36,20 @@ public final class Presensi extends javax.swing.JPanel {
 
 	public void tablePresensiUser() {
 		DefaultTableModel model = new DefaultTableModel();
+		model.addColumn("ID Jadwal");
 		model.addColumn("Date");
-		model.addColumn("Jam Mengajar");
+		model.addColumn("Durasi");
 		model.addColumn("Status");
 		model.addColumn("Nama");
 		model.addColumn("Mata Pelajaran");
 		try {
 
-			String sql = "select dj.tanggal as \"Date\", CONCAT(dj.jam, \" Jam\") as \"Jam Mengajar\", dj.status as \"Status\", k.nama as \"Nama Guru\", m.nama as \"Nama Mapel\" from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id where k.id = " + id;
+			String sql = "select dj.id, dj.tanggal as \"Date\", CONCAT(dj.jam, \" Jam\") as \"Durasi\", dj.status as \"Status\", k.nama as \"Nama Guru\", m.nama as \"Nama Mapel\" from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id where k.id = " + id;
+			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
-				model.addRow(new Object[]{rs.getString(1), rs.getString(2), getStatus(rs.getString(3)), rs.getString(4), rs.getString(5)});
+				model.addRow(new Object[]{rs.getString(1), rs.getTimestamp(2), rs.getString(3), getStatus(rs.getString(4)), rs.getString(5), rs.getString(6)});
 			}
 			table.setModel(model);
 		} catch (SQLException ex) {
@@ -53,6 +66,19 @@ public final class Presensi extends javax.swing.JPanel {
 			string = status;
 		}
 		return string;
+	}
+
+	public void isTherePresensi(String date, int hour) {
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss.SSS");
+		DateTime pDate = dtf.parseDateTime(date).toDateTime(DateTimeZone.forID("Asia/Jakarta"));
+		DateTime dt = new DateTime(DateTimeZone.forID("Asia/Jakarta"));
+		System.out.println(pDate.toLocalDateTime());
+		System.out.println(dt.toLocalDateTime());
+		if (dt.isAfter(pDate) && dt.isBefore(pDate.plusHours(hour))) {
+			System.out.println("boleh absen dek");
+		} else {
+			System.out.println("telat dek");
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -141,11 +167,12 @@ public final class Presensi extends javax.swing.JPanel {
         private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
 		// TODO add your handling code here:
 		int row = table.rowAtPoint(evt.getPoint());
-		String status = table.getValueAt(row, 2).toString();
-		if (status.equals("?")) {
-			System.out.println("yoi");
+		String date = table.getValueAt(row, 1).toString();
+		String hour = table.getValueAt(row, 2).toString();
+		String status = table.getValueAt(row, 3).toString();
+		if (status.equals("Submit Attendance")) {
+			isTherePresensi(date, 2);
 		} else {
-			System.out.println("ga boleh ngabsss");
 		}
         }//GEN-LAST:event_tableMouseClicked
 
