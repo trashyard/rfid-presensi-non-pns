@@ -1,17 +1,12 @@
 package com.presensikeun.form.user;
 
 import com.presensikeun.controller.Koneksi;
+import com.presensikeun.form.FillIn;
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.Hours;
-import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -45,11 +40,10 @@ public final class Presensi extends javax.swing.JPanel {
 		try {
 
 			String sql = "select dj.id, dj.tanggal as \"Date\", CONCAT(dj.jam, \" Jam\") as \"Durasi\", dj.status as \"Status\", k.nama as \"Nama Guru\", m.nama as \"Nama Mapel\" from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id where k.id = " + id;
-			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
-				model.addRow(new Object[]{rs.getString(1), rs.getTimestamp(2), rs.getString(3), getStatus(rs.getString(4)), rs.getString(5), rs.getString(6)});
+				model.addRow(new Object[]{rs.getString(1), rs.getTimestamp(2), rs.getString(3), getStatus(rs.getString(4), rs.getString(2), 2), rs.getString(5), rs.getString(6)});
 			}
 			table.setModel(model);
 		} catch (SQLException ex) {
@@ -58,9 +52,12 @@ public final class Presensi extends javax.swing.JPanel {
 		}
 	}
 
-	public String getStatus(String status) {
+	public String getStatus(String status, String date, int hour) {
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss");
+		DateTime pDate = dtf.parseDateTime(date).toDateTime(DateTimeZone.forID("Asia/Jakarta"));
+		DateTime dt = new DateTime(DateTimeZone.forID("Asia/Jakarta"));
 		String string;
-		if (status.equals("?")) {
+		if (dt.isAfter(pDate) && dt.isBefore(pDate.plusHours(hour)) && status.equals("?")) {
 			string = "Submit Attendance";
 		} else {
 			string = status;
@@ -68,16 +65,13 @@ public final class Presensi extends javax.swing.JPanel {
 		return string;
 	}
 
-	public void isTherePresensi(String date, int hour) {
-		DateTimeFormatter dtf = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss.SSS");
+	public void isTherePresensi(String date, int hour, String id) {
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss.S");
 		DateTime pDate = dtf.parseDateTime(date).toDateTime(DateTimeZone.forID("Asia/Jakarta"));
 		DateTime dt = new DateTime(DateTimeZone.forID("Asia/Jakarta"));
-		System.out.println(pDate.toLocalDateTime());
-		System.out.println(dt.toLocalDateTime());
 		if (dt.isAfter(pDate) && dt.isBefore(pDate.plusHours(hour))) {
-			System.out.println("boleh absen dek");
-		} else {
-			System.out.println("telat dek");
+			JOptionPane.showMessageDialog(null, "hayoo absennya gimana akowakwo");
+			new FillIn(id).setVisible(true);
 		}
 	}
 
@@ -85,7 +79,7 @@ public final class Presensi extends javax.swing.JPanel {
         // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
         private void initComponents() {
 
-                panelBorder1 = new com.presensikeun.swing.PanelBorder();
+                panel = new com.presensikeun.swing.PanelBorder();
                 panelShadow1 = new com.presensikeun.swing.PanelShadow();
                 jScrollPane1 = new javax.swing.JScrollPane();
                 table = new com.presensikeun.swing.Table();
@@ -133,19 +127,19 @@ public final class Presensi extends javax.swing.JPanel {
                         .addGap(0, 34, Short.MAX_VALUE)
                 );
 
-                javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
-                panelBorder1.setLayout(panelBorder1Layout);
-                panelBorder1Layout.setHorizontalGroup(
-                        panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
+                panel.setLayout(panelLayout);
+                panelLayout.setHorizontalGroup(
+                        panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(panelShadow1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorder1Layout.createSequentialGroup()
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(panelShadow2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
                 );
-                panelBorder1Layout.setVerticalGroup(
-                        panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorder1Layout.createSequentialGroup()
+                panelLayout.setVerticalGroup(
+                        panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(panelShadow2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -156,29 +150,30 @@ public final class Presensi extends javax.swing.JPanel {
                 this.setLayout(layout);
                 layout.setHorizontalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 );
                 layout.setVerticalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 );
         }// </editor-fold>//GEN-END:initComponents
 
         private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
 		// TODO add your handling code here:
 		int row = table.rowAtPoint(evt.getPoint());
+		String id = table.getValueAt(row, 0).toString();
 		String date = table.getValueAt(row, 1).toString();
 		String hour = table.getValueAt(row, 2).toString();
 		String status = table.getValueAt(row, 3).toString();
 		if (status.equals("Submit Attendance")) {
-			isTherePresensi(date, 2);
+			isTherePresensi(date, 2, id);
 		} else {
 		}
         }//GEN-LAST:event_tableMouseClicked
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private javax.swing.JScrollPane jScrollPane1;
-        private com.presensikeun.swing.PanelBorder panelBorder1;
+        private com.presensikeun.swing.PanelBorder panel;
         private com.presensikeun.swing.PanelShadow panelShadow1;
         private com.presensikeun.swing.PanelShadow panelShadow2;
         private com.presensikeun.swing.Table table;

@@ -5,6 +5,7 @@ import com.presensikeun.form.Login;
 import com.presensikeun.form.user.*;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Toolkit;
 
 public final class MainUser extends javax.swing.JFrame {
 
@@ -22,6 +23,11 @@ public final class MainUser extends javax.swing.JFrame {
 		initComponents();
 		setBackground(new Color(0, 0, 0, 0));
 		showForm(new Dashboard(id));
+	}
+
+	public void initialize() {
+		setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - getSize().width) / 2, (Toolkit.getDefaultToolkit().getScreenSize().height - getSize().height) / 2);
+
 	}
 
 	public void showForm(Component com) {

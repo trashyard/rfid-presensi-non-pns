@@ -43,7 +43,7 @@ public class Login extends javax.swing.JFrame {
 					this.setVisible(false);
 					new Main().setVisible(true);
 				} else if (txt_user.getText().equals(rs.getString("username")) && txt_pass.getText().equals(rs.getString("password")) && rs.getString("status").equals("user")) {
-					JOptionPane.showMessageDialog(null, "pler");
+					JOptionPane.showMessageDialog(null, "Anda Berhasil Masuk");
 					this.setVisible(false);
 					new MainUser(rs.getString("id")).setVisible(true);
 				}
