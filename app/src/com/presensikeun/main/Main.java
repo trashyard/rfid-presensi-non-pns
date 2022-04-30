@@ -1,12 +1,12 @@
 package com.presensikeun.main;
 
 import com.presensikeun.event.EventMenu;
-import com.presensikeun.form.Dashboard;
-import com.presensikeun.form.Jadwal;
-import com.presensikeun.form.Karyawan;
+import com.presensikeun.form.admin.Dashboard;
+import com.presensikeun.form.admin.Jadwal;
+import com.presensikeun.form.admin.Karyawan;
 import com.presensikeun.form.Login;
-import com.presensikeun.form.Presensi;
-import com.presensikeun.form.Report;
+import com.presensikeun.form.admin.Presensi;
+import com.presensikeun.form.admin.Report;
 import java.awt.Color;
 import java.awt.Component;
 

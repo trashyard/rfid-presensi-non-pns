@@ -1,7 +1,6 @@
 package com.presensikeun.form.user;
 
 import com.presensikeun.controller.Koneksi;
-import com.presensikeun.form.FillIn;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;

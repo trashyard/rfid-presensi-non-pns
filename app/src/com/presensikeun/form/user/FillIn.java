@@ -1,5 +1,6 @@
-package com.presensikeun.form;
+package com.presensikeun.form.user;
 
+import com.presensikeun.form.admin.Presensi;
 import com.presensikeun.controller.Koneksi;
 import java.awt.Toolkit;
 import java.sql.Connection;

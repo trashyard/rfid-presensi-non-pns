@@ -1,4 +1,4 @@
-package com.presensikeun.form;
+package com.presensikeun.form.admin;
 
 import com.presensikeun.controller.Koneksi;
 import java.sql.*;
@@ -139,14 +139,8 @@ public final class Report extends javax.swing.JPanel {
         private javax.swing.JScrollPane ScrollReport;
         private javax.swing.JLabel jLabel1;
         private javax.swing.JLabel jLabel2;
-        private javax.swing.JScrollPane jScrollPane1;
-        private javax.swing.JScrollPane jScrollPane2;
-        private com.presensikeun.swing.PanelShadow panelShadow1;
-        private com.presensikeun.swing.PanelShadow panelShadow2;
         private com.presensikeun.swing.PanelShadow panelShadow4;
         private com.presensikeun.swing.PanelShadow panelShadow5;
         private com.presensikeun.swing.Table table;
-        private com.presensikeun.swing.Table table1;
-        private com.presensikeun.swing.Table table2;
         // End of variables declaration//GEN-END:variables
 }

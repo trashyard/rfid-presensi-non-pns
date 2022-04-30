@@ -1,4 +1,4 @@
-package com.presensikeun.form;
+package com.presensikeun.form.admin;
 
 import com.presensikeun.chart.ModelChart;
 import com.presensikeun.chart.ModelPolarAreaChart;

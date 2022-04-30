@@ -1,38 +1,37 @@
-package com.presensikeun.form;
+package com.presensikeun.form.admin;
 
 import com.presensikeun.controller.Koneksi;
-import com.presensikeun.popup.PopUpEditPresensi;
-import com.presensikeun.popup.PopUpPresensi;
-import javax.swing.table.DefaultTableModel;
+import com.presensikeun.popup.PopUpEditKaryawan;
+import com.presensikeun.popup.PopUpKaryawan;
 import java.sql.*;
+import javax.swing.table.DefaultTableModel;
 
-public final class Presensi extends javax.swing.JPanel {
+public final class Karyawan extends javax.swing.JPanel {
 
 	Connection con = null;
 	ResultSet rs = null;
 	PreparedStatement pst = null;
 
-	public Presensi() {
+	public Karyawan() {
 		this.con = Koneksi.getKoneksi();
 		initComponents();
-		tablePresensi();
+		tableKaryawan();
 		table1.scroll(jScrollPane1);
 	}
 
-	public void tablePresensi() {
+	public void tableKaryawan() {
 		DefaultTableModel model = new DefaultTableModel();
 		model.addColumn("NIK");
 		model.addColumn("NAMA");
-		model.addColumn("STATUS");
+		model.addColumn("JENIS KELAMIN");
 		model.addColumn("JABATAN");
-		model.addColumn("TANGGAL");
 		try {
 
-			String sql = "select tbk.id, tbk.nama, tdp.keterangan, tbj.nama, tdp.tanggal from tb_detail_presensi as tdp join tb_karyawan as tbk on tbk.id = tdp.id_karyawan join tb_jabatan as tbj on tbk.id_jabatan = tbj.id join tb_jadwal as jadwal on tdp.id_jadwal = jadwal.id order by tdp.tanggal desc";
+			String sql = "select tbk.id, tbk.nama, jenis_kelamin, tbj.nama as jabatan from tb_karyawan as tbk join tb_jabatan as tbj on tbk.id_jabatan = tbj.id";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
-				model.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)});
+				model.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)});
 			}
 			table1.setModel(model);
 		} catch (SQLException ex) {
@@ -53,11 +52,10 @@ public final class Presensi extends javax.swing.JPanel {
                 jLabel2 = new javax.swing.JLabel();
 
                 setBackground(new java.awt.Color(242, 246, 253));
-                setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
                 jLabel1.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
                 jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                jLabel1.setText("Presensi");
+                jLabel1.setText("Karyawan");
                 jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
 
                 panelShadow1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -78,8 +76,8 @@ public final class Presensi extends javax.swing.JPanel {
                         }
                 ));
                 table1.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mouseClicked(java.awt.event.MouseEvent evt) {
-                                table1MouseClicked(evt);
+                        public void mousePressed(java.awt.event.MouseEvent evt) {
+                                table1MousePressed(evt);
                         }
                 });
                 jScrollPane1.setViewportView(table1);
@@ -90,14 +88,14 @@ public final class Presensi extends javax.swing.JPanel {
                         panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(panelShadow1Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 749, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 925, Short.MAX_VALUE)
                                 .addContainerGap())
                 );
                 panelShadow1Layout.setVerticalGroup(
                         panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
                                 .addContainerGap())
                 );
 
@@ -148,15 +146,15 @@ public final class Presensi extends javax.swing.JPanel {
 
         private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
 		// TODO add your handling code here:
-		new PopUpPresensi().setVisible(true);
+		new PopUpKaryawan().setVisible(true);
         }//GEN-LAST:event_jLabel2MousePressed
 
-        private void table1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table1MouseClicked
+        private void table1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table1MousePressed
 		// TODO add your handling code here:
 		int row = table1.rowAtPoint(evt.getPoint());
 		String id = table1.getValueAt(row, 0).toString();
-		new PopUpEditPresensi(id).setVisible(true);
-        }//GEN-LAST:event_table1MouseClicked
+		new PopUpEditKaryawan(id).setVisible(true);
+        }//GEN-LAST:event_table1MousePressed
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private javax.swing.JLabel jLabel1;
