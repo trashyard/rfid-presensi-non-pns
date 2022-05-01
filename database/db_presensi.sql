@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 28, 2022 at 12:41 PM
+-- Generation Time: May 01, 2022 at 06:53 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -41,9 +41,10 @@ CREATE TABLE `tb_detail_jadwal` (
 --
 
 INSERT INTO `tb_detail_jadwal` (`id`, `id_jadwal`, `tanggal`, `jam`, `status`, `id_karyawan`) VALUES
-(1, 1, '2022-04-28 17:00:00', 2, '?', 6),
-(2, 2, '2022-04-29 16:13:29', 2, '?', 7),
-(3, 1, '2022-04-28 16:39:52', 2, '?', 6);
+(9, 1, '2022-04-29 18:24:57', 2, 'hadir', 6),
+(10, 2, '2022-04-30 10:30:49', 2, 'hadir', 6),
+(11, 1, '2022-05-02 11:06:33', 2, '?', 6),
+(12, 1, '2022-05-01 06:08:22', 4, '?', 6);
 
 -- --------------------------------------------------------
 
@@ -278,7 +279,7 @@ ALTER TABLE `tb_ruang`
 -- AUTO_INCREMENT for table `tb_detail_jadwal`
 --
 ALTER TABLE `tb_detail_jadwal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tb_jadwal`
