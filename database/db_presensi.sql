@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 01, 2022 at 06:53 AM
+-- Generation Time: May 01, 2022 at 04:58 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -29,22 +29,21 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `tb_detail_jadwal` (
   `id` int(11) NOT NULL,
-  `id_jadwal` int(11) NOT NULL,
-  `tanggal` datetime NOT NULL,
-  `jam` int(1) NOT NULL,
+  `tanggal` date NOT NULL,
+  `jam` time DEFAULT NULL,
+  `durasi` time DEFAULT NULL,
   `status` enum('hadir','ijin','sakit','alpa','?') NOT NULL DEFAULT '?',
-  `id_karyawan` int(11) NOT NULL
+  `id_karyawan` int(11) NOT NULL,
+  `id_jadwal` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tb_detail_jadwal`
 --
 
-INSERT INTO `tb_detail_jadwal` (`id`, `id_jadwal`, `tanggal`, `jam`, `status`, `id_karyawan`) VALUES
-(9, 1, '2022-04-29 18:24:57', 2, 'hadir', 6),
-(10, 2, '2022-04-30 10:30:49', 2, 'hadir', 6),
-(11, 1, '2022-05-02 11:06:33', 2, '?', 6),
-(12, 1, '2022-05-01 06:08:22', 4, '?', 6);
+INSERT INTO `tb_detail_jadwal` (`id`, `tanggal`, `jam`, `durasi`, `status`, `id_karyawan`, `id_jadwal`) VALUES
+(13, '2022-05-01', '19:08:36', '03:08:36', 'hadir', 6, 1),
+(14, '2022-05-02', '19:14:04', '02:14:04', '?', 6, 3);
 
 -- --------------------------------------------------------
 
@@ -279,7 +278,7 @@ ALTER TABLE `tb_ruang`
 -- AUTO_INCREMENT for table `tb_detail_jadwal`
 --
 ALTER TABLE `tb_detail_jadwal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `tb_jadwal`

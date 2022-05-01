@@ -6,6 +6,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -32,17 +34,17 @@ public final class Presensi extends javax.swing.JPanel {
 		DefaultTableModel model = new DefaultTableModel();
 		model.addColumn("ID Jadwal");
 		model.addColumn("Date");
-		model.addColumn("Durasi");
+		model.addColumn("Jam Mulai");
+		model.addColumn("Jam Selesai");
 		model.addColumn("Status");
-		model.addColumn("Nama");
 		model.addColumn("Mata Pelajaran");
 		try {
 
-			String sql = "select dj.id, dj.tanggal as \"Date\", CONCAT(dj.jam, \" Jam\") as \"Durasi\", dj.status as \"Status\", k.nama as \"Nama Guru\", m.nama as \"Nama Mapel\" from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id where k.id = " + id;
+			String sql = "select dj.id, dj.tanggal as \"Date\", dj.jam as \"Jam Mulai\", ADDTIME(dj.jam, dj.durasi) as \"Durasi\", dj.status as \"Status\", m.nama as \"Nama Mapel\" from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id where k.id = " + id;
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
-				model.addRow(new Object[]{rs.getString(1), rs.getTimestamp(2), rs.getString(3), getStatus(rs.getString(4), rs.getString(2), 2), rs.getString(5), rs.getString(6)});
+				model.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), getStatus(rs.getString(5), rs.getString(2), rs.getString(3), rs.getString(4)), rs.getString(6)});
 			}
 			table.setModel(model);
 		} catch (SQLException ex) {
@@ -51,12 +53,17 @@ public final class Presensi extends javax.swing.JPanel {
 		}
 	}
 
-	public String getStatus(String status, String date, int hour) {
-		DateTimeFormatter dtf = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss");
-		DateTime pDate = dtf.parseDateTime(date).toDateTime(DateTimeZone.forID("Asia/Jakarta"));
-		DateTime dt = new DateTime(DateTimeZone.forID("Asia/Jakarta"));
+	public String getStatus(String status, String date, String hour, String duration) {
 		String string;
-		if (dt.isAfter(pDate) && dt.isBefore(pDate.plusHours(hour)) && status.equals("?")) {
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+		LocalDate datet = formatter.parseLocalDate(date);
+
+		LocalDate localDate = new LocalDate();
+		LocalTime ht = new LocalTime(hour);
+		LocalTime dt = new LocalTime(duration);
+		LocalTime now = LocalTime.now();
+
+		if (now.compareTo(ht) == 1 && now.compareTo(dt) == -1 && localDate.isEqual(datet) && status.equals("?")) {
 			string = "Submit Attendance";
 		} else {
 			string = status;
@@ -64,13 +71,16 @@ public final class Presensi extends javax.swing.JPanel {
 		return string;
 	}
 
-	public void isTherePresensi(String date, int hour, String id) {
-		DateTimeFormatter dtf = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss.S");
-		DateTime pDate = dtf.parseDateTime(date).toDateTime(DateTimeZone.forID("Asia/Jakarta"));
-		DateTime dt = new DateTime(DateTimeZone.forID("Asia/Jakarta"));
-		if (dt.isAfter(pDate) && dt.isBefore(pDate.plusHours(hour))) {
-			JOptionPane.showMessageDialog(null, "hayoo absennya gimana akowakwo");
+	public void Presensi(String hour, String duration, String id) {
+
+		LocalTime ht = new LocalTime(hour);
+		LocalTime dt = new LocalTime(duration);
+		LocalTime now = LocalTime.now();
+
+		if (now.compareTo(ht) == 1 && now.compareTo(dt) == -1) {
+			System.out.println("ngab: " + hour + " " + duration + " id: " + id);
 			new FillIn(id).setVisible(true);
+		} else {
 		}
 	}
 
@@ -160,14 +170,16 @@ public final class Presensi extends javax.swing.JPanel {
         private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
 		// TODO add your handling code here:
 		int row = table.rowAtPoint(evt.getPoint());
-		String id = table.getValueAt(row, 0).toString();
-		String date = table.getValueAt(row, 1).toString();
+		String idPresensi = table.getValueAt(row, 0).toString();
 		String hour = table.getValueAt(row, 2).toString();
-		String status = table.getValueAt(row, 3).toString();
+		String duration = table.getValueAt(row, 3).toString();
+		String status = table.getValueAt(row, 4).toString();
+
 		if (status.equals("Submit Attendance")) {
-			isTherePresensi(date, 2, id);
+			Presensi(hour, duration, idPresensi);
 		} else {
 		}
+
         }//GEN-LAST:event_tableMouseClicked
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
