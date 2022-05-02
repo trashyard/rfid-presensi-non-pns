@@ -1,20 +1,8 @@
 package com.presensikeun.component;
 
-import com.presensikeun.controller.Koneksi;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.swing.JOptionPane;
-
 public class Profile extends javax.swing.JPanel {
 
-	Connection con;
-	PreparedStatement pst;
-	ResultSet rs;
-
 	public Profile() {
-		this.con = Koneksi.getKoneksi();
 		initComponents();
 		setOpaque(false);
 	}
