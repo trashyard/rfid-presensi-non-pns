@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 01, 2022 at 04:58 PM
+-- Generation Time: May 02, 2022 at 05:38 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -29,10 +29,10 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `tb_detail_jadwal` (
   `id` int(11) NOT NULL,
-  `tanggal` date NOT NULL,
+  `hari` int(1) NOT NULL,
   `jam` time DEFAULT NULL,
   `durasi` time DEFAULT NULL,
-  `status` enum('hadir','ijin','sakit','alpa','?') NOT NULL DEFAULT '?',
+  `status` enum('?','recorded') NOT NULL DEFAULT '?',
   `id_karyawan` int(11) NOT NULL,
   `id_jadwal` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -41,9 +41,17 @@ CREATE TABLE `tb_detail_jadwal` (
 -- Dumping data for table `tb_detail_jadwal`
 --
 
-INSERT INTO `tb_detail_jadwal` (`id`, `tanggal`, `jam`, `durasi`, `status`, `id_karyawan`, `id_jadwal`) VALUES
-(13, '2022-05-01', '19:08:36', '03:08:36', 'hadir', 6, 1),
-(14, '2022-05-02', '19:14:04', '02:14:04', '?', 6, 3);
+INSERT INTO `tb_detail_jadwal` (`id`, `hari`, `jam`, `durasi`, `status`, `id_karyawan`, `id_jadwal`) VALUES
+(2, 0, '20:40:35', '02:40:32', 'recorded', 6, 1),
+(3, 0, '20:40:01', '02:48:00', 'recorded', 6, 2);
+
+--
+-- Triggers `tb_detail_jadwal`
+--
+DELIMITER $$
+CREATE TRIGGER `insert_presensi` AFTER UPDATE ON `tb_detail_jadwal` FOR EACH ROW INSERT INTO tb_presensi VALUES (NULL, current_timestamp(), 'hadir', old.id)
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -192,6 +200,27 @@ INSERT INTO `tb_mapel` (`id`, `id_mapel`, `nama`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tb_presensi`
+--
+
+CREATE TABLE `tb_presensi` (
+  `id` int(11) NOT NULL,
+  `tanggal` datetime NOT NULL DEFAULT current_timestamp(),
+  `keterangan` enum('hadir','sakit','izin','alpa') NOT NULL,
+  `id_detail_jadwal` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tb_presensi`
+--
+
+INSERT INTO `tb_presensi` (`id`, `tanggal`, `keterangan`, `id_detail_jadwal`) VALUES
+(1, '2022-05-02 21:59:14', 'hadir', 2),
+(2, '2022-05-02 21:59:20', 'hadir', 3);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tb_ruang`
 --
 
@@ -265,6 +294,13 @@ ALTER TABLE `tb_mapel`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tb_presensi`
+--
+ALTER TABLE `tb_presensi`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_detail_jadwal` (`id_detail_jadwal`);
+
+--
 -- Indexes for table `tb_ruang`
 --
 ALTER TABLE `tb_ruang`
@@ -278,7 +314,7 @@ ALTER TABLE `tb_ruang`
 -- AUTO_INCREMENT for table `tb_detail_jadwal`
 --
 ALTER TABLE `tb_detail_jadwal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tb_jadwal`
@@ -297,6 +333,12 @@ ALTER TABLE `tb_kelas`
 --
 ALTER TABLE `tb_mapel`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `tb_presensi`
+--
+ALTER TABLE `tb_presensi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
@@ -329,6 +371,12 @@ ALTER TABLE `tb_karyawan`
 ALTER TABLE `tb_kelas`
   ADD CONSTRAINT `tb_kelas_ibfk_1` FOREIGN KEY (`id_ruang`) REFERENCES `tb_ruang` (`id`),
   ADD CONSTRAINT `tb_kelas_ibfk_2` FOREIGN KEY (`id_jurusan`) REFERENCES `tb_jurusan` (`id`);
+
+--
+-- Constraints for table `tb_presensi`
+--
+ALTER TABLE `tb_presensi`
+  ADD CONSTRAINT `tb_presensi_ibfk_1` FOREIGN KEY (`id_detail_jadwal`) REFERENCES `tb_detail_jadwal` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

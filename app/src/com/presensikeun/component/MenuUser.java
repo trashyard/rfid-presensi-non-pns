@@ -80,9 +80,8 @@ public class MenuUser extends PanelShadow {
 	private void initData() {
 		listMenu.addItem(new ModelMenu("1", "Dashboard", ModelMenu.MenuType.MENU));
 		listMenu.addItem(new ModelMenu("2", "Presensi", ModelMenu.MenuType.MENU));
-		listMenu.addItem(new ModelMenu("3", "Mata Pelajaran", ModelMenu.MenuType.MENU));
-		listMenu.addItem(new ModelMenu("4", "Automatic Experiment", ModelMenu.MenuType.MENU));
-		listMenu.addItem(new ModelMenu("5", "Logout", ModelMenu.MenuType.MENU));
+		listMenu.addItem(new ModelMenu("3", "Automatic Experiment", ModelMenu.MenuType.MENU));
+		listMenu.addItem(new ModelMenu("4", "Logout", ModelMenu.MenuType.MENU));
 	}
 
 	private void createImage() {

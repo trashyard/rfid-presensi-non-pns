@@ -66,13 +66,13 @@ public class Automatic extends javax.swing.JPanel {
 	public void automaticPresence(String id) {
 
 		try {
-			String sql = "select dj.id, dj.tanggal as \"Date\", dj.jam as \"Jam Mulai\", ADDTIME(dj.jam, dj.durasi) as \"Jam Selesai\", dj.status as \"Status\", m.nama as \"Nama Mapel\" from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id where k.id = " + id + " and (current_time > dj.jam && current_time < ADDTIME(dj.jam, dj.durasi) && dj.tanggal = CURRENT_DATE) and dj.status = \"?\" order by ADDTIME(dj.jam, dj.durasi) asc limit 1";
+			String sql = "select dj.id, dj.hari as \"Date\", dj.jam as \"Jam Mulai\", ADDTIME(dj.jam, dj.durasi) as \"Jam Selesai\", dj.status as \"Status\", m.nama as \"Nama Mapel\" from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id where k.id = " + id + " and (current_time > dj.jam && current_time < ADDTIME(dj.jam, dj.durasi) && dj.hari = WEEKDAY(CURRENT_DATE)) and dj.status = \"?\" order by ADDTIME(dj.jam, dj.durasi) asc limit 1";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 
 			if (rs.next()) {
 				System.out.println("dapet ngab jadwalnya:" + rs.getString(1) + " " + rs.getString(2));
-				sql = "update tb_detail_jadwal set status = 'hadir' where id = " + rs.getString(1);
+				sql = "update tb_detail_jadwal set status = 'recorded' where id = " + rs.getString(1);
 				pst = con.prepareStatement(sql);
 				pst.executeUpdate();
 			} else {

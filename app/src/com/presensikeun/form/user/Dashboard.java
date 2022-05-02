@@ -46,14 +46,15 @@ public final class Dashboard extends javax.swing.JPanel {
 		chart.addData(new ModelChart("Juni", new double[]{1, 35, 4, 20}));
 
 		// telat hadir sakit izin alpa
-		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(52, 148, 203), "Hadir", 15));
-		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(175, 67, 237), "Sakit", 4));
-		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(87, 218, 137), "Telat", 8));
+		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(52, 148, 203), "Hadir", getStatus(id, "hadir")));
+		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(175, 67, 237), "Sakit", getStatus(id, "sakit")));
+		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(175, 67, 237), "Izin", getStatus(id, "izin")));
+		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(87, 218, 137), "Alpa", getStatus(id, "alpa")));
 		polarAreaChart1.start();
 	}
 
 	public String getName(String id) {
-		String nama = "kontolmemekangsa";
+		String nama = null;
 		try {
 			String sql = "select nama from tb_karyawan where id = " + id;
 			pst = con.prepareStatement(sql);
@@ -64,6 +65,21 @@ public final class Dashboard extends javax.swing.JPanel {
 		} catch (SQLException ex) {
 		}
 		return nama;
+	}
+
+	public int getStatus(String id, String query) {
+		int status = 0;
+		try {
+			String sql = "select count(*) from tb_presensi as p join tb_detail_jadwal as dj on dj.id = p.id_detail_jadwal join tb_karyawan as k on k.id = dj.id_karyawan where p.keterangan = '" + query + "' and k.id = " + id;
+			System.out.println(sql);
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				status = rs.getInt(1);
+			}
+		} catch (SQLException ex) {
+		}
+		return status;
 	}
 
 //	public void get 
