@@ -51,10 +51,10 @@ public final class Automatic extends javax.swing.JPanel {
 
 	public void submitAttendance(String id) {
 		try {
-			String sql = "INSERT INTO tb_presensi VALUES (NULL, current_timestamp(), 'hadir', " + id + ")";
+			String sql = "INSERT INTO tb_presensi (id, tanggal, keterangan, id_detail_jadwal) VALUES (NULL, current_timestamp(), '?', " + id + ")";
 			pst = con.prepareStatement(sql);
 			pst.executeUpdate();
-			JOptionPane.showMessageDialog(null, "OOOOOMAGAAAT", "UR MOM GAYYY", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "dah mashok datamu", "UR MOM GAYYY", JOptionPane.INFORMATION_MESSAGE);
 
 		} catch (SQLException ex) {
 
