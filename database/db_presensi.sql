@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 02, 2022 at 05:38 PM
+-- Generation Time: May 03, 2022 at 10:46 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -32,7 +32,6 @@ CREATE TABLE `tb_detail_jadwal` (
   `hari` int(1) NOT NULL,
   `jam` time DEFAULT NULL,
   `durasi` time DEFAULT NULL,
-  `status` enum('?','recorded') NOT NULL DEFAULT '?',
   `id_karyawan` int(11) NOT NULL,
   `id_jadwal` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -41,17 +40,10 @@ CREATE TABLE `tb_detail_jadwal` (
 -- Dumping data for table `tb_detail_jadwal`
 --
 
-INSERT INTO `tb_detail_jadwal` (`id`, `hari`, `jam`, `durasi`, `status`, `id_karyawan`, `id_jadwal`) VALUES
-(2, 0, '20:40:35', '02:40:32', 'recorded', 6, 1),
-(3, 0, '20:40:01', '02:48:00', 'recorded', 6, 2);
-
---
--- Triggers `tb_detail_jadwal`
---
-DELIMITER $$
-CREATE TRIGGER `insert_presensi` AFTER UPDATE ON `tb_detail_jadwal` FOR EACH ROW INSERT INTO tb_presensi VALUES (NULL, current_timestamp(), 'hadir', old.id)
-$$
-DELIMITER ;
+INSERT INTO `tb_detail_jadwal` (`id`, `hari`, `jam`, `durasi`, `id_karyawan`, `id_jadwal`) VALUES
+(1, 1, '12:00:00', '02:00:00', 6, 4),
+(2, 1, '07:00:00', '02:00:00', 6, 4),
+(3, 1, '15:00:00', '02:00:00', 6, 5);
 
 -- --------------------------------------------------------
 
@@ -72,8 +64,8 @@ CREATE TABLE `tb_jabatan` (
 INSERT INTO `tb_jabatan` (`id`, `id_jabatan`, `nama`) VALUES
 (1, 'JB001', 'P3K'),
 (2, 'JB002', 'Satpam'),
-(3, 'JB003', 'Non PNS'),
-(4, 'JB004', 'Pegawai');
+(3, 'JBNPNS', 'Non PNS'),
+(4, 'JBPGW', 'Pegawai');
 
 -- --------------------------------------------------------
 
@@ -83,19 +75,19 @@ INSERT INTO `tb_jabatan` (`id`, `id_jabatan`, `nama`) VALUES
 
 CREATE TABLE `tb_jadwal` (
   `id` int(11) NOT NULL,
-  `status` enum('datang','mengajar','pulang') NOT NULL,
   `id_mapel` int(11) DEFAULT NULL,
-  `id_kelas` int(11) DEFAULT NULL
+  `id_kelas` int(11) DEFAULT NULL,
+  `status` enum('datang','mengajar','pulang') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tb_jadwal`
 --
 
-INSERT INTO `tb_jadwal` (`id`, `status`, `id_mapel`, `id_kelas`) VALUES
-(1, 'mengajar', 6, 1),
-(2, 'mengajar', 5, 1),
-(3, 'mengajar', 3, 1);
+INSERT INTO `tb_jadwal` (`id`, `id_mapel`, `id_kelas`, `status`) VALUES
+(4, 1, 1, 'mengajar'),
+(5, 2, 1, 'mengajar'),
+(6, 3, 1, 'mengajar');
 
 -- --------------------------------------------------------
 
@@ -105,6 +97,7 @@ INSERT INTO `tb_jadwal` (`id`, `status`, `id_mapel`, `id_kelas`) VALUES
 
 CREATE TABLE `tb_jurusan` (
   `id` int(11) NOT NULL,
+  `id_jurusan` varchar(10) NOT NULL,
   `nama` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -112,13 +105,13 @@ CREATE TABLE `tb_jurusan` (
 -- Dumping data for table `tb_jurusan`
 --
 
-INSERT INTO `tb_jurusan` (`id`, `nama`) VALUES
-(1, 'Rekayasa Perangkat Lunak'),
-(2, 'Teknik Komputer dan Jaringan'),
-(3, 'Teknik Kendaraan Ringan'),
-(4, 'Teknik Sepeda Motor'),
-(5, 'Agribisnis dan Holtikutura'),
-(6, 'Multimedia');
+INSERT INTO `tb_jurusan` (`id`, `id_jurusan`, `nama`) VALUES
+(1, 'RPL', 'Rekayasa Perangkat Lunak'),
+(2, 'TKJ', 'Teknik Komputer dan Jaringan'),
+(3, 'TKR', 'Teknik Kendaraan Ringan'),
+(4, 'TSM', 'Teknik Sepeda Motor'),
+(5, 'AGRH', 'Agribisnis dan Holtikutura'),
+(6, 'MM', 'Multimedia');
 
 -- --------------------------------------------------------
 
@@ -128,6 +121,7 @@ INSERT INTO `tb_jurusan` (`id`, `nama`) VALUES
 
 CREATE TABLE `tb_karyawan` (
   `id` int(11) NOT NULL,
+  `nik` varchar(16) NOT NULL,
   `username` varchar(6) NOT NULL,
   `password` varchar(6) NOT NULL,
   `nama` varchar(50) NOT NULL,
@@ -140,16 +134,13 @@ CREATE TABLE `tb_karyawan` (
 -- Dumping data for table `tb_karyawan`
 --
 
-INSERT INTO `tb_karyawan` (`id`, `username`, `password`, `nama`, `status`, `jenis_kelamin`, `id_jabatan`) VALUES
-(1, 'ADM001', 'admin', 'Andini Ayuningsih', 'admin', 'P', 1),
-(3, 'ADM003', 'admin3', 'Yunanda', 'admin', 'L', 3),
-(4, 'ADM004', 'admin4', 'Supriyadi', 'admin', 'L', 4),
-(5, 'ADM005', 'admin5', 'Anggun ', 'admin', 'P', 1),
-(6, 'r', 'r', 'Raihan', 'user', 'L', 4),
-(7, 'a', 'a', 'Andini <3', 'user', 'P', 4),
-(8, '', '', 'Farhan', 'user', 'L', 4),
-(9, '', '', 'Ayunda', 'user', 'P', 4),
-(10, 'x', 'x', 'Samsul', 'admin', 'L', 2);
+INSERT INTO `tb_karyawan` (`id`, `nik`, `username`, `password`, `nama`, `status`, `jenis_kelamin`, `id_jabatan`) VALUES
+(1, '3525010609510002', 'ADM001', 'admin', 'Andini Ayuningsih', 'admin', 'P', 1),
+(6, '3525017006750042', 'r', 'r', 'Raihan', 'user', 'L', 4),
+(7, '3525016611770002', 'a', 'a', 'Andini <3', 'user', 'P', 4),
+(8, '3525016812770001', '', '', 'Farhan', 'user', 'L', 4),
+(9, '3525013006770017', '', '', 'Ayunda', 'user', 'P', 4),
+(10, '3525012005590001', 'x', 'x', 'Samsul', 'admin', 'L', 2);
 
 -- --------------------------------------------------------
 
@@ -159,6 +150,7 @@ INSERT INTO `tb_karyawan` (`id`, `username`, `password`, `nama`, `status`, `jeni
 
 CREATE TABLE `tb_kelas` (
   `id` int(11) NOT NULL,
+  `id_kelas` varchar(10) NOT NULL,
   `nama` varchar(10) NOT NULL,
   `angkatan` enum('1','2','3') NOT NULL,
   `id_ruang` int(11) DEFAULT NULL,
@@ -169,9 +161,9 @@ CREATE TABLE `tb_kelas` (
 -- Dumping data for table `tb_kelas`
 --
 
-INSERT INTO `tb_kelas` (`id`, `nama`, `angkatan`, `id_ruang`, `id_jurusan`) VALUES
-(1, 'RPL 1', '1', 1, 1),
-(2, 'RPL 2', '1', 2, 1);
+INSERT INTO `tb_kelas` (`id`, `id_kelas`, `nama`, `angkatan`, `id_ruang`, `id_jurusan`) VALUES
+(1, 'RPL1.1', 'RPL 1', '1', 1, 1),
+(2, 'RPL2.1', 'RPL 2', '1', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -209,14 +201,6 @@ CREATE TABLE `tb_presensi` (
   `keterangan` enum('hadir','sakit','izin','alpa') NOT NULL,
   `id_detail_jadwal` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tb_presensi`
---
-
-INSERT INTO `tb_presensi` (`id`, `tanggal`, `keterangan`, `id_detail_jadwal`) VALUES
-(1, '2022-05-02 21:59:14', 'hadir', 2),
-(2, '2022-05-02 21:59:20', 'hadir', 3);
 
 -- --------------------------------------------------------
 
@@ -314,13 +298,13 @@ ALTER TABLE `tb_ruang`
 -- AUTO_INCREMENT for table `tb_detail_jadwal`
 --
 ALTER TABLE `tb_detail_jadwal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tb_jadwal`
 --
 ALTER TABLE `tb_jadwal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tb_kelas`
@@ -338,7 +322,7 @@ ALTER TABLE `tb_mapel`
 -- AUTO_INCREMENT for table `tb_presensi`
 --
 ALTER TABLE `tb_presensi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables

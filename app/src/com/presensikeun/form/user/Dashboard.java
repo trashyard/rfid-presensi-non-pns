@@ -71,7 +71,6 @@ public final class Dashboard extends javax.swing.JPanel {
 		int status = 0;
 		try {
 			String sql = "select count(*) from tb_presensi as p join tb_detail_jadwal as dj on dj.id = p.id_detail_jadwal join tb_karyawan as k on k.id = dj.id_karyawan where p.keterangan = '" + query + "' and k.id = " + id;
-			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			if (rs.next()) {

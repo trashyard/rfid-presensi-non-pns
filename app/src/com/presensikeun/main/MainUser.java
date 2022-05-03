@@ -114,7 +114,7 @@ public final class MainUser extends javax.swing.JFrame {
 					showForm(new Presensi(id));
 					break;
 				case 2:
-					showForm(new Automatic());
+					showForm(new Automatic(id));
 					break;
 				case 3:
 					logout();

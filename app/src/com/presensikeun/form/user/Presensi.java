@@ -4,10 +4,7 @@ import com.presensikeun.controller.Koneksi;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -37,14 +34,13 @@ public final class Presensi extends javax.swing.JPanel {
 		model.addColumn("Timestamp");
 		model.addColumn("Keterangan");
 		model.addColumn("Nama");
-		model.addColumn("Status");
 		try {
 
-			String sql = "select p.id, p.tanggal, p.keterangan, m.nama, dj.status from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id join tb_mapel as m on dj.id_jadwal = m.id join tb_karyawan as k on dj.id_karyawan = k.id where k.id = " + id;
+			String sql = "select p.id, p.tanggal, p.keterangan, m.nama from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id join tb_mapel as m on dj.id_jadwal = m.id join tb_karyawan as k on dj.id_karyawan = k.id where k.id = " + id;
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
-				model.addRow(new Object[]{rs.getString(1), getDay(rs.getString(2)), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)});
+				model.addRow(new Object[]{rs.getString(1), getDay(rs.getString(2)), rs.getString(2), rs.getString(3), rs.getString(4)});
 			}
 			table.setModel(model);
 		} catch (SQLException ex) {
