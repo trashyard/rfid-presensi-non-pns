@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 03, 2022 at 10:46 AM
+-- Generation Time: May 03, 2022 at 02:41 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -43,7 +43,7 @@ CREATE TABLE `tb_detail_jadwal` (
 INSERT INTO `tb_detail_jadwal` (`id`, `hari`, `jam`, `durasi`, `id_karyawan`, `id_jadwal`) VALUES
 (1, 1, '12:00:00', '02:00:00', 6, 4),
 (2, 1, '07:00:00', '02:00:00', 6, 4),
-(3, 1, '15:00:00', '02:00:00', 6, 5);
+(3, 1, '18:00:00', '02:00:00', 6, 5);
 
 -- --------------------------------------------------------
 
@@ -198,9 +198,34 @@ INSERT INTO `tb_mapel` (`id`, `id_mapel`, `nama`) VALUES
 CREATE TABLE `tb_presensi` (
   `id` int(11) NOT NULL,
   `tanggal` datetime NOT NULL DEFAULT current_timestamp(),
-  `keterangan` enum('hadir','sakit','izin','alpa') NOT NULL,
+  `keterangan` enum('hadir','sakit','izin','alpa','?') NOT NULL,
   `id_detail_jadwal` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tb_presensi`
+--
+
+INSERT INTO `tb_presensi` (`id`, `tanggal`, `keterangan`, `id_detail_jadwal`) VALUES
+(2, '2022-05-03 19:40:43', 'hadir', 3);
+
+--
+-- Triggers `tb_presensi`
+--
+DELIMITER $$
+CREATE TRIGGER `insert_attendance` BEFORE INSERT ON `tb_presensi` FOR EACH ROW BEGIN
+	DECLARE start_time DATETIME;
+    DECLARE end_time DATETIME;
+	SET @start_time = cast((select addtime(current_date, tb_detail_jadwal.jam) from tb_detail_jadwal where id = NEW.id_detail_jadwal) as datetime);
+    SET @end_time = cast((select addtime(current_date, addtime(tb_detail_jadwal.jam, tb_detail_jadwal.durasi)) from tb_detail_jadwal where id = NEW.id_detail_jadwal) as datetime);
+	IF NEW.tanggal > @start_time && NEW.tanggal < @end_time THEN
+    		SET NEW.keterangan = "hadir";
+		ELSE
+        	SET NEW.keterangan = "alpa";
+        END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -322,7 +347,7 @@ ALTER TABLE `tb_mapel`
 -- AUTO_INCREMENT for table `tb_presensi`
 --
 ALTER TABLE `tb_presensi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
