@@ -7,6 +7,8 @@ import com.presensikeun.form.admin.Karyawan;
 import com.presensikeun.form.Login;
 import com.presensikeun.form.admin.Presensi;
 import com.presensikeun.form.admin.Report;
+import com.presensikeun.swing.Notification;
+import com.presensikeun.swing.Notification.Location;
 import java.awt.Color;
 import java.awt.Component;
 
@@ -85,8 +87,10 @@ public final class Main extends javax.swing.JFrame {
                 setLocationRelativeTo(null);
         }// </editor-fold>//GEN-END:initComponents
 
-	void logout() {
+	public void logout() {
 		this.setVisible(false);
+		Notification panel = new Notification(this, Notification.Type.SUCCESS, Notification.Location.TOP_CENTER, "Goodbyeeeeee! :(");
+		panel.showNotification();
 		new Login().setVisible(true);
 	}
 

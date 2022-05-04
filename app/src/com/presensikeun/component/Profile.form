@@ -62,7 +62,7 @@
         </Property>
         <Property name="borderSize" type="int" value="2"/>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/com/presensikeun/images/icons/urmom.jpg"/>
+          <Image iconType="3" name="/com/presensikeun/images/icons/logo-SMK3.png"/>
         </Property>
       </Properties>
 

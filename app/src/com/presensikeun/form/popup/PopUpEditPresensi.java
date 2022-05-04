@@ -1,7 +1,6 @@
-package com.presensikeun.popup;
+package com.presensikeun.form.popup;
 
 import com.presensikeun.controller.Koneksi;
-import com.presensikeun.form.admin.Karyawan;
 import com.presensikeun.form.admin.Presensi;
 import java.awt.Color;
 import java.sql.Connection;
@@ -9,21 +8,52 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class PopUpEditKaryawan extends javax.swing.JFrame {
+public final class PopUpEditPresensi extends javax.swing.JFrame {
 
 	Connection con;
 	PreparedStatement pst;
 	ResultSet rs;
 	String id;
 
-	public PopUpEditKaryawan(String id) {
+	public PopUpEditPresensi(String id) {
 		this.con = Koneksi.getKoneksi();
 		this.id = id;
 		initComponents();
+		disableTextFields();
+		getData(id);
+		System.out.println(id);
+		nik.setText(id);
 	}
 
-	private PopUpEditKaryawan() {
+	private PopUpEditPresensi() {
 		throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+	}
+
+	public void disableTextFields() {
+		nama.disable();
+	}
+
+	public void getData(String id) {
+		try {
+			String sql = "select tbk.nama, tbj.nama as jabatan from tb_karyawan as tbk join tb_jabatan as tbj on tbk.id_jabatan = tbj.id where tbk.id = " + id;
+			System.out.println(sql);
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				nama.setText(rs.getString(1));
+			}
+		} catch (SQLException ex) {
+		}
+	}
+
+	public void setData(String id) {
+		try {
+			String sql = "insert into tb_detail_presensi values('" + (String) statusbox.getSelectedItem() + "', CURRENT_TIMESTAMP, 1," + id + ");";
+			System.out.println(sql);
+			pst = con.prepareStatement(sql);
+			pst.executeUpdate();
+		} catch (SQLException ex) {
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -177,14 +207,13 @@ public final class PopUpEditKaryawan extends javax.swing.JFrame {
                                 .addGap(35, 35, 35)
                                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(nik, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                                        .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(nama, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                                                .addComponent(jabatanbox, 0, 210, Short.MAX_VALUE)
-                                                .addComponent(statusbox, 0, 210, Short.MAX_VALUE)
-                                                .addGroup(panelBorder1Layout.createSequentialGroup()
-                                                        .addComponent(close, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addGap(10, 10, 10)
-                                                        .addComponent(ok, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                        .addComponent(nama, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                                        .addComponent(jabatanbox, 0, 210, Short.MAX_VALUE)
+                                        .addComponent(statusbox, 0, 210, Short.MAX_VALUE)
+                                        .addGroup(panelBorder1Layout.createSequentialGroup()
+                                                .addComponent(close, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(10, 10, 10)
+                                                .addComponent(ok, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addContainerGap(39, Short.MAX_VALUE))
                 );
                 panelBorder1Layout.setVerticalGroup(
@@ -238,8 +267,7 @@ public final class PopUpEditKaryawan extends javax.swing.JFrame {
         private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
 		// TODO add your handling code here:
 		this.setVisible(false);
-		Karyawan k = new Karyawan();
-		k.tableKaryawan();
+		setData(id);
         }//GEN-LAST:event_jLabel7MouseClicked
 
         private void closeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMouseEntered
@@ -313,110 +341,14 @@ public final class PopUpEditKaryawan extends javax.swing.JFrame {
 				}
 			}
 		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(PopUpEditKaryawan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(PopUpEditPresensi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(PopUpEditKaryawan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(PopUpEditPresensi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(PopUpEditKaryawan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(PopUpEditPresensi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(PopUpEditKaryawan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(PopUpEditPresensi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
 		//</editor-fold>
 		//</editor-fold>
 		//</editor-fold>
@@ -454,7 +386,7 @@ public final class PopUpEditKaryawan extends javax.swing.JFrame {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				new PopUpEditKaryawan().setVisible(true);
+				new PopUpEditPresensi().setVisible(true);
 			}
 		});
 	}

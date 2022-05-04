@@ -20,7 +20,7 @@ public class Profile extends javax.swing.JPanel {
                 imageAvatar1.setBackground(new java.awt.Color(255, 255, 255));
                 imageAvatar1.setForeground(new java.awt.Color(255, 255, 255));
                 imageAvatar1.setBorderSize(2);
-                imageAvatar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/urmom.jpg"))); // NOI18N
+                imageAvatar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/logo-SMK3.png"))); // NOI18N
 
                 jLabel1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
                 jLabel1.setForeground(new java.awt.Color(255, 255, 255));

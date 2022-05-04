@@ -4,6 +4,7 @@ import com.presensikeun.component.Profile;
 import com.presensikeun.controller.Koneksi;
 import com.presensikeun.main.Main;
 import com.presensikeun.main.MainUser;
+import com.presensikeun.swing.Notification;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 import java.awt.Desktop;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,25 +37,29 @@ public class Login extends javax.swing.JFrame {
 			if (rs.next()) {
 
 				if (txt_user.getText().equals("") || txt_pass.getText().equals("")) {
-					JOptionPane.showMessageDialog(this, "User atau Password Tidak Boleh Kosong", "Peringatan", JOptionPane.ERROR_MESSAGE);
+					Notification panel = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_CENTER, "User atau Password Tidak Boleh Kosong");
+					panel.showNotification();
 					txt_user.setText(null);
 					txt_pass.setText(null);
 				} else if (txt_user.getText().equals(rs.getString("username")) && txt_pass.getText().equals(rs.getString("password")) && rs.getString("status").equals("admin")) {
-					JOptionPane.showMessageDialog(null, "Anda Berhasil Masuk");
+					Notification panel = new Notification(this, Notification.Type.SUCCESS, Notification.Location.TOP_CENTER, "Berhasil Masuk!");
+					panel.showNotification();
 					this.setVisible(false);
 					new Main().setVisible(true);
 				} else if (txt_user.getText().equals(rs.getString("username")) && txt_pass.getText().equals(rs.getString("password")) && rs.getString("status").equals("user")) {
-					JOptionPane.showMessageDialog(null, "Anda Berhasil Masuk");
+					Notification panel = new Notification(this, Notification.Type.SUCCESS, Notification.Location.TOP_CENTER, "Berhasil Masuk!");
+					panel.showNotification();
 					this.setVisible(false);
 					new MainUser(rs.getString("id")).setVisible(true);
 				}
 
 			} else {
-				JOptionPane.showMessageDialog(null, "Username atau Password Salah");
+				Notification panel = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_CENTER, "Username atau Password Salah!");
+				panel.showNotification();
 				txt_user.setText("");
 				txt_pass.setText("");
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
 	}

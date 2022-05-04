@@ -1,11 +1,14 @@
 package com.presensikeun.form.user;
 
 import com.presensikeun.controller.Koneksi;
+import com.presensikeun.swing.Notification;
+import java.awt.Frame;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 public final class Automatic extends javax.swing.JPanel {
 
@@ -37,10 +40,10 @@ public final class Automatic extends javax.swing.JPanel {
 			rs = pst.executeQuery();
 
 			if (rs.next()) {
-				JOptionPane.showMessageDialog(this, "ok dek ketemu: " + rs.getString(3) + " Mapel: " + rs.getString(5), "UR MOM GAYYY", JOptionPane.INFORMATION_MESSAGE);
 				submitAttendance(rs.getString(1));
 			} else {
-				JOptionPane.showMessageDialog(this, "ga ada presensi dek, turu aja", "UR MOM GAYYY", JOptionPane.ERROR_MESSAGE);
+				Notification panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.WARNING, Notification.Location.CENTER, "Tidak ditemukan presensi");
+				panel.showNotification();
 			}
 
 		} catch (SQLException ex) {
@@ -54,10 +57,11 @@ public final class Automatic extends javax.swing.JPanel {
 			String sql = "INSERT INTO tb_presensi (id, tanggal, keterangan, id_detail_jadwal) VALUES (NULL, current_timestamp(), '?', " + id + ")";
 			pst = con.prepareStatement(sql);
 			pst.executeUpdate();
-			JOptionPane.showMessageDialog(null, "dah mashok datamu", "UR MOM GAYYY", JOptionPane.INFORMATION_MESSAGE);
-
+			Notification panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.SUCCESS, Notification.Location.CENTER, rs.getString(5) + ": " + rs.getString(3));
+			panel.showNotification();
 		} catch (SQLException ex) {
-
+			Notification panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.WARNING, Notification.Location.CENTER, "Gagal memasukkan data");
+			panel.showNotification();
 		}
 
 	}

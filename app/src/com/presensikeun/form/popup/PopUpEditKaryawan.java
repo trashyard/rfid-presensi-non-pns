@@ -1,35 +1,29 @@
-package com.presensikeun.popup;
+package com.presensikeun.form.popup;
 
 import com.presensikeun.controller.Koneksi;
+import com.presensikeun.form.admin.Karyawan;
+import com.presensikeun.form.admin.Presensi;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class PopUpKaryawan extends javax.swing.JFrame {
+public final class PopUpEditKaryawan extends javax.swing.JFrame {
 
 	Connection con;
 	PreparedStatement pst;
 	ResultSet rs;
+	String id;
 
-	public PopUpKaryawan() {
+	public PopUpEditKaryawan(String id) {
 		this.con = Koneksi.getKoneksi();
+		this.id = id;
 		initComponents();
-		getJabatan();
 	}
 
-	void getJabatan() {
-		try {
-			jabatan.removeAllItems();
-			String sql = "select nama from tb_jabatan";
-			pst = con.prepareStatement(sql);
-			rs = pst.executeQuery();
-			while (rs.next()) {
-				jabatan.addItem(rs.getString(1));
-			}
-		} catch (SQLException ex) {
-		}
+	private PopUpEditKaryawan() {
+		throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 	}
 
 	@SuppressWarnings("unchecked")
@@ -37,17 +31,76 @@ public final class PopUpKaryawan extends javax.swing.JFrame {
         private void initComponents() {
 
                 panelBorder1 = new com.presensikeun.swing.PanelBorder();
+                nik = new javax.swing.JTextField();
+                statusbox = new javax.swing.JComboBox<>();
+                jabatanbox = new javax.swing.JComboBox<>();
+                nama = new javax.swing.JTextField();
                 close = new javax.swing.JPanel();
                 jLabel6 = new javax.swing.JLabel();
                 ok = new javax.swing.JPanel();
                 jLabel7 = new javax.swing.JLabel();
-                jTextField1 = new javax.swing.JTextField();
-                jabatan = new javax.swing.JComboBox<>();
 
                 setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
                 setUndecorated(true);
 
                 panelBorder1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+
+                nik.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+                nik.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+                nik.setBorder(null);
+                nik.addFocusListener(new java.awt.event.FocusAdapter() {
+                        public void focusGained(java.awt.event.FocusEvent evt) {
+                                nikFocusGained(evt);
+                        }
+                        public void focusLost(java.awt.event.FocusEvent evt) {
+                                nikFocusLost(evt);
+                        }
+                });
+                nik.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                nikMouseClicked(evt);
+                        }
+                });
+
+                statusbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hadir", "Alpa", "Sakit", "Izin" }));
+                statusbox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+                        public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                        }
+                        public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                                statusboxPopupMenuWillBecomeInvisible(evt);
+                        }
+                        public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+                        }
+                });
+                statusbox.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                statusboxActionPerformed(evt);
+                        }
+                });
+
+                jabatanbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+                jabatanbox.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                jabatanboxActionPerformed(evt);
+                        }
+                });
+
+                nama.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+                nama.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+                nama.setBorder(null);
+                nama.addFocusListener(new java.awt.event.FocusAdapter() {
+                        public void focusGained(java.awt.event.FocusEvent evt) {
+                                namaFocusGained(evt);
+                        }
+                        public void focusLost(java.awt.event.FocusEvent evt) {
+                                namaFocusLost(evt);
+                        }
+                });
+                nama.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                namaMouseClicked(evt);
+                        }
+                });
 
                 close.setBackground(new java.awt.Color(244, 67, 54));
                 close.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -107,7 +160,7 @@ public final class PopUpKaryawan extends javax.swing.JFrame {
                 okLayout.setHorizontalGroup(
                         okLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, okLayout.createSequentialGroup()
-                                .addContainerGap(61, Short.MAX_VALUE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
                 );
@@ -116,15 +169,6 @@ public final class PopUpKaryawan extends javax.swing.JFrame {
                         .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
                 );
 
-                jTextField1.setText("Nama");
-                jTextField1.addActionListener(new java.awt.event.ActionListener() {
-                        public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jTextField1ActionPerformed(evt);
-                        }
-                });
-
-                jabatan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
                 javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
                 panelBorder1.setLayout(panelBorder1Layout);
                 panelBorder1Layout.setHorizontalGroup(
@@ -132,22 +176,29 @@ public final class PopUpKaryawan extends javax.swing.JFrame {
                         .addGroup(panelBorder1Layout.createSequentialGroup()
                                 .addGap(35, 35, 35)
                                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jabatan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jTextField1)
-                                        .addGroup(panelBorder1Layout.createSequentialGroup()
-                                                .addComponent(close, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(10, 10, 10)
-                                                .addComponent(ok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(nik, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                                        .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(nama, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                                                .addComponent(jabatanbox, 0, 210, Short.MAX_VALUE)
+                                                .addComponent(statusbox, 0, 210, Short.MAX_VALUE)
+                                                .addGroup(panelBorder1Layout.createSequentialGroup()
+                                                        .addComponent(close, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGap(10, 10, 10)
+                                                        .addComponent(ok, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                                 .addContainerGap(39, Short.MAX_VALUE))
                 );
                 panelBorder1Layout.setVerticalGroup(
                         panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorder1Layout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jabatan, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                                .addContainerGap(56, Short.MAX_VALUE)
+                                .addComponent(nik, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 37, 37)
+                                .addComponent(nama, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(50, 50, 50)
+                                .addComponent(jabatanbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addComponent(statusbox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30)
                                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(close, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(ok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -181,18 +232,14 @@ public final class PopUpKaryawan extends javax.swing.JFrame {
 
         private void okMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okMousePressed
 		// TODO add your handling code here:
-		try {
-			String sql = "insert into tb_karyawan values('', '', '', '<nama>', 'user', 'L', '<id jabatan>')";
-			pst = con.prepareStatement(sql);
-			rs = pst.executeQuery();
-		} catch (SQLException ex) {
-
-		}
+		this.setVisible(false);
         }//GEN-LAST:event_okMousePressed
 
         private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
 		// TODO add your handling code here:
 		this.setVisible(false);
+		Karyawan k = new Karyawan();
+		k.tableKaryawan();
         }//GEN-LAST:event_jLabel7MouseClicked
 
         private void closeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMouseEntered
@@ -207,9 +254,47 @@ public final class PopUpKaryawan extends javax.swing.JFrame {
 		this.setVisible(false);
         }//GEN-LAST:event_closeMousePressed
 
-        private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        private void namaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_namaMouseClicked
+
+        }//GEN-LAST:event_namaMouseClicked
+
+        private void namaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_namaFocusLost
+		if (nama.getText().equals("")) {
+			nama.setText("Masukkan Nama");
+			nama.setForeground(new Color(204, 204, 204));
+		}
+        }//GEN-LAST:event_namaFocusLost
+
+        private void namaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_namaFocusGained
+		if (nama.getText().equals("Masukkan Nama")) {
+			nama.setText("");
+			nama.setForeground(new Color(0, 0, 0));
+		}
+        }//GEN-LAST:event_namaFocusGained
+
+        private void statusboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusboxActionPerformed
 		// TODO add your handling code here:
-        }//GEN-LAST:event_jTextField1ActionPerformed
+        }//GEN-LAST:event_statusboxActionPerformed
+
+        private void statusboxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_statusboxPopupMenuWillBecomeInvisible
+		// TODO add your handling code here:
+        }//GEN-LAST:event_statusboxPopupMenuWillBecomeInvisible
+
+        private void jabatanboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jabatanboxActionPerformed
+		// TODO add your handling code here:
+        }//GEN-LAST:event_jabatanboxActionPerformed
+
+        private void nikFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nikFocusGained
+		// TODO add your handling code here:
+        }//GEN-LAST:event_nikFocusGained
+
+        private void nikFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nikFocusLost
+		// TODO add your handling code here:
+        }//GEN-LAST:event_nikFocusLost
+
+        private void nikMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nikMouseClicked
+		// TODO add your handling code here:
+        }//GEN-LAST:event_nikMouseClicked
 
 	/**
 	 * @param args the command line arguments
@@ -228,14 +313,78 @@ public final class PopUpKaryawan extends javax.swing.JFrame {
 				}
 			}
 		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(PopUpKaryawan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(PopUpEditKaryawan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(PopUpKaryawan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(PopUpEditKaryawan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(PopUpKaryawan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(PopUpEditKaryawan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(PopUpKaryawan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(PopUpEditKaryawan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
 		//</editor-fold>
 		//</editor-fold>
 		//</editor-fold>
@@ -303,8 +452,9 @@ public final class PopUpKaryawan extends javax.swing.JFrame {
 
 		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
-				new PopUpKaryawan().setVisible(true);
+				new PopUpEditKaryawan().setVisible(true);
 			}
 		});
 	}
@@ -313,9 +463,11 @@ public final class PopUpKaryawan extends javax.swing.JFrame {
         private javax.swing.JPanel close;
         private javax.swing.JLabel jLabel6;
         private javax.swing.JLabel jLabel7;
-        private javax.swing.JTextField jTextField1;
-        private javax.swing.JComboBox<String> jabatan;
+        private javax.swing.JComboBox<String> jabatanbox;
+        private javax.swing.JTextField nama;
+        private javax.swing.JTextField nik;
         private javax.swing.JPanel ok;
         private com.presensikeun.swing.PanelBorder panelBorder1;
+        private javax.swing.JComboBox<String> statusbox;
         // End of variables declaration//GEN-END:variables
 }

@@ -1,4 +1,9 @@
-package com.presensikeun.popup;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.presensikeun.form.popup;
 
 import com.presensikeun.controller.Koneksi;
 import com.presensikeun.form.admin.Presensi;
@@ -8,34 +13,30 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class PopUpEditPresensi extends javax.swing.JFrame {
+/**
+ *
+ * @author Anjayani
+ */
+public final class PopUpPresensi extends javax.swing.JFrame {
 
 	Connection con;
 	PreparedStatement pst;
 	ResultSet rs;
-	String id;
 
-	public PopUpEditPresensi(String id) {
+	/**
+	 * Creates new form edit_presensi
+	 */
+	public PopUpPresensi() {
 		this.con = Koneksi.getKoneksi();
-		this.id = id;
 		initComponents();
-		disableTextFields();
-		getData(id);
-		System.out.println(id);
-		nik.setText(id);
-	}
-
-	private PopUpEditPresensi() {
-		throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-	}
-
-	public void disableTextFields() {
+		getNIK();
+		getData();
 		nama.disable();
 	}
 
-	public void getData(String id) {
+	public void getData() {
 		try {
-			String sql = "select tbk.nama, tbj.nama as jabatan from tb_karyawan as tbk join tb_jabatan as tbj on tbk.id_jabatan = tbj.id where tbk.id = " + id;
+			String sql = "select tbk.nama, tbj.nama as jabatan from tb_karyawan as tbk join tb_jabatan as tbj on tbk.id_jabatan = tbj.id where tbk.id = " + nikbox.getSelectedItem();
 			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
@@ -46,9 +47,22 @@ public final class PopUpEditPresensi extends javax.swing.JFrame {
 		}
 	}
 
-	public void setData(String id) {
+	public void getNIK() {
 		try {
-			String sql = "insert into tb_detail_presensi values('" + (String) statusbox.getSelectedItem() + "', CURRENT_TIMESTAMP, 1," + id + ");";
+			nikbox.removeAllItems();
+			String sql = "select id from tb_karyawan";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				nikbox.addItem(rs.getString(1));
+			}
+		} catch (SQLException ex) {
+		}
+	}
+
+	public void setData() {
+		try {
+			String sql = "insert into tb_detail_presensi values('" + (String) statusbox.getSelectedItem() + "', CURRENT_TIMESTAMP, 1," + nikbox.getSelectedItem() + ");";
 			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			pst.executeUpdate();
@@ -61,7 +75,7 @@ public final class PopUpEditPresensi extends javax.swing.JFrame {
         private void initComponents() {
 
                 panelBorder1 = new com.presensikeun.swing.PanelBorder();
-                nik = new javax.swing.JTextField();
+                nikbox = new javax.swing.JComboBox<>();
                 statusbox = new javax.swing.JComboBox<>();
                 jabatanbox = new javax.swing.JComboBox<>();
                 nama = new javax.swing.JTextField();
@@ -75,20 +89,19 @@ public final class PopUpEditPresensi extends javax.swing.JFrame {
 
                 panelBorder1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
 
-                nik.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-                nik.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-                nik.setBorder(null);
-                nik.addFocusListener(new java.awt.event.FocusAdapter() {
-                        public void focusGained(java.awt.event.FocusEvent evt) {
-                                nikFocusGained(evt);
+                nikbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+                nikbox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+                        public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
                         }
-                        public void focusLost(java.awt.event.FocusEvent evt) {
-                                nikFocusLost(evt);
+                        public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                                nikboxPopupMenuWillBecomeInvisible(evt);
+                        }
+                        public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
                         }
                 });
-                nik.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mouseClicked(java.awt.event.MouseEvent evt) {
-                                nikMouseClicked(evt);
+                nikbox.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                nikboxActionPerformed(evt);
                         }
                 });
 
@@ -206,23 +219,22 @@ public final class PopUpEditPresensi extends javax.swing.JFrame {
                         .addGroup(panelBorder1Layout.createSequentialGroup()
                                 .addGap(35, 35, 35)
                                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(nik, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                                        .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(nama, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                                                .addComponent(jabatanbox, 0, 210, Short.MAX_VALUE)
-                                                .addComponent(statusbox, 0, 210, Short.MAX_VALUE)
-                                                .addGroup(panelBorder1Layout.createSequentialGroup()
-                                                        .addComponent(close, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addGap(10, 10, 10)
-                                                        .addComponent(ok, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                        .addComponent(nikbox, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(nama, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jabatanbox, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(statusbox, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(panelBorder1Layout.createSequentialGroup()
+                                                .addComponent(close, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(10, 10, 10)
+                                                .addComponent(ok, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addContainerGap(39, Short.MAX_VALUE))
                 );
                 panelBorder1Layout.setVerticalGroup(
                         panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorder1Layout.createSequentialGroup()
-                                .addContainerGap(56, Short.MAX_VALUE)
-                                .addComponent(nik, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(37, 37, 37)
+                                .addContainerGap(50, Short.MAX_VALUE)
+                                .addComponent(nikbox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(50, 50, 50)
                                 .addComponent(nama, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(50, 50, 50)
                                 .addComponent(jabatanbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -263,14 +275,12 @@ public final class PopUpEditPresensi extends javax.swing.JFrame {
         private void okMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okMousePressed
 		// TODO add your handling code here:
 		this.setVisible(false);
+		setData();
         }//GEN-LAST:event_okMousePressed
 
         private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
 		// TODO add your handling code here:
 		this.setVisible(false);
-		setData(id);
-		Presensi p = new Presensi();
-		p.tablePresensi();
         }//GEN-LAST:event_jLabel7MouseClicked
 
         private void closeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMouseEntered
@@ -311,21 +321,18 @@ public final class PopUpEditPresensi extends javax.swing.JFrame {
 		// TODO add your handling code here:
         }//GEN-LAST:event_statusboxPopupMenuWillBecomeInvisible
 
+        private void nikboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nikboxActionPerformed
+		// TODO add your handling code here:
+        }//GEN-LAST:event_nikboxActionPerformed
+
+        private void nikboxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_nikboxPopupMenuWillBecomeInvisible
+		// TODO add your handling code here:
+		getData();
+        }//GEN-LAST:event_nikboxPopupMenuWillBecomeInvisible
+
         private void jabatanboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jabatanboxActionPerformed
 		// TODO add your handling code here:
         }//GEN-LAST:event_jabatanboxActionPerformed
-
-        private void nikFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nikFocusGained
-		// TODO add your handling code here:
-        }//GEN-LAST:event_nikFocusGained
-
-        private void nikFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nikFocusLost
-		// TODO add your handling code here:
-        }//GEN-LAST:event_nikFocusLost
-
-        private void nikMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nikMouseClicked
-		// TODO add your handling code here:
-        }//GEN-LAST:event_nikMouseClicked
 
 	/**
 	 * @param args the command line arguments
@@ -344,30 +351,14 @@ public final class PopUpEditPresensi extends javax.swing.JFrame {
 				}
 			}
 		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(PopUpEditPresensi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(PopUpPresensi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(PopUpEditPresensi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(PopUpPresensi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(PopUpEditPresensi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(PopUpPresensi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(PopUpEditPresensi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(PopUpPresensi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
 		//</editor-fold>
 		//</editor-fold>
 		//</editor-fold>
@@ -387,9 +378,8 @@ public final class PopUpEditPresensi extends javax.swing.JFrame {
 
 		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(new Runnable() {
-			@Override
 			public void run() {
-				new PopUpEditPresensi().setVisible(true);
+				new PopUpPresensi().setVisible(true);
 			}
 		});
 	}
@@ -400,7 +390,7 @@ public final class PopUpEditPresensi extends javax.swing.JFrame {
         private javax.swing.JLabel jLabel7;
         private javax.swing.JComboBox<String> jabatanbox;
         private javax.swing.JTextField nama;
-        private javax.swing.JTextField nik;
+        private javax.swing.JComboBox<String> nikbox;
         private javax.swing.JPanel ok;
         private com.presensikeun.swing.PanelBorder panelBorder1;
         private javax.swing.JComboBox<String> statusbox;

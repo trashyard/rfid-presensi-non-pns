@@ -1,8 +1,8 @@
 package com.presensikeun.form.admin;
 
 import com.presensikeun.controller.Koneksi;
-import com.presensikeun.popup.PopUpEditKaryawan;
-import com.presensikeun.popup.PopUpKaryawan;
+import com.presensikeun.form.popup.PopUpEditKaryawan;
+import com.presensikeun.form.popup.PopUpKaryawan;
 import java.sql.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -27,7 +27,7 @@ public final class Karyawan extends javax.swing.JPanel {
 		model.addColumn("JABATAN");
 		try {
 
-			String sql = "select tbk.id, tbk.nama, jenis_kelamin, tbj.nama as jabatan from tb_karyawan as tbk join tb_jabatan as tbj on tbk.id_jabatan = tbj.id";
+			String sql = "select tbk.nik, tbk.nama, jenis_kelamin, tbj.nama as jabatan from tb_karyawan as tbk join tb_jabatan as tbj on tbk.id_jabatan = tbj.id";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {

@@ -3,6 +3,7 @@ package com.presensikeun.main;
 import com.presensikeun.component.Profile;
 import com.presensikeun.form.Login;
 import com.presensikeun.form.user.*;
+import com.presensikeun.swing.Notification;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Toolkit;
@@ -16,6 +17,7 @@ public final class MainUser extends javax.swing.JFrame {
 		initComponents();
 		setBackground(new Color(0, 0, 0, 0));
 		showForm(new Dashboard());
+		initialize();
 	}
 
 	public MainUser(String id) {
@@ -23,6 +25,7 @@ public final class MainUser extends javax.swing.JFrame {
 		initComponents();
 		setBackground(new Color(0, 0, 0, 0));
 		showForm(new Dashboard(id));
+		initialize();
 	}
 
 	public void initialize() {
@@ -99,6 +102,8 @@ public final class MainUser extends javax.swing.JFrame {
 
 	void logout() {
 		this.setVisible(false);
+		Notification panel = new Notification(this, Notification.Type.SUCCESS, Notification.Location.TOP_CENTER, "Goodbye! :(");
+		panel.showNotification();
 		new Login().setVisible(true);
 	}
 

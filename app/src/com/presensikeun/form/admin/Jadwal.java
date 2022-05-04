@@ -20,22 +20,54 @@ public final class Jadwal extends javax.swing.JPanel {
 	public void tableJadwal() {
 		DefaultTableModel model = new DefaultTableModel();
 		model.addColumn("ID");
-		model.addColumn("HARI");
-		model.addColumn("TANGGAL");
-		model.addColumn("STATUS");
+		model.addColumn("Hari");
+		model.addColumn("Jam Mulai");
+		model.addColumn("Jam Selesai");
+		model.addColumn("Nama Mapel");
+		model.addColumn("Nama Guru");
+		model.addColumn("Kelas");
 		try {
 
-			String sql = "select id, hari, tanggal, status from tb_jadwal";
+			String sql = "select dj.id, dj.hari as \"Date\", dj.jam as \"Jam Mulai\", ADDTIME(dj.jam, dj.durasi) as \"Jam Selesai\", m.nama as \"Nama Mapel\", k.nama as \"Nama Guru\", r.nama as \"Kelas\" from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on r.id = kls.id_ruang;";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
-				model.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)});
+				model.addRow(new Object[]{rs.getString(1), getDay(rs.getInt(2)), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)});
 			}
 			table1.setModel(model);
 		} catch (SQLException ex) {
 			model.addRow(new Object[]{});
 			table1.setModel(model);
 		}
+	}
+
+	public String getDay(int day) {
+		String string = null;
+
+		switch (day) {
+			case 1:
+				string = "Senin";
+				break;
+			case 2:
+				string = "Selasa";
+				break;
+			case 3:
+				string = "Rabu";
+				break;
+			case 4:
+				string = "Kamis";
+				break;
+			case 5:
+				string = "Jumat";
+				break;
+			case 6:
+				string = "Sabtu";
+				break;
+			case 7:
+				string = "Minggu";
+				break;
+		}
+		return string;
 	}
 
 	@SuppressWarnings("unchecked")
