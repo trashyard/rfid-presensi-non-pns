@@ -5,15 +5,15 @@ import com.presensikeun.event.EventMenuCallBack;
 import com.presensikeun.event.EventMenuSelected;
 import com.presensikeun.model.ModelMenu;
 import com.presensikeun.shadow.ShadowBorder;
-import com.presensikeun.swing.PanelShadow;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import javax.swing.JPanel;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 
-public class Menu extends PanelShadow {
+public class Menu extends JPanel {
 
 	private int selectedIndex = -1;
 	private double menuTarget;
@@ -30,7 +30,6 @@ public class Menu extends PanelShadow {
 	}
 
 	private void init() {
-		setRadius(20);
 		initData();
 		listMenu.addEventSelectedMenu(new EventMenuSelected() {
 			@Override
@@ -79,16 +78,21 @@ public class Menu extends PanelShadow {
 
 	private void initData() {
 		listMenu.addItem(new ModelMenu("1", "Dashboard", ModelMenu.MenuType.MENU));
-		listMenu.addItem(new ModelMenu("2", "Presensi", ModelMenu.MenuType.MENU));
-		listMenu.addItem(new ModelMenu("3", "Karyawan", ModelMenu.MenuType.MENU));
-		listMenu.addItem(new ModelMenu("4", "Jadwal", ModelMenu.MenuType.MENU));
-		listMenu.addItem(new ModelMenu("5", "Report", ModelMenu.MenuType.MENU));
-		listMenu.addItem(new ModelMenu("6", "Logout", ModelMenu.MenuType.MENU));
+		listMenu.addItem(new ModelMenu("attendance", "Presensi", ModelMenu.MenuType.MENU));
+		listMenu.addItem(new ModelMenu("people", "Karyawan", ModelMenu.MenuType.MENU));
+		listMenu.addItem(new ModelMenu("schedule", "Jadwal", ModelMenu.MenuType.MENU));
+		listMenu.addItem(new ModelMenu("report", "Report", ModelMenu.MenuType.MENU));
+		listMenu.addItem(new ModelMenu("", "", ModelMenu.MenuType.EMPTY));
+		listMenu.addItem(new ModelMenu("", "", ModelMenu.MenuType.EMPTY));
+		listMenu.addItem(new ModelMenu("", "", ModelMenu.MenuType.EMPTY));
+		listMenu.addItem(new ModelMenu("", "", ModelMenu.MenuType.EMPTY));
+		listMenu.addItem(new ModelMenu("", "", ModelMenu.MenuType.EMPTY));
+		listMenu.addItem(new ModelMenu("logout", "Logout", ModelMenu.MenuType.MENU));
 	}
 
 	private void createImage() {
 		int width = getWidth() - 30;
-		selectedImage = ShadowBorder.getInstance().createShadowOut(width, 50, 8, 8, new Color(242, 246, 253));
+		selectedImage = ShadowBorder.getInstance().createShadowOut(width, 50, 8, 8, new Color(250, 250, 250));
 	}
 
 	@Override
@@ -110,52 +114,48 @@ public class Menu extends PanelShadow {
         private void initComponents() {
 
                 listMenu = new com.presensikeun.swing.ListMenu<>();
-                panelShadow1 = new com.presensikeun.swing.PanelShadow();
+                jPanel1 = new javax.swing.JPanel();
                 profile1 = new com.presensikeun.component.Profile();
 
                 listMenu.setOpaque(false);
 
-                panelShadow1.setBackground(new java.awt.Color(85, 65, 118));
+                jPanel1.setBackground(new java.awt.Color(53, 33, 89));
+                jPanel1.setPreferredSize(new java.awt.Dimension(291, 100));
 
-                javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
-                panelShadow1.setLayout(panelShadow1Layout);
-                panelShadow1Layout.setHorizontalGroup(
-                        panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(panelShadow1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(profile1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addContainerGap())
+                javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+                jPanel1.setLayout(jPanel1Layout);
+                jPanel1Layout.setHorizontalGroup(
+                        jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addContainerGap(24, Short.MAX_VALUE)
+                                .addComponent(profile1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(20, 20, 20))
                 );
-                panelShadow1Layout.setVerticalGroup(
-                        panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(panelShadow1Layout.createSequentialGroup()
-                                .addContainerGap()
+                jPanel1Layout.setVerticalGroup(
+                        jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(5, 5, 5)
                                 .addComponent(profile1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap(19, Short.MAX_VALUE))
                 );
 
                 javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
                 this.setLayout(layout);
                 layout.setHorizontalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGap(10, 10, 10)
-                                                .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGap(40, 40, 40)
-                                                .addComponent(listMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(listMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(20, 20, 20))
                 );
                 layout.setVerticalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addComponent(panelShadow1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(20, 20, 20)
-                                .addComponent(listMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
-                                .addGap(16, 16, 16))
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(listMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(26, Short.MAX_VALUE))
                 );
         }// </editor-fold>//GEN-END:initComponents
 
@@ -164,8 +164,8 @@ public class Menu extends PanelShadow {
 	}
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
+        private javax.swing.JPanel jPanel1;
         private com.presensikeun.swing.ListMenu<String> listMenu;
-        private com.presensikeun.swing.PanelShadow panelShadow1;
         private com.presensikeun.component.Profile profile1;
         // End of variables declaration//GEN-END:variables
 }

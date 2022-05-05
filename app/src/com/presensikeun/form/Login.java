@@ -42,12 +42,12 @@ public class Login extends javax.swing.JFrame {
 					txt_user.setText(null);
 					txt_pass.setText(null);
 				} else if (txt_user.getText().equals(rs.getString("username")) && txt_pass.getText().equals(rs.getString("password")) && rs.getString("status").equals("admin")) {
-					Notification panel = new Notification(this, Notification.Type.SUCCESS, Notification.Location.TOP_CENTER, "Berhasil Masuk!");
+					Notification panel = new Notification(this, Notification.Type.SUCCESS, Notification.Location.TOP_CENTER, "Selamat datang, " + rs.getString(5) + "!");
 					panel.showNotification();
 					this.setVisible(false);
 					new Main().setVisible(true);
 				} else if (txt_user.getText().equals(rs.getString("username")) && txt_pass.getText().equals(rs.getString("password")) && rs.getString("status").equals("user")) {
-					Notification panel = new Notification(this, Notification.Type.SUCCESS, Notification.Location.TOP_CENTER, "Berhasil Masuk!");
+					Notification panel = new Notification(this, Notification.Type.SUCCESS, Notification.Location.TOP_CENTER, "Selamat datang, " + rs.getString(5) + "!");
 					panel.showNotification();
 					this.setVisible(false);
 					new MainUser(rs.getString("id")).setVisible(true);

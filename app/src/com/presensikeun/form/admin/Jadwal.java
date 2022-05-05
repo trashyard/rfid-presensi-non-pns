@@ -42,7 +42,7 @@ public final class Jadwal extends javax.swing.JPanel {
 	}
 
 	public String getDay(int day) {
-		String string = null;
+		String string;
 
 		switch (day) {
 			case 1:
@@ -66,7 +66,11 @@ public final class Jadwal extends javax.swing.JPanel {
 			case 7:
 				string = "Minggu";
 				break;
+			default:
+				string = "?";
+				break;
 		}
+
 		return string;
 	}
 

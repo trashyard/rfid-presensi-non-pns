@@ -1,6 +1,5 @@
 package com.presensikeun.swing;
 
-import com.presensikeun.model.StatusType;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JLabel;
@@ -14,9 +13,10 @@ public class Table extends JTable {
 
 	public Table() {
 		setShowHorizontalLines(true);
-		setGridColor(new Color(232, 232, 232));
+		setGridColor(new Color(242, 242, 242));
 		setRowHeight(40);
 		setShowVerticalLines(false);
+		setFillsViewportHeight(true);
 		getTableHeader().setReorderingAllowed(false);
 		getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
 			@Override
@@ -32,7 +32,7 @@ public class Table extends JTable {
 			@Override
 			public Component getTableCellRendererComponent(JTable jtable, Object o, boolean selected, boolean bln1, int i, int i1) {
 				Component com = super.getTableCellRendererComponent(jtable, o, selected, bln1, i, i1);
-				com.setBackground(new Color(242, 246, 253));
+				com.setBackground(new Color(252, 254, 255));
 				setBorder(noFocusBorder);
 				if (selected) {
 					com.setForeground(new Color(15, 89, 140));
@@ -53,7 +53,7 @@ public class Table extends JTable {
 
 	public void scroll(JScrollPane jspane) {
 		jspane.setVerticalScrollBar(new ScrollBar());
-		jspane.getVerticalScrollBar().setBackground(new Color(242, 246, 253));
+		jspane.getVerticalScrollBar().setBackground(new Color(252, 254, 255));
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(85, 65, 118));
 		jspane.setCorner(JScrollPane.UPPER_RIGHT_CORNER, panel);

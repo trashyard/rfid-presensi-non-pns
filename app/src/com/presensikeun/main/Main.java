@@ -31,7 +31,7 @@ public final class Main extends javax.swing.JFrame {
         // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
         private void initComponents() {
 
-                panelBorder1 = new com.presensikeun.swing.PanelBorder();
+                jPanel1 = new javax.swing.JPanel();
                 menu1 = new com.presensikeun.component.Menu();
                 body = new javax.swing.JLayeredPane();
 
@@ -43,44 +43,36 @@ public final class Main extends javax.swing.JFrame {
                         }
                 });
 
-                menu1.setBorder(null);
+                jPanel1.setBackground(new java.awt.Color(242, 246, 253));
+
+                menu1.setBackground(new java.awt.Color(252, 254, 255));
 
                 body.setLayout(new java.awt.BorderLayout());
 
-                javax.swing.GroupLayout panelBorder1Layout = new javax.swing.GroupLayout(panelBorder1);
-                panelBorder1.setLayout(panelBorder1Layout);
-                panelBorder1Layout.setHorizontalGroup(
-                        panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(panelBorder1Layout.createSequentialGroup()
+                javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+                jPanel1.setLayout(jPanel1Layout);
+                jPanel1Layout.setHorizontalGroup(
+                        jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(menu1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(body, javax.swing.GroupLayout.DEFAULT_SIZE, 886, Short.MAX_VALUE)
-                                .addContainerGap())
+                                .addGap(0, 0, 0)
+                                .addComponent(body, javax.swing.GroupLayout.DEFAULT_SIZE, 959, Short.MAX_VALUE))
                 );
-                panelBorder1Layout.setVerticalGroup(
-                        panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(panelBorder1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(body)
-                                .addContainerGap())
-                        .addComponent(menu1, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
+                jPanel1Layout.setVerticalGroup(
+                        jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(body)
+                        .addComponent(menu1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
                 );
 
                 javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
                 getContentPane().setLayout(layout);
                 layout.setHorizontalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addContainerGap())
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 );
                 layout.setVerticalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addContainerGap())
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 );
 
                 pack();
@@ -114,7 +106,7 @@ public final class Main extends javax.swing.JFrame {
 				case 4:
 					showForm(new Report());
 					break;
-				case 5:
+				case 10:
 					logout();
 					break;
 				default:
@@ -133,7 +125,7 @@ public final class Main extends javax.swing.JFrame {
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private javax.swing.JLayeredPane body;
+        private javax.swing.JPanel jPanel1;
         private com.presensikeun.component.Menu menu1;
-        private com.presensikeun.swing.PanelBorder panelBorder1;
         // End of variables declaration//GEN-END:variables
 }
