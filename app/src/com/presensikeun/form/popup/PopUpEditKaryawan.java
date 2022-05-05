@@ -2,7 +2,6 @@ package com.presensikeun.form.popup;
 
 import com.presensikeun.controller.Koneksi;
 import com.presensikeun.form.admin.Karyawan;
-import com.presensikeun.form.admin.Presensi;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -238,8 +237,6 @@ public final class PopUpEditKaryawan extends javax.swing.JFrame {
         private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
 		// TODO add your handling code here:
 		this.setVisible(false);
-		Karyawan k = new Karyawan();
-		k.tableKaryawan();
         }//GEN-LAST:event_jLabel7MouseClicked
 
         private void closeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMouseEntered
