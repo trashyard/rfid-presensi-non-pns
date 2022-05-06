@@ -91,7 +91,7 @@ public class Presensi extends javax.swing.JPanel {
                 jLabel1.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
                 jLabel1.setForeground(new java.awt.Color(240, 236, 227));
                 jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-schedule-30.png"))); // NOI18N
+                jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-attendance-30.png"))); // NOI18N
                 jLabel1.setText("Presensi");
                 jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
 

@@ -126,7 +126,7 @@ public final class Report extends javax.swing.JPanel {
                 jLabel1.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
                 jLabel1.setForeground(new java.awt.Color(240, 236, 227));
                 jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-document-30.png"))); // NOI18N
+                jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-presentation-36.png"))); // NOI18N
                 jLabel1.setText("Report");
                 jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
 
@@ -153,7 +153,7 @@ public final class Report extends javax.swing.JPanel {
                                                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addComponent(jLabel1)
-                                                .addGap(0, 867, Short.MAX_VALUE)))
+                                                .addGap(0, 861, Short.MAX_VALUE)))
                                 .addContainerGap())
                 );
                 jPanel1Layout.setVerticalGroup(

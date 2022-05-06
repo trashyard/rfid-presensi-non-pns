@@ -22,7 +22,7 @@ public final class PopUpEditKaryawan extends javax.swing.JFrame {
 	}
 
 	private PopUpEditKaryawan() {
-		throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+		initComponents();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -176,20 +176,19 @@ public final class PopUpEditKaryawan extends javax.swing.JFrame {
                                 .addGap(35, 35, 35)
                                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(nik, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                                        .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(nama, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                                                .addComponent(jabatanbox, 0, 210, Short.MAX_VALUE)
-                                                .addComponent(statusbox, 0, 210, Short.MAX_VALUE)
-                                                .addGroup(panelBorder1Layout.createSequentialGroup()
-                                                        .addComponent(close, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addGap(10, 10, 10)
-                                                        .addComponent(ok, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                        .addComponent(nama, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                                        .addComponent(jabatanbox, 0, 210, Short.MAX_VALUE)
+                                        .addComponent(statusbox, 0, 210, Short.MAX_VALUE)
+                                        .addGroup(panelBorder1Layout.createSequentialGroup()
+                                                .addComponent(close, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(10, 10, 10)
+                                                .addComponent(ok, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addContainerGap(39, Short.MAX_VALUE))
                 );
                 panelBorder1Layout.setVerticalGroup(
                         panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorder1Layout.createSequentialGroup()
-                                .addContainerGap(56, Short.MAX_VALUE)
+                                .addContainerGap(221, Short.MAX_VALUE)
                                 .addComponent(nik, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(37, 37, 37)
                                 .addComponent(nama, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
