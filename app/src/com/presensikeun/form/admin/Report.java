@@ -110,7 +110,7 @@ public final class Report extends javax.swing.JPanel {
                 jLabel1 = new javax.swing.JLabel();
                 jPanel2 = new javax.swing.JPanel();
                 panelShadow1 = new com.presensikeun.swing.PanelShadow();
-                searchPresensi = new com.presensikeun.swing.TextFieldAnimation();
+                searchPresensi = new com.presensikeun.swing.Searchbar();
                 jLabel2 = new javax.swing.JLabel();
                 panelShadow2 = new com.presensikeun.swing.PanelShadow();
                 jScrollPane1 = new javax.swing.JScrollPane();
@@ -277,7 +277,7 @@ public final class Report extends javax.swing.JPanel {
         private javax.swing.JScrollPane jScrollPane1;
         private com.presensikeun.swing.PanelShadow panelShadow1;
         private com.presensikeun.swing.PanelShadow panelShadow2;
-        private com.presensikeun.swing.TextFieldAnimation searchPresensi;
+        private com.presensikeun.swing.Searchbar searchPresensi;
         private com.presensikeun.swing.Table table1;
         // End of variables declaration//GEN-END:variables
 }

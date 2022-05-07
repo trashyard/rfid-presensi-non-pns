@@ -161,7 +161,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="com.presensikeun.swing.TextFieldAnimation" name="searchPresensi">
+        <Component class="com.presensikeun.swing.Searchbar" name="searchPresensi">
           <Properties>
             <Property name="animationColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="76" green="41" red="55" type="rgb"/>

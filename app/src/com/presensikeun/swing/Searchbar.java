@@ -28,7 +28,7 @@ import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 
-public class TextFieldAnimation extends JTextField {
+public class Searchbar extends JTextField {
 
 	public String getHintText() {
 		return hintText;
@@ -59,7 +59,7 @@ public class TextFieldAnimation extends JTextField {
 	private Thread thread;
 	private final Animator animator;
 
-	public TextFieldAnimation() {
+	public Searchbar() {
 		super.setBackground(new Color(250, 250, 250, 0)); //  Remove background
 		setOpaque(false);
 		setBorder(new EmptyBorder(10, 10, 10, 50)); //  Set Right border 50
