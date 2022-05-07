@@ -1,14 +1,11 @@
 package com.presensikeun.main;
 
-import com.presensikeun.event.EventMenu;
 import com.presensikeun.form.admin.Dashboard;
 import com.presensikeun.form.admin.Jadwal;
 import com.presensikeun.form.admin.Karyawan;
-import com.presensikeun.form.Login;
+import com.presensikeun.form.Logout;
 import com.presensikeun.form.admin.Presensi;
 import com.presensikeun.form.admin.Report;
-import com.presensikeun.swing.Notification;
-import com.presensikeun.swing.Notification.Location;
 import java.awt.Color;
 import java.awt.Component;
 
@@ -80,10 +77,13 @@ public final class Main extends javax.swing.JFrame {
         }// </editor-fold>//GEN-END:initComponents
 
 	public void logout() {
-		this.setVisible(false);
-		Notification panel = new Notification(this, Notification.Type.SUCCESS, Notification.Location.TOP_CENTER, "Goodbyeeeeee! :(");
-		panel.showNotification();
-		new Login().setVisible(true);
+		Logout p = new Logout(this);
+		p.showMessage(null);
+	}
+
+	private void goBack() {
+		menu1.setSelectedIndex(0);
+		showForm(new Dashboard());
 	}
 
         private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -108,6 +108,7 @@ public final class Main extends javax.swing.JFrame {
 					break;
 				case 10:
 					logout();
+					goBack();
 					break;
 				default:
 					break;

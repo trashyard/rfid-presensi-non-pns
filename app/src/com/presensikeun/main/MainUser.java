@@ -2,6 +2,7 @@ package com.presensikeun.main;
 
 import com.presensikeun.component.Profile;
 import com.presensikeun.form.Login;
+import com.presensikeun.form.Logout;
 import com.presensikeun.form.user.*;
 import com.presensikeun.swing.Notification;
 import java.awt.Color;
@@ -38,6 +39,16 @@ public final class MainUser extends javax.swing.JFrame {
 		body.add(com);
 		body.repaint();
 		body.revalidate();
+	}
+
+	public void logout() {
+		Logout p = new Logout(this);
+		p.showMessage(null);
+	}
+
+	private void goBack() {
+		menu1.setSelectedIndex(0);
+		showForm(new Dashboard(id));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -100,13 +111,6 @@ public final class MainUser extends javax.swing.JFrame {
                 setLocationRelativeTo(null);
         }// </editor-fold>//GEN-END:initComponents
 
-	void logout() {
-		this.setVisible(false);
-		Notification panel = new Notification(this, Notification.Type.SUCCESS, Notification.Location.TOP_CENTER, "Goodbye! :(");
-		panel.showNotification();
-		new Login().setVisible(true);
-	}
-
         private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
 		// TODO add your handling code here:
 		menu1.setSelectedIndex(0);
@@ -123,6 +127,7 @@ public final class MainUser extends javax.swing.JFrame {
 					break;
 				case 3:
 					logout();
+					goBack();
 					break;
 				default:
 					break;
