@@ -1,87 +1,29 @@
-I don't know what to fill in this readme.md
-so, here's drugs by EDEN lyrics.
+<h1 align="center">Sistem Aplikasi Presensi</h1>
 
-[Verse 1]
-'Cause I had the best of the worst sides
-And I had these lungs, ohh
-And I had too many flashbacks
-That I just let them burn
+## Overview
 
-[Pre-Chorus]
-'Till my chest is on fire
-And my head just won't die
-I guess I'm lying 'cause I wanna
-I guess I'm lying 'cause I don't
-'Cause I just feel so tired
-Like it's move or slowly die
-You say, "You ain't you when you're like this
-This ain't you and you know it"
-But ain't that just the point?
+Aplikasi ini bla bla bla ya gitulah project semester 2
 
-[Interlude]
-You don't know how to let go
-Who said this must be all or nothing?
-But I'm so caught below, and I'll never let you know
-No, I can't tell you nothing
+## Explaining some "complicated" things
 
-[Chorus]
-'Cause I'm a fucking mess sometimes
-But still I could always be
-Whatever you wanted
-But not what you needed
-Especially when you been needing me
-'Cause I'm a fucking mess sometimes
-And I'll say what I don't mean
-Just 'cause I wanted
-Or maybe I need it
-Swear lying's the only rush I need
+<br/>
+<h2> - Automatic presence</h2>
 
-[Verse 2]
-'Cause all I needed was some words to say
-That all these feelings don't mean shit to me
-'Cause it's all just chemicals anyway, anyway, yeah
-And I got way too many routes to take
-To make this all just go away
-And find another heart to break
-So heartless with these words I say
-Just saying what I'm supposed to say
-'Cause I had nothing for you
-I can't love when I can't even love myself
-Things I would rather be thoughts at the back of my head
-But I'm addicted to hurting
-And I got these lungs
-And I spent too many late nights
-Just thinking a hole in the earth
+```sql
+select dj.id, dj.hari as "Date", dj.jam as "Jam Mulai", ADDTIME(dj.jam, dj.durasi) as "Jam Selesai", m.nama as "Nama Mapel" from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id where k.id = 6 and (current_time > dj.jam && current_time < ADDTIME(dj.jam, dj.durasi) && dj.hari = WEEKDAY(CURRENT_DATE) && dj.id not in (select p.id_detail_jadwal from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id where weekday(p.tanggal) = weekday(current_date) and (current_time > dj.jam && current_time < ADDTIME(dj.jam, dj.durasi)))) order by ADDTIME(dj.jam, dj.durasi) asc limit 1;
+```
 
-[Pre-Chorus]
-'Till the sky is on fire
-And my head still won't die
-I guess I'm lying 'cause I wanna
-I guess I'm lying 'cause I don't
-'Cause I just feel so tired
-Like I need something to come alive
-She said, "You ain't you when you're like this
-This ain't you, what you doing?"
-And I said, "That's the point"
+E: Shows employee's schedule by filtering using where clause reference to employee's id and then filter it again in date, if the current time matches employee's schedule time and not already submitted in presence table (tb_presensi)
 
-[Interlude]
-You don't know how to let go
-Who said this must be all or nothing?
-But I'm so caught below, and I'll never let you know
-No, I can't tell you nothing
+<h2> - JodaTime</h2>
 
-[Chorus]
-'Cause I'm a fucking mess sometimes
-But still I could always be
-Whatever you wanted, but not what you needed
-Especially when you been needing me
-'Cause I'm a fucking mess inside
-And I'll say what I don't mean
-Just 'cause I want it
-Or maybe I need it
-Swear lying's the only rush I need
+```java
+DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm aa");
+DateTimeFormatter myFormatObj = DateTimeFormat.forPattern("HH:mm:ss");
+LocalTime formattedTime = fmt.parseLocalTime(lTime);
+String time = myFormatObj.print(formattedTime);
 
-[Outro]
-Yeah, yeah, yeah, oh
-Yeah, oh yeah, I need it
-Yeah, I need it, I need it I need it, I need it, yeah
+displayText.setText(time);
+```
+
+E: Pick two formatter, one is to format the am and pm time and the other one is to format the formatted time before. and after that declare string variable for the localtime, then set the display text for "datefield" field.
