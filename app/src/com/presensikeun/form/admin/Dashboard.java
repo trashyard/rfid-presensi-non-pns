@@ -6,7 +6,7 @@ import com.presensikeun.model.ModelCard;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 
-public class Dashboard extends javax.swing.JPanel {
+public final class Dashboard extends javax.swing.JPanel {
 
 	public Dashboard() {
 		initComponents();
