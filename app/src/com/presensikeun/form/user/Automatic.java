@@ -9,6 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -167,7 +170,11 @@ public final class Automatic extends javax.swing.JPanel {
 		if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 			// your code is scanned and you can access it using frame.getBarCode()
 			// now clean the bar code so the next one can be read
-			System.out.println("loldek: " + getBarcode());
+			Pattern p = Pattern.compile("-?\\d+");
+			Matcher m = p.matcher(getBarcode());
+			while (m.find()) {
+				setBarcode(m.group());
+			}
 			afterEnter();
 		} else {
 			// some character has been read, append it to your "barcode cache"
