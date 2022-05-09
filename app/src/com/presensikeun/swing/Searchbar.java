@@ -30,6 +30,19 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 public class Searchbar extends JTextField {
 
+	private Color backgroundColor = Color.WHITE;
+	private Color animationColor = new Color(3, 175, 255);
+	private final Icon iconSearch;
+	private final Icon iconClose;
+	private final Icon iconLoading;
+	private String hintText = "Search ...";
+	private boolean show;
+	private double location = -1;
+	private EventTextField event;
+	private EventCallBack callBack;
+	private Thread thread;
+	private final Animator animator;
+
 	public String getHintText() {
 		return hintText;
 	}
@@ -45,19 +58,6 @@ public class Searchbar extends JTextField {
 	public void setAnimationColor(Color animationColor) {
 		this.animationColor = animationColor;
 	}
-
-	private Color backgroundColor = Color.WHITE;
-	private Color animationColor = new Color(3, 175, 255);
-	private final Icon iconSearch;
-	private final Icon iconClose;
-	private final Icon iconLoading;
-	private String hintText = "Search ...";
-	private boolean show;
-	private double location = -1;
-	private EventTextField event;
-	private EventCallBack callBack;
-	private Thread thread;
-	private final Animator animator;
 
 	public Searchbar() {
 		super.setBackground(new Color(250, 250, 250, 0)); //  Remove background

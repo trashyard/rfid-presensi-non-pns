@@ -14,396 +14,385 @@ import java.util.List;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import org.joda.time.LocalTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 public class TimePicker extends javax.swing.JPanel {
 
-	private final SimpleDateFormat format = new SimpleDateFormat("hh:mm aa");
-	private final DecimalFormat numberFormat = new DecimalFormat("00");
-	private JTextField displayText;
-	private List<EventTimePicker> events;
-	private JPopupMenu menu;
+    private final SimpleDateFormat format = new SimpleDateFormat("hh:mm aa");
+    private final DecimalFormat numberFormat = new DecimalFormat("00");
+    private JTextField displayText;
+    private List<EventTimePicker> events;
+    private JPopupMenu menu;
 
-	public TimePicker() {
-		initComponents();
-		init();
-	}
+    public TimePicker() {
+        initComponents();
+        init();
+    }
 
-	private void init() {
-		events = new ArrayList<>();
-		now();
-		EventTimeSelected event = new EventTimeSelected() {
-			@Override
-			public void hourSelected(int hour) {
-				cmdHour.setText(numberFormat.format(hour));
-				displayOnText();
-				runEvent();
-			}
+    private void init() {
+        events = new ArrayList<>();
+        now();
+        EventTimeSelected event = new EventTimeSelected() {
+            @Override
+            public void hourSelected(int hour) {
+                cmdHour.setText(numberFormat.format(hour));
+                displayOnText();
+                runEvent();
+            }
 
-			@Override
-			public void minuteSelected(int minute) {
-				cmdMinute.setText(numberFormat.format(minute));
-				displayOnText();
-				runEvent();
-			}
-		};
-		timeComponent.addEventTimeSelected(event);
-		timeComponent.setEventTimeChange(new EventTimeChange() {
-			@Override
-			public void timeChange(boolean isHour) {
-				if (isHour) {
-					cmdHour.setForeground(Color.WHITE);
-					cmdMinute.setForeground(new Color(178, 178, 178));
-				} else {
-					cmdMinute.setForeground(Color.WHITE);
-					cmdHour.setForeground(new Color(178, 178, 178));
-				}
-				displayOnText();
-				runEvent();
-			}
-		});
-		setForeground(new Color(37, 88, 207));
-	}
-
-	private void changeAM(boolean am) {
-		if (am) {
-			cmdAM.setForeground(Color.WHITE);
-			cmdPM.setForeground(new Color(178, 178, 178));
-		} else {
-			cmdPM.setForeground(Color.WHITE);
-			cmdAM.setForeground(new Color(178, 178, 178));
-		}
-		displayOnText();
-		runEvent();
-	}
-
-	private void displayOnText() {
-		if (displayText != null) {
-
-			String lTime = cmdHour.getText() + ":" + cmdMinute.getText() + " " + (cmdAM.getForeground() == Color.WHITE ? "AM" : "PM");
-
-			DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm aa");
-			DateTimeFormatter myFormatObj = DateTimeFormat.forPattern("HH:mm:ss");
-			LocalTime formattedTime = fmt.parseLocalTime(lTime);
-			String loldek = myFormatObj.print(formattedTime);
-
-			displayText.setText(loldek);
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        header = new javax.swing.JPanel();
-        panelHeader = new javax.swing.JPanel();
-        lbSplit = new com.presensikeun.swing.TimePickerLabel();
-        panel = new javax.swing.JPanel();
-        cmdAM = new com.presensikeun.swing.TimePickerButton();
-        cmdPM = new com.presensikeun.swing.TimePickerButton();
-        cmdHour = new com.presensikeun.swing.TimePickerButton();
-        cmdMinute = new com.presensikeun.swing.TimePickerButton();
-        timeComponent = new com.presensikeun.swing.TimeComponent();
-        cmdOK = new com.presensikeun.swing.TimePickerButton();
-        cmdCancel = new com.presensikeun.swing.TimePickerButton();
-
-        setBackground(new java.awt.Color(255, 255, 255));
-
-        header.setBackground(new java.awt.Color(37, 88, 207));
-        header.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                headerMouseDragged(evt);
+            @Override
+            public void minuteSelected(int minute) {
+                cmdMinute.setText(numberFormat.format(minute));
+                displayOnText();
+                runEvent();
+            }
+        };
+        timeComponent.addEventTimeSelected(event);
+        timeComponent.setEventTimeChange(new EventTimeChange() {
+            @Override
+            public void timeChange(boolean isHour) {
+                if (isHour) {
+                    cmdHour.setForeground(Color.WHITE);
+                    cmdMinute.setForeground(new Color(178, 178, 178));
+                } else {
+                    cmdMinute.setForeground(Color.WHITE);
+                    cmdHour.setForeground(new Color(178, 178, 178));
+                }
+                displayOnText();
+                runEvent();
             }
         });
-        header.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                headerMousePressed(evt);
-            }
-        });
+        setForeground(new Color(37, 88, 207));
+    }
 
-        panelHeader.setOpaque(false);
+    private void changeAM(boolean am) {
+        if (am) {
+            cmdAM.setForeground(Color.WHITE);
+            cmdPM.setForeground(new Color(178, 178, 178));
+        } else {
+            cmdPM.setForeground(Color.WHITE);
+            cmdAM.setForeground(new Color(178, 178, 178));
+        }
+        displayOnText();
+        runEvent();
+    }
 
-        lbSplit.setForeground(new java.awt.Color(178, 178, 178));
-        lbSplit.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbSplit.setText(":");
-        lbSplit.setFont(new java.awt.Font("sansserif", 0, 48)); // NOI18N
+    private void displayOnText() {
+        if (displayText != null) {
+            displayText.setText(cmdHour.getText() + ":" + cmdMinute.getText() + " " + (cmdAM.getForeground() == Color.WHITE ? "AM" : "MP"));
+        }
+    }
 
-        panel.setOpaque(false);
+    @SuppressWarnings("unchecked")
+        // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+        private void initComponents() {
 
-        cmdAM.setBackground(new java.awt.Color(37, 88, 207));
-        cmdAM.setBorder(null);
-        cmdAM.setForeground(new java.awt.Color(255, 255, 255));
-        cmdAM.setText("AM");
-        cmdAM.setFont(new java.awt.Font("sansserif", 1, 15)); // NOI18N
-        cmdAM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdAMActionPerformed(evt);
-            }
-        });
+                header = new javax.swing.JPanel();
+                panelHeader = new javax.swing.JPanel();
+                lbSplit = new com.presensikeun.swing.TimePickerLabel();
+                panel = new javax.swing.JPanel();
+                cmdAM = new com.presensikeun.swing.TimePickerButton();
+                cmdPM = new com.presensikeun.swing.TimePickerButton();
+                cmdHour = new com.presensikeun.swing.TimePickerButton();
+                cmdMinute = new com.presensikeun.swing.TimePickerButton();
+                timeComponent = new com.presensikeun.swing.TimeComponent();
+                cmdOK = new com.presensikeun.swing.TimePickerButton();
+                cmdCancel = new com.presensikeun.swing.TimePickerButton();
 
-        cmdPM.setBackground(new java.awt.Color(37, 88, 207));
-        cmdPM.setBorder(null);
-        cmdPM.setForeground(new java.awt.Color(255, 255, 255));
-        cmdPM.setText("PM");
-        cmdPM.setFont(new java.awt.Font("sansserif", 1, 15)); // NOI18N
-        cmdPM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdPMActionPerformed(evt);
-            }
-        });
+                setBackground(new java.awt.Color(255, 255, 255));
 
-        javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
-        panel.setLayout(panelLayout);
-        panelLayout.setHorizontalGroup(
-            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(cmdPM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(cmdAM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        panelLayout.setVerticalGroup(
-            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cmdAM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(3, 3, 3)
-                .addComponent(cmdPM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(8, 8, 8))
-        );
+                header.setBackground(new java.awt.Color(37, 88, 207));
+                header.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+                        public void mouseDragged(java.awt.event.MouseEvent evt) {
+                                headerMouseDragged(evt);
+                        }
+                });
+                header.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mousePressed(java.awt.event.MouseEvent evt) {
+                                headerMousePressed(evt);
+                        }
+                });
 
-        cmdHour.setBackground(new java.awt.Color(37, 88, 207));
-        cmdHour.setForeground(new java.awt.Color(255, 255, 255));
-        cmdHour.setText("07");
-        cmdHour.setFont(new java.awt.Font("sansserif", 0, 48)); // NOI18N
-        cmdHour.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdHourActionPerformed(evt);
-            }
-        });
+                panelHeader.setOpaque(false);
 
-        cmdMinute.setBackground(new java.awt.Color(37, 88, 207));
-        cmdMinute.setForeground(new java.awt.Color(178, 178, 178));
-        cmdMinute.setText("30");
-        cmdMinute.setFont(new java.awt.Font("sansserif", 0, 48)); // NOI18N
-        cmdMinute.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdMinuteActionPerformed(evt);
-            }
-        });
+                lbSplit.setForeground(new java.awt.Color(178, 178, 178));
+                lbSplit.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                lbSplit.setText(":");
+                lbSplit.setFont(new java.awt.Font("sansserif", 0, 48)); // NOI18N
 
-        javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
-        panelHeader.setLayout(panelHeaderLayout);
-        panelHeaderLayout.setHorizontalGroup(
-            panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelHeaderLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(cmdHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(3, 3, 3)
-                .addComponent(lbSplit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(3, 3, 3)
-                .addComponent(cmdMinute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        panelHeaderLayout.setVerticalGroup(
-            panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
-                .addContainerGap(9, Short.MAX_VALUE)
-                .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmdMinute, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbSplit, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmdHour, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
+                panel.setOpaque(false);
 
-        javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
-        header.setLayout(headerLayout);
-        headerLayout.setHorizontalGroup(
-            headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(headerLayout.createSequentialGroup()
-                .addContainerGap(35, Short.MAX_VALUE)
-                .addComponent(panelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
-        );
-        headerLayout.setVerticalGroup(
-            headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(panelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+                cmdAM.setBackground(new java.awt.Color(37, 88, 207));
+                cmdAM.setBorder(null);
+                cmdAM.setForeground(new java.awt.Color(255, 255, 255));
+                cmdAM.setText("AM");
+                cmdAM.setFont(new java.awt.Font("sansserif", 1, 15)); // NOI18N
+                cmdAM.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                cmdAMActionPerformed(evt);
+                        }
+                });
 
-        timeComponent.setBackground(new java.awt.Color(242, 242, 242));
+                cmdPM.setBackground(new java.awt.Color(37, 88, 207));
+                cmdPM.setBorder(null);
+                cmdPM.setForeground(new java.awt.Color(255, 255, 255));
+                cmdPM.setText("PM");
+                cmdPM.setFont(new java.awt.Font("sansserif", 1, 15)); // NOI18N
+                cmdPM.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                cmdPMActionPerformed(evt);
+                        }
+                });
 
-        cmdOK.setForeground(new java.awt.Color(37, 88, 207));
-        cmdOK.setText("OK");
-        cmdOK.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        cmdOK.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdOKActionPerformed(evt);
-            }
-        });
+                javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
+                panel.setLayout(panelLayout);
+                panelLayout.setHorizontalGroup(
+                        panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(cmdPM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cmdAM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                );
+                panelLayout.setVerticalGroup(
+                        panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelLayout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cmdAM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(3, 3, 3)
+                                .addComponent(cmdPM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(8, 8, 8))
+                );
 
-        cmdCancel.setForeground(new java.awt.Color(37, 88, 207));
-        cmdCancel.setText("Cancel");
-        cmdCancel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        cmdCancel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdCancelActionPerformed(evt);
-            }
-        });
+                cmdHour.setBackground(new java.awt.Color(37, 88, 207));
+                cmdHour.setForeground(new java.awt.Color(255, 255, 255));
+                cmdHour.setText("07");
+                cmdHour.setFont(new java.awt.Font("sansserif", 0, 48)); // NOI18N
+                cmdHour.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                cmdHourActionPerformed(evt);
+                        }
+                });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(timeComponent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(header, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cmdCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmdOK, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(header, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
-                .addComponent(timeComponent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmdOK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmdCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10))
-        );
-    }// </editor-fold>//GEN-END:initComponents
+                cmdMinute.setBackground(new java.awt.Color(37, 88, 207));
+                cmdMinute.setForeground(new java.awt.Color(178, 178, 178));
+                cmdMinute.setText("30");
+                cmdMinute.setFont(new java.awt.Font("sansserif", 0, 48)); // NOI18N
+                cmdMinute.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                cmdMinuteActionPerformed(evt);
+                        }
+                });
+
+                javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
+                panelHeader.setLayout(panelHeaderLayout);
+                panelHeaderLayout.setHorizontalGroup(
+                        panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelHeaderLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(cmdHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(3, 3, 3)
+                                .addComponent(lbSplit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(3, 3, 3)
+                                .addComponent(cmdMinute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
+                );
+                panelHeaderLayout.setVerticalGroup(
+                        panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
+                                .addContainerGap(9, Short.MAX_VALUE)
+                                .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(cmdMinute, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lbSplit, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cmdHour, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap())
+                );
+
+                javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
+                header.setLayout(headerLayout);
+                headerLayout.setHorizontalGroup(
+                        headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(headerLayout.createSequentialGroup()
+                                .addContainerGap(35, Short.MAX_VALUE)
+                                .addComponent(panelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(35, Short.MAX_VALUE))
+                );
+                headerLayout.setVerticalGroup(
+                        headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(panelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                );
+
+                timeComponent.setBackground(new java.awt.Color(242, 242, 242));
+
+                cmdOK.setForeground(new java.awt.Color(37, 88, 207));
+                cmdOK.setText("OK");
+                cmdOK.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+                cmdOK.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                cmdOKActionPerformed(evt);
+                        }
+                });
+
+                cmdCancel.setForeground(new java.awt.Color(37, 88, 207));
+                cmdCancel.setText("Cancel");
+                cmdCancel.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+                cmdCancel.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                cmdCancelActionPerformed(evt);
+                        }
+                });
+
+                javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+                this.setLayout(layout);
+                layout.setHorizontalGroup(
+                        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(timeComponent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(header, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cmdCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmdOK, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
+                );
+                layout.setVerticalGroup(
+                        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(header, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(15, 15, 15)
+                                .addComponent(timeComponent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(15, 15, 15)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(cmdOK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cmdCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(10, 10, 10))
+                );
+        }// </editor-fold>//GEN-END:initComponents
 
     private void cmdHourActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdHourActionPerformed
-		timeComponent.changeToHour();
+        timeComponent.changeToHour();
     }//GEN-LAST:event_cmdHourActionPerformed
 
     private void cmdMinuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMinuteActionPerformed
-		timeComponent.changeToMinute();
+        timeComponent.changeToMinute();
     }//GEN-LAST:event_cmdMinuteActionPerformed
 
     private void cmdAMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAMActionPerformed
-		changeAM(true);
+        changeAM(true);
     }//GEN-LAST:event_cmdAMActionPerformed
 
     private void cmdPMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdPMActionPerformed
-		changeAM(false);
+        changeAM(false);
     }//GEN-LAST:event_cmdPMActionPerformed
 
     private void cmdCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCancelActionPerformed
-		if (menu != null) {
-			menu.setVisible(false);
-		}
+        if (menu != null) {
+            menu.setVisible(false);
+        }
     }//GEN-LAST:event_cmdCancelActionPerformed
 
     private void cmdOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdOKActionPerformed
-		if (menu != null) {
-			menu.setVisible(false);
-		}
+        if (menu != null) {
+            menu.setVisible(false);
+        }
     }//GEN-LAST:event_cmdOKActionPerformed
-	private int x;
-	private int y;
+    private int x;
+    private int y;
     private void headerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_headerMousePressed
-		x = evt.getX();
-		y = evt.getY() + 6;
+        x = evt.getX();
+        y = evt.getY() + 6;
     }//GEN-LAST:event_headerMousePressed
 
     private void headerMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_headerMouseDragged
-		if (menu != null && menu.isVisible()) {
-			if (SwingUtilities.isLeftMouseButton(evt)) {
-				int xs = evt.getXOnScreen();
-				int ys = evt.getYOnScreen();
-				menu.setLocation(xs - x, ys - y);
+        if (menu != null && menu.isVisible()) {
+            if (SwingUtilities.isLeftMouseButton(evt)) {
+                int xs = evt.getXOnScreen();
+                int ys = evt.getYOnScreen();
+                menu.setLocation(xs - x, ys - y);
 
-			}
-		}
+            }
+        }
     }//GEN-LAST:event_headerMouseDragged
 
-	@Override
-	public void setForeground(Color color) {
-		super.setForeground(color);
-		if (header != null) {
-			header.setBackground(color);
-			timeComponent.setColor(color);
-			cmdCancel.setForeground(color);
-			cmdOK.setForeground(color);
-			cmdHour.setBackground(color);
-			cmdMinute.setBackground(color);
-			cmdAM.setBackground(color);
-			cmdPM.setBackground(color);
-			if (menu != null) {
-				menu.setBackground(color);
-			}
-		}
-	}
+    @Override
+    public void setForeground(Color color) {
+        super.setForeground(color);
+        if (header != null) {
+            header.setBackground(color);
+            timeComponent.setColor(color);
+            cmdCancel.setForeground(color);
+            cmdOK.setForeground(color);
+            cmdHour.setBackground(color);
+            cmdMinute.setBackground(color);
+            cmdAM.setBackground(color);
+            cmdPM.setBackground(color);
+            if (menu != null) {
+                menu.setBackground(color);
+            }
+        }
+    }
 
-	public JTextField getDisplayText() {
-		return displayText;
-	}
+    public JTextField getDisplayText() {
+        return displayText;
+    }
 
-	public void setDisplayText(JTextField displayText) {
-		this.displayText = displayText;
-	}
+    public void setDisplayText(JTextField displayText) {
+        this.displayText = displayText;
+    }
 
-	public void setSelectedTime(Date date) {
-		String now = format.format(date);
-		int hour = Integer.valueOf(now.split(":")[0]);
-		int minute = Integer.valueOf(now.split(":")[1].split(" ")[0]);
-		changeAM(now.split(" ")[1].equals("AM"));
-		cmdHour.setText(numberFormat.format(hour));
-		cmdMinute.setText(numberFormat.format(minute));
-		timeComponent.setSelectedHour(hour, minute);
-	}
+    public void setSelectedTime(Date date) {
+        String now = format.format(date);
+        int hour = Integer.valueOf(now.split(":")[0]);
+        int minute = Integer.valueOf(now.split(":")[1].split(" ")[0]);
+        changeAM(now.split(" ")[1].equals("AM"));
+        cmdHour.setText(numberFormat.format(hour));
+        cmdMinute.setText(numberFormat.format(minute));
+        timeComponent.setSelectedHour(hour, minute);
+    }
 
-	public void now() {
-		setSelectedTime(new Date());
-	}
+    public void now() {
+        setSelectedTime(new Date());
+    }
 
-	public String getSelectedTime() {
-		return cmdHour.getText() + ":" + cmdMinute.getText() + " " + (cmdAM.getForeground() == Color.WHITE ? "AM" : "PM");
-	}
+    public String getSelectedTime() {
+        return cmdHour.getText() + ":" + cmdMinute.getText() + " " + (cmdAM.getForeground() == Color.WHITE ? "AM" : "PM");
+    }
 
-	private void runEvent() {
-		for (EventTimePicker event : events) {
-			event.timeSelected(getSelectedTime());
-		}
-	}
+    private void runEvent() {
+        for (EventTimePicker event : events) {
+            event.timeSelected(getSelectedTime());
+        }
+    }
 
-	public void addEventTimePicker(EventTimePicker event) {
-		events.add(event);
-	}
+    public void addEventTimePicker(EventTimePicker event) {
+        events.add(event);
+    }
 
-	public void addActionListener(ActionListener event) {
-		cmdOK.addActionListener(event);
-	}
+    public void addActionListener(ActionListener event) {
+        cmdOK.addActionListener(event);
+    }
 
-	public void showPopup(Component com, int x, int y) {
-		if (menu == null) {
-			menu = new TimePickerMenu();
-			menu.setBackground(getForeground());
-			menu.add(this);
-		}
-		menu.show(com, x, y);
-	}
+    public void showPopup(Component com, int x, int y) {
+        if (menu == null) {
+            menu = new TimePickerMenu();
+            menu.setBackground(getForeground());
+            menu.add(this);
+        }
+        menu.show(com, x, y);
+    }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.presensikeun.swing.TimePickerButton cmdAM;
-    private com.presensikeun.swing.TimePickerButton cmdCancel;
-    private com.presensikeun.swing.TimePickerButton cmdHour;
-    private com.presensikeun.swing.TimePickerButton cmdMinute;
-    private com.presensikeun.swing.TimePickerButton cmdOK;
-    private com.presensikeun.swing.TimePickerButton cmdPM;
-    private javax.swing.JPanel header;
-    private com.presensikeun.swing.TimePickerLabel lbSplit;
-    private javax.swing.JPanel panel;
-    private javax.swing.JPanel panelHeader;
-    private com.presensikeun.swing.TimeComponent timeComponent;
-    // End of variables declaration//GEN-END:variables
+        // Variables declaration - do not modify//GEN-BEGIN:variables
+        private com.presensikeun.swing.TimePickerButton cmdAM;
+        private com.presensikeun.swing.TimePickerButton cmdCancel;
+        private com.presensikeun.swing.TimePickerButton cmdHour;
+        private com.presensikeun.swing.TimePickerButton cmdMinute;
+        private com.presensikeun.swing.TimePickerButton cmdOK;
+        private com.presensikeun.swing.TimePickerButton cmdPM;
+        private javax.swing.JPanel header;
+        private com.presensikeun.swing.TimePickerLabel lbSplit;
+        private javax.swing.JPanel panel;
+        private javax.swing.JPanel panelHeader;
+        private com.presensikeun.swing.TimeComponent timeComponent;
+        // End of variables declaration//GEN-END:variables
 }
