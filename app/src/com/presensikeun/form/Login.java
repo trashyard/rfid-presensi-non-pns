@@ -1,9 +1,7 @@
 package com.presensikeun.form;
 
-import com.presensikeun.component.Profile;
 import com.presensikeun.controller.Koneksi;
 import com.presensikeun.main.Main;
-import com.presensikeun.main.MainUser;
 import com.presensikeun.swing.Notification;
 import java.awt.Color;
 import javax.swing.JOptionPane;
@@ -47,10 +45,10 @@ public class Login extends javax.swing.JFrame {
 					this.setVisible(false);
 					new Main().setVisible(true);
 				} else if (txt_user.getText().equals(rs.getString("username")) && txt_pass.getText().equals(rs.getString("password")) && rs.getString("status").equals("user")) {
-					Notification panel = new Notification(this, Notification.Type.SUCCESS, Notification.Location.TOP_CENTER, "Selamat datang, " + rs.getString(5) + "!");
+					Notification panel = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_CENTER, "Mohon maaf, Hanya admin yang dapat masuk");
 					panel.showNotification();
-					this.setVisible(false);
-					new MainUser(rs.getString("id")).setVisible(true);
+					txt_user.setText("");
+					txt_pass.setText("");
 				}
 
 			} else {
