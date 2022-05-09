@@ -4,6 +4,7 @@ import com.presensikeun.form.admin.Dashboard;
 import com.presensikeun.form.admin.Jadwal;
 import com.presensikeun.form.admin.Karyawan;
 import com.presensikeun.form.Logout;
+import com.presensikeun.form.admin.Automatic;
 import com.presensikeun.form.admin.Presensi;
 import com.presensikeun.form.admin.Report;
 import java.awt.Color;
@@ -105,6 +106,9 @@ public final class Main extends javax.swing.JFrame {
 					break;
 				case 4:
 					showForm(new Report());
+					break;
+				case 5:
+					showForm(new Automatic());
 					break;
 				case 10:
 					logout();

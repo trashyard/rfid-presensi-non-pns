@@ -153,7 +153,7 @@ public final class Report extends javax.swing.JPanel {
                                                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addComponent(jLabel1)
-                                                .addGap(0, 861, Short.MAX_VALUE)))
+                                                .addGap(0, 864, Short.MAX_VALUE)))
                                 .addContainerGap())
                 );
                 jPanel1Layout.setVerticalGroup(

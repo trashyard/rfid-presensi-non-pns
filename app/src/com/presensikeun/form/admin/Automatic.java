@@ -1,13 +1,16 @@
 package com.presensikeun.form.admin;
 
 import com.presensikeun.controller.Koneksi;
-import com.presensikeun.event.EventCallBack;
-import com.presensikeun.event.EventTextField;
+import com.presensikeun.swing.Notification;
+import java.awt.Frame;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.table.DefaultTableModel;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.SwingUtilities;
 
 public final class Automatic extends javax.swing.JPanel {
 
@@ -15,91 +18,60 @@ public final class Automatic extends javax.swing.JPanel {
 	ResultSet rs = null;
 	PreparedStatement pst = null;
 
+	String barcode = "";
+
 	public Automatic() {
 		this.con = Koneksi.getKoneksi();
 		initComponents();
-		table1.scroll(jScrollPane1);
-		tableReport();
-		searchBar();
 	}
 
-	public void tableReport() {
-		DefaultTableModel model = new DefaultTableModel();
-		model.addColumn("ID");
-		model.addColumn("Hari");
-		model.addColumn("Jam Mulai");
-		model.addColumn("Jam Selesai");
-		model.addColumn("Nama");
-		model.addColumn("Mapel");
-		model.addColumn("Ruangan");
-		model.addColumn("Masuk");
-		try {
+	public void automaticAttendance(String input) {
 
-			String sql = "select dj.id, dj.hari, dj.jam as \"jam mulai\", addtime(dj.jam, dj.durasi) as \"jam selesai\", k.nama, m.nama as \"mapel\", r.nama as \"ruangan\", p.tanggal as \"masuk\" from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id join tb_karyawan as k on k.id = dj.id_karyawan join tb_jadwal as j on j.id = dj.id_jadwal join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on kls.id_ruang = r.id";
+		try {
+			String sql = "select dj.id, dj.hari as \"Date\", dj.jam as \"Jam Mulai\", ADDTIME(dj.jam, dj.durasi) as \"Jam Selesai\", m.nama as \"Nama Mapel\" from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id where k.nik = " + input + " and (current_time > dj.jam && current_time < ADDTIME(dj.jam, dj.durasi) && dj.hari = WEEKDAY(CURRENT_DATE) && dj.id not in (select p.id_detail_jadwal from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id where weekday(p.tanggal) = weekday(current_date) and (current_time > dj.jam && current_time < ADDTIME(dj.jam, dj.durasi)))) order by ADDTIME(dj.jam, dj.durasi) asc limit 1;";
+			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
-			while (rs.next()) {
-				model.addRow(new Object[]{rs.getString(1), getDay(rs.getInt(2)), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8)});
+
+			if (rs.next()) {
+				submitAttendance(rs.getString(1));
+			} else {
+				Notification panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.WARNING, Notification.Location.CENTER, "Tidak ditemukan presensi");
+				panel.showNotification();
 			}
-			table1.setModel(model);
+
 		} catch (SQLException ex) {
-			model.addRow(new Object[]{});
-			table1.setModel(model);
+
 		}
-	}
-
-	private void searchBar() {
-		searchPresensi.addEvent(new EventTextField() {
-			@Override
-			public void onPressed(EventCallBack call) {
-				//  Test
-				try {
-					Thread.sleep(500);
-					call.done();
-				} catch (InterruptedException e) {
-					System.err.println(e);
-				}
-			}
-
-			@Override
-			public void onCancel() {
-
-			}
-		});
 
 	}
 
-	private String getDay(int day) {
-		String string;
-
-		switch (day) {
-			case 1:
-				string = "Senin";
-				break;
-			case 2:
-				string = "Selasa";
-				break;
-			case 3:
-				string = "Rabu";
-				break;
-			case 4:
-				string = "Kamis";
-				break;
-			case 5:
-				string = "Jumat";
-				break;
-			case 6:
-				string = "Sabtu";
-				break;
-			case 7:
-				string = "Minggu";
-				break;
-			default:
-				string = "?";
-				break;
+	public void submitAttendance(String id) {
+		try {
+			String sql = "INSERT INTO tb_presensi (id, tanggal, keterangan, id_detail_jadwal) VALUES (NULL, current_timestamp(), '?', " + id + ")";
+			pst = con.prepareStatement(sql);
+			pst.executeUpdate();
+			Notification panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.SUCCESS, Notification.Location.CENTER, rs.getString(5) + ": " + rs.getString(3));
+			panel.showNotification();
+		} catch (SQLException ex) {
+			Notification panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.WARNING, Notification.Location.CENTER, "Gagal memasukkan data");
+			panel.showNotification();
 		}
 
-		return string;
+	}
+
+	private String setBarcode(String barcode) {
+		return this.barcode = barcode;
+	}
+
+	private String getBarcode() {
+		return this.barcode;
+	}
+
+	private void afterEnter() {
+		automaticAttendance(this.barcode);
+		setBarcode("");
+		nik.setText("");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -109,12 +81,8 @@ public final class Automatic extends javax.swing.JPanel {
                 jPanel1 = new javax.swing.JPanel();
                 jLabel1 = new javax.swing.JLabel();
                 jPanel2 = new javax.swing.JPanel();
-                panelShadow1 = new com.presensikeun.swing.PanelShadow();
-                searchPresensi = new com.presensikeun.swing.Searchbar();
-                jLabel2 = new javax.swing.JLabel();
                 panelShadow2 = new com.presensikeun.swing.PanelShadow();
-                jScrollPane1 = new javax.swing.JScrollPane();
-                table1 = new com.presensikeun.swing.Table();
+                nik = new com.presensikeun.swing.TextField();
 
                 setBackground(new java.awt.Color(250, 250, 250));
 
@@ -126,8 +94,8 @@ public final class Automatic extends javax.swing.JPanel {
                 jLabel1.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
                 jLabel1.setForeground(new java.awt.Color(240, 236, 227));
                 jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-presentation-36.png"))); // NOI18N
-                jLabel1.setText("Report");
+                jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-automation-36.png"))); // NOI18N
+                jLabel1.setText("Automatic");
                 jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
 
                 javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -153,7 +121,7 @@ public final class Automatic extends javax.swing.JPanel {
                                                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addComponent(jLabel1)
-                                                .addGap(0, 861, Short.MAX_VALUE)))
+                                                .addGap(0, 816, Short.MAX_VALUE)))
                                 .addContainerGap())
                 );
                 jPanel1Layout.setVerticalGroup(
@@ -166,76 +134,31 @@ public final class Automatic extends javax.swing.JPanel {
                                 .addGap(18, 18, 18))
                 );
 
-                panelShadow1.setBackground(new java.awt.Color(252, 254, 255));
-
-                searchPresensi.setAnimationColor(new java.awt.Color(85, 65, 118));
-
-                jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icon/add.png"))); // NOI18N
-                jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mousePressed(java.awt.event.MouseEvent evt) {
-                                jLabel2MousePressed(evt);
-                        }
-                });
-
-                javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
-                panelShadow1.setLayout(panelShadow1Layout);
-                panelShadow1Layout.setHorizontalGroup(
-                        panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createSequentialGroup()
-                                .addComponent(searchPresensi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel2)
-                                .addContainerGap())
-                );
-                panelShadow1Layout.setVerticalGroup(
-                        panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(panelShadow1Layout.createSequentialGroup()
-                                .addGroup(panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(searchPresensi, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                );
-
                 panelShadow2.setBackground(new java.awt.Color(252, 254, 255));
 
-                jScrollPane1.setBackground(new java.awt.Color(252, 254, 255));
-                jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-
-                table1.setBackground(new java.awt.Color(252, 254, 255));
-                table1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-                table1.setModel(new javax.swing.table.DefaultTableModel(
-                        new Object [][] {
-                                {null, null, null, null},
-                                {null, null, null, null},
-                                {null, null, null, null},
-                                {null, null, null, null}
-                        },
-                        new String [] {
-                                "Title 1", "Title 2", "Title 3", "Title 4"
-                        }
-                ));
-                table1.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mousePressed(java.awt.event.MouseEvent evt) {
-                                table1MousePressed(evt);
+                nik.setBackground(new java.awt.Color(252, 254, 255));
+                nik.setLabelText("NIK");
+                nik.addKeyListener(new java.awt.event.KeyAdapter() {
+                        public void keyReleased(java.awt.event.KeyEvent evt) {
+                                nikKeyReleased(evt);
                         }
                 });
-                jScrollPane1.setViewportView(table1);
 
                 javax.swing.GroupLayout panelShadow2Layout = new javax.swing.GroupLayout(panelShadow2);
                 panelShadow2.setLayout(panelShadow2Layout);
                 panelShadow2Layout.setHorizontalGroup(
                         panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(panelShadow2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 967, Short.MAX_VALUE)
-                                .addContainerGap())
+                                .addGap(317, 317, 317)
+                                .addComponent(nik, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 );
                 panelShadow2Layout.setVerticalGroup(
                         panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE)
-                                .addContainerGap())
+                        .addGroup(panelShadow2Layout.createSequentialGroup()
+                                .addGap(243, 243, 243)
+                                .addComponent(nik, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(316, Short.MAX_VALUE))
                 );
 
                 javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -245,9 +168,7 @@ public final class Automatic extends javax.swing.JPanel {
                         .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1023, Short.MAX_VALUE)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(panelShadow2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(panelShadow2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addContainerGap())
                 );
                 layout.setVerticalGroup(
@@ -255,29 +176,32 @@ public final class Automatic extends javax.swing.JPanel {
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(panelShadow1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
                                 .addComponent(panelShadow2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 );
         }// </editor-fold>//GEN-END:initComponents
 
-        private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
+        private void nikKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nikKeyReleased
 		// TODO add your handling code here:
-        }//GEN-LAST:event_jLabel2MousePressed
-
-        private void table1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table1MousePressed
-		// TODO add your handling code here:
-        }//GEN-LAST:event_table1MousePressed
+		if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+			// your code is scanned and you can access it using frame.getBarCode()
+			// now clean the bar code so the next one can be read
+			Pattern p = Pattern.compile("-?\\d+");
+			Matcher m = p.matcher(getBarcode());
+			while (m.find()) {
+				setBarcode(m.group());
+			}
+			afterEnter();
+		} else {
+			// some character has been read, append it to your "barcode cache"
+			setBarcode(getBarcode() + evt.getKeyChar());
+		}
+        }//GEN-LAST:event_nikKeyReleased
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private javax.swing.JLabel jLabel1;
-        private javax.swing.JLabel jLabel2;
         private javax.swing.JPanel jPanel1;
         private javax.swing.JPanel jPanel2;
-        private javax.swing.JScrollPane jScrollPane1;
-        private com.presensikeun.swing.PanelShadow panelShadow1;
+        private com.presensikeun.swing.TextField nik;
         private com.presensikeun.swing.PanelShadow panelShadow2;
-        private com.presensikeun.swing.Searchbar searchPresensi;
-        private com.presensikeun.swing.Table table1;
         // End of variables declaration//GEN-END:variables
 }
