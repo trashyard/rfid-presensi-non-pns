@@ -28,12 +28,13 @@ public final class Automatic extends javax.swing.JPanel {
 	public void automaticAttendance(String input) {
 
 		try {
-			String sql = "select dj.id, dj.hari as \"Date\", dj.jam as \"Jam Mulai\", ADDTIME(dj.jam, dj.durasi) as \"Jam Selesai\", m.nama as \"Nama Mapel\" from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id where k.nik = " + input + " and (current_time > dj.jam && current_time < ADDTIME(dj.jam, dj.durasi) && dj.hari = WEEKDAY(CURRENT_DATE) && dj.id not in (select p.id_detail_jadwal from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id where weekday(p.tanggal) = weekday(current_date) and (current_time > dj.jam && current_time < ADDTIME(dj.jam, dj.durasi)))) order by ADDTIME(dj.jam, dj.durasi) asc limit 1;";
+			String sql = "select dj.id, k.nama, dj.hari as \"Date\", dj.jam as \"Jam Mulai\", ADDTIME(dj.jam, dj.durasi) as \"Jam Selesai\", m.nama as \"Nama Mapel\" from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id where k.nik = " + input + " and (current_time > dj.jam && current_time < ADDTIME(dj.jam, dj.durasi) && dj.hari = WEEKDAY(CURRENT_DATE) && dj.id not in (select p.id_detail_jadwal from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id where weekday(p.tanggal) = weekday(current_date) and (current_time > dj.jam && current_time < ADDTIME(dj.jam, dj.durasi)))) order by ADDTIME(dj.jam, dj.durasi) asc limit 1;";
 			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 
 			if (rs.next()) {
+				lastAttendance.setText("Last Attendance: " + rs.getString(2) + ":" + rs.getString(5) + ":" + rs.getString(6));
 				submitAttendance(rs.getString(1));
 			} else {
 				Notification panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.WARNING, Notification.Location.CENTER, "Tidak ditemukan presensi");
@@ -83,6 +84,7 @@ public final class Automatic extends javax.swing.JPanel {
                 jPanel2 = new javax.swing.JPanel();
                 panelShadow2 = new com.presensikeun.swing.PanelShadow();
                 nik = new com.presensikeun.swing.TextField();
+                lastAttendance = new javax.swing.JLabel();
 
                 setBackground(new java.awt.Color(250, 250, 250));
 
@@ -144,19 +146,25 @@ public final class Automatic extends javax.swing.JPanel {
                         }
                 });
 
+                lastAttendance.setText("Last Attendance:");
+
                 javax.swing.GroupLayout panelShadow2Layout = new javax.swing.GroupLayout(panelShadow2);
                 panelShadow2.setLayout(panelShadow2Layout);
                 panelShadow2Layout.setHorizontalGroup(
                         panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(panelShadow2Layout.createSequentialGroup()
                                 .addGap(317, 317, 317)
-                                .addComponent(nik, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(nik, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+                                        .addComponent(lastAttendance, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 );
                 panelShadow2Layout.setVerticalGroup(
                         panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(panelShadow2Layout.createSequentialGroup()
-                                .addGap(243, 243, 243)
+                                .addGap(139, 139, 139)
+                                .addComponent(lastAttendance, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(48, 48, 48)
                                 .addComponent(nik, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(316, Short.MAX_VALUE))
                 );
@@ -201,6 +209,7 @@ public final class Automatic extends javax.swing.JPanel {
         private javax.swing.JLabel jLabel1;
         private javax.swing.JPanel jPanel1;
         private javax.swing.JPanel jPanel2;
+        private javax.swing.JLabel lastAttendance;
         private com.presensikeun.swing.TextField nik;
         private com.presensikeun.swing.PanelShadow panelShadow2;
         // End of variables declaration//GEN-END:variables
