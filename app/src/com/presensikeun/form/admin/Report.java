@@ -20,7 +20,6 @@ public final class Report extends javax.swing.JPanel {
 		initComponents();
 		table1.scroll(jScrollPane1);
 		tableReport();
-		searchBar();
 	}
 
 	public void tableReport() {
@@ -46,27 +45,6 @@ public final class Report extends javax.swing.JPanel {
 			model.addRow(new Object[]{});
 			table1.setModel(model);
 		}
-	}
-
-	private void searchBar() {
-		searchPresensi.addEvent(new EventTextField() {
-			@Override
-			public void onPressed(EventCallBack call) {
-				//  Test
-				try {
-					Thread.sleep(500);
-					call.done();
-				} catch (InterruptedException e) {
-					System.err.println(e);
-				}
-			}
-
-			@Override
-			public void onCancel() {
-
-			}
-		});
-
 	}
 
 	private String getDay(int day) {
