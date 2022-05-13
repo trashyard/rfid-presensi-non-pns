@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 03, 2022 at 02:41 PM
+-- Generation Time: May 13, 2022 at 04:47 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -41,9 +41,13 @@ CREATE TABLE `tb_detail_jadwal` (
 --
 
 INSERT INTO `tb_detail_jadwal` (`id`, `hari`, `jam`, `durasi`, `id_karyawan`, `id_jadwal`) VALUES
-(1, 1, '12:00:00', '02:00:00', 6, 4),
-(2, 1, '07:00:00', '02:00:00', 6, 4),
-(3, 1, '18:00:00', '02:00:00', 6, 5);
+(1, 1, '13:00:00', '02:00:00', 6, 4),
+(2, 1, '15:00:00', '02:00:00', 6, 4),
+(3, 2, '20:00:00', '02:00:00', 6, 5),
+(4, 1, '23:00:00', '02:00:00', 7, 8),
+(11, 4, '21:20:00', '02:00:00', 6, 9),
+(13, 0, '22:00:00', '02:00:00', 6, 8),
+(14, 1, '10:00:00', '02:00:00', 6, 9);
 
 -- --------------------------------------------------------
 
@@ -64,8 +68,9 @@ CREATE TABLE `tb_jabatan` (
 INSERT INTO `tb_jabatan` (`id`, `id_jabatan`, `nama`) VALUES
 (1, 'JB001', 'P3K'),
 (2, 'JB002', 'Satpam'),
-(3, 'JBNPNS', 'Non PNS'),
-(4, 'JBPGW', 'Pegawai');
+(3, 'JB003', 'Non PNS'),
+(4, 'JB004', 'Pegawai'),
+(5, 'JB005', 'Admin');
 
 -- --------------------------------------------------------
 
@@ -87,7 +92,10 @@ CREATE TABLE `tb_jadwal` (
 INSERT INTO `tb_jadwal` (`id`, `id_mapel`, `id_kelas`, `status`) VALUES
 (4, 1, 1, 'mengajar'),
 (5, 2, 1, 'mengajar'),
-(6, 3, 1, 'mengajar');
+(6, 3, 1, 'mengajar'),
+(7, 4, 1, 'mengajar'),
+(8, 5, 1, 'mengajar'),
+(9, 6, 1, 'mengajar');
 
 -- --------------------------------------------------------
 
@@ -198,7 +206,7 @@ INSERT INTO `tb_mapel` (`id`, `id_mapel`, `nama`) VALUES
 CREATE TABLE `tb_presensi` (
   `id` int(11) NOT NULL,
   `tanggal` datetime NOT NULL DEFAULT current_timestamp(),
-  `keterangan` enum('hadir','sakit','izin','alpa','?') NOT NULL,
+  `keterangan` enum('Hadir','Telat','Alpa','?') CHARACTER SET latin1 COLLATE latin1_general_cs NOT NULL,
   `id_detail_jadwal` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -207,7 +215,7 @@ CREATE TABLE `tb_presensi` (
 --
 
 INSERT INTO `tb_presensi` (`id`, `tanggal`, `keterangan`, `id_detail_jadwal`) VALUES
-(2, '2022-05-03 19:40:43', 'hadir', 3);
+(29, '2022-05-13 21:43:07', 'Telat', 11);
 
 --
 -- Triggers `tb_presensi`
@@ -216,12 +224,20 @@ DELIMITER $$
 CREATE TRIGGER `insert_attendance` BEFORE INSERT ON `tb_presensi` FOR EACH ROW BEGIN
 	DECLARE start_time DATETIME;
     DECLARE end_time DATETIME;
+    DECLARE late_time DATETIME;
+    DECLARE alpa_time DATETIME;
 	SET @start_time = cast((select addtime(current_date, tb_detail_jadwal.jam) from tb_detail_jadwal where id = NEW.id_detail_jadwal) as datetime);
     SET @end_time = cast((select addtime(current_date, addtime(tb_detail_jadwal.jam, tb_detail_jadwal.durasi)) from tb_detail_jadwal where id = NEW.id_detail_jadwal) as datetime);
-	IF NEW.tanggal > @start_time && NEW.tanggal < @end_time THEN
-    		SET NEW.keterangan = "hadir";
+	SET @late_time = cast((select addtime(current_date, addtime(tb_detail_jadwal.jam, "00:15:00")) from tb_detail_jadwal where id = NEW.id_detail_jadwal) as datetime);
+	SET @alpa_time = cast((select addtime(current_date, addtime(tb_detail_jadwal.jam, "00:45:00")) from tb_detail_jadwal where id = NEW.id_detail_jadwal) as datetime);
+	IF NEW.tanggal > @start_time && NEW.tanggal < @late_time THEN
+    		SET NEW.keterangan = "Hadir";
+		ELSEIF NEW.tanggal > @late_time && NEW.tanggal < @alpa_time THEN 
+			SET NEW.keterangan = "Telat";
+		ELSEIF NEW.tanggal > @alpa_time && NEW.tanggal < @end_time THEN 
+        	SET NEW.keterangan = "Alpa";
 		ELSE
-        	SET NEW.keterangan = "alpa";
+			SET NEW.keterangan = "?";
         END IF;
 END
 $$
@@ -265,7 +281,8 @@ ALTER TABLE `tb_detail_jadwal`
 -- Indexes for table `tb_jabatan`
 --
 ALTER TABLE `tb_jabatan`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_jabatan` (`id_jabatan`);
 
 --
 -- Indexes for table `tb_jadwal`
@@ -279,13 +296,15 @@ ALTER TABLE `tb_jadwal`
 -- Indexes for table `tb_jurusan`
 --
 ALTER TABLE `tb_jurusan`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_jurusan` (`id_jurusan`);
 
 --
 -- Indexes for table `tb_karyawan`
 --
 ALTER TABLE `tb_karyawan`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `nik` (`nik`),
   ADD KEY `id_jabatan` (`id_jabatan`);
 
 --
@@ -300,7 +319,8 @@ ALTER TABLE `tb_kelas`
 -- Indexes for table `tb_mapel`
 --
 ALTER TABLE `tb_mapel`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_mapel` (`id_mapel`);
 
 --
 -- Indexes for table `tb_presensi`
@@ -323,13 +343,13 @@ ALTER TABLE `tb_ruang`
 -- AUTO_INCREMENT for table `tb_detail_jadwal`
 --
 ALTER TABLE `tb_detail_jadwal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `tb_jadwal`
 --
 ALTER TABLE `tb_jadwal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tb_kelas`
@@ -347,7 +367,7 @@ ALTER TABLE `tb_mapel`
 -- AUTO_INCREMENT for table `tb_presensi`
 --
 ALTER TABLE `tb_presensi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- Constraints for dumped tables
