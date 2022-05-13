@@ -1,26 +1,31 @@
 package com.presensikeun.form.admin;
 
 import com.presensikeun.controller.Koneksi;
-import com.presensikeun.event.EventCallBack;
-import com.presensikeun.event.EventTextField;
+import com.presensikeun.swing.Notification;
+import java.awt.Frame;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-public class Presensi extends javax.swing.JPanel {
+public final class Presensi extends javax.swing.JPanel {
 
 	Connection con = null;
 	ResultSet rs = null;
 	PreparedStatement pst = null;
 
+	String barcode = "";
+
 	public Presensi() {
 		this.con = Koneksi.getKoneksi();
 		initComponents();
-		tablePresensi("");
 		table1.scroll(jScrollPane1);
-		searchBar();
+		tablePresensi("");
 	}
 
 	public void tablePresensi(String query) {
@@ -45,26 +50,55 @@ public class Presensi extends javax.swing.JPanel {
 		}
 	}
 
-	private void searchBar() {
-		searchPresensi.addEvent(new EventTextField() {
-			@Override
-			public void onPressed(EventCallBack call) {
-				//  Test
-				try {
-					Thread.sleep(500);
-					tablePresensi(searchPresensi.getText());
-					call.done();
-				} catch (InterruptedException e) {
-					System.err.println(e);
-				}
+	public void automaticAttendance(String input) {
+
+		try {
+			String sql = "select dj.id, k.nama, dj.hari as \"Date\", dj.jam as \"Jam Mulai\", ADDTIME(dj.jam, dj.durasi) as \"Jam Selesai\", m.nama as \"Nama Mapel\" from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id where k.nik = '" + input + "' and (current_time > dj.jam && current_time < ADDTIME(dj.jam, dj.durasi) && dj.hari = WEEKDAY(CURRENT_DATE) && dj.id not in (select p.id_detail_jadwal from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id where weekday(p.tanggal) = weekday(current_date) and (current_time > dj.jam && current_time < ADDTIME(dj.jam, dj.durasi)))) order by ADDTIME(dj.jam, dj.durasi) asc limit 1;";
+			System.out.println(sql);
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+
+			if (rs.next()) {
+				submitAttendance(rs.getString(1));
+				tablePresensi("");
+			} else {
+				Notification panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.WARNING, Notification.Location.CENTER, "Tidak ditemukan presensi");
+				panel.showNotification();
 			}
 
-			@Override
-			public void onCancel() {
+		} catch (SQLException ex) {
 
-			}
-		});
+		}
 
+	}
+
+	public void submitAttendance(String id) {
+		try {
+			String sql = "INSERT INTO tb_presensi (id, tanggal, keterangan, id_detail_jadwal) VALUES (NULL, current_timestamp(), '?', " + id + ")";
+			System.out.println(sql);
+			pst = con.prepareStatement(sql);
+			pst.executeUpdate();
+			Notification panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.SUCCESS, Notification.Location.CENTER, rs.getString(5) + ": " + rs.getString(3));
+			panel.showNotification();
+		} catch (SQLException ex) {
+			Notification panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.WARNING, Notification.Location.CENTER, "Gagal memasukkan data");
+			panel.showNotification();
+		}
+
+	}
+
+	private String setBarcode(String barcode) {
+		return this.barcode = barcode;
+	}
+
+	private String getBarcode() {
+		return this.barcode;
+	}
+
+	private void afterEnter() {
+		automaticAttendance(this.barcode);
+		setBarcode("");
+		nik.setText("");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -75,8 +109,8 @@ public class Presensi extends javax.swing.JPanel {
                 jLabel1 = new javax.swing.JLabel();
                 jPanel2 = new javax.swing.JPanel();
                 panelShadow1 = new com.presensikeun.swing.PanelShadow();
-                searchPresensi = new com.presensikeun.swing.Searchbar();
-                jLabel2 = new javax.swing.JLabel();
+                nik = new com.presensikeun.swing.TextField();
+                button1 = new com.presensikeun.swing.Button();
                 panelShadow2 = new com.presensikeun.swing.PanelShadow();
                 jScrollPane1 = new javax.swing.JScrollPane();
                 table1 = new com.presensikeun.swing.Table();
@@ -118,7 +152,7 @@ public class Presensi extends javax.swing.JPanel {
                                                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addComponent(jLabel1)
-                                                .addGap(0, 847, Short.MAX_VALUE)))
+                                                .addGap(0, 0, Short.MAX_VALUE)))
                                 .addContainerGap())
                 );
                 jPanel1Layout.setVerticalGroup(
@@ -133,12 +167,23 @@ public class Presensi extends javax.swing.JPanel {
 
                 panelShadow1.setBackground(new java.awt.Color(252, 254, 255));
 
-                searchPresensi.setAnimationColor(new java.awt.Color(85, 65, 118));
+                nik.setBackground(new java.awt.Color(252, 254, 255));
+                nik.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+                nik.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                nik.setLabelText("NIK");
+                nik.addKeyListener(new java.awt.event.KeyAdapter() {
+                        public void keyReleased(java.awt.event.KeyEvent evt) {
+                                nikKeyReleased(evt);
+                        }
+                });
 
-                jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icon/add.png"))); // NOI18N
-                jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
-                        public void mousePressed(java.awt.event.MouseEvent evt) {
-                                jLabel2MousePressed(evt);
+                button1.setBackground(new java.awt.Color(78, 148, 79));
+                button1.setForeground(new java.awt.Color(255, 255, 255));
+                button1.setText("Scan Barcode");
+                button1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                button1.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                button1ActionPerformed(evt);
                         }
                 });
 
@@ -147,18 +192,20 @@ public class Presensi extends javax.swing.JPanel {
                 panelShadow1Layout.setHorizontalGroup(
                         panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createSequentialGroup()
-                                .addComponent(searchPresensi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel2)
+                                .addGap(15, 15, 15)
+                                .addComponent(nik, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
                 );
                 panelShadow1Layout.setVerticalGroup(
                         panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(panelShadow1Layout.createSequentialGroup()
-                                .addGroup(panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(searchPresensi, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addGap(0, 0, 0)
+                                .addGroup(panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(button1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(nik, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, 0))
                 );
 
                 panelShadow2.setBackground(new java.awt.Color(252, 254, 255));
@@ -192,14 +239,14 @@ public class Presensi extends javax.swing.JPanel {
                         panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(panelShadow2Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 967, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 955, Short.MAX_VALUE)
                                 .addContainerGap())
                 );
                 panelShadow2Layout.setVerticalGroup(
                         panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow2Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
                                 .addContainerGap())
                 );
 
@@ -207,7 +254,7 @@ public class Presensi extends javax.swing.JPanel {
                 this.setLayout(layout);
                 layout.setHorizontalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1023, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1011, Short.MAX_VALUE)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,28 +268,46 @@ public class Presensi extends javax.swing.JPanel {
                                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(panelShadow1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(panelShadow2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 );
         }// </editor-fold>//GEN-END:initComponents
-
-        private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-		// TODO add your handling code here:
-        }//GEN-LAST:event_jLabel2MousePressed
 
         private void table1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table1MousePressed
 		// TODO add your handling code here:
         }//GEN-LAST:event_table1MousePressed
 
+        private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
+		// TODO add your handling code here:
+		nik.requestFocus();
+        }//GEN-LAST:event_button1ActionPerformed
+
+        private void nikKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nikKeyReleased
+		// TODO add your handling code here:
+		if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+			// your code is scanned and you can access it using frame.getBarCode()
+			// now clean the bar code so the next one can be read
+			Pattern p = Pattern.compile("-?\\d+");
+			Matcher m = p.matcher(getBarcode());
+			while (m.find()) {
+				setBarcode(m.group());
+			}
+			afterEnter();
+		} else {
+			// some character has been read, append it to your "barcode cache"
+			setBarcode(getBarcode() + evt.getKeyChar());
+		}
+        }//GEN-LAST:event_nikKeyReleased
+
         // Variables declaration - do not modify//GEN-BEGIN:variables
+        private com.presensikeun.swing.Button button1;
         private javax.swing.JLabel jLabel1;
-        private javax.swing.JLabel jLabel2;
         private javax.swing.JPanel jPanel1;
         private javax.swing.JPanel jPanel2;
         private javax.swing.JScrollPane jScrollPane1;
+        private com.presensikeun.swing.TextField nik;
         private com.presensikeun.swing.PanelShadow panelShadow1;
         private com.presensikeun.swing.PanelShadow panelShadow2;
-        private com.presensikeun.swing.Searchbar searchPresensi;
         private com.presensikeun.swing.Table table1;
         // End of variables declaration//GEN-END:variables
 }
