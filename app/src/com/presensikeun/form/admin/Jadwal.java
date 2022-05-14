@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
 
-public class Jadwal extends javax.swing.JPanel {
+public final class Jadwal extends javax.swing.JPanel {
 
 	Connection con = null;
 	ResultSet rs = null;
@@ -25,7 +25,9 @@ public class Jadwal extends javax.swing.JPanel {
 
 	public void tableJadwal() {
 		DefaultTableModel model = new DefaultTableModel();
-		model.addColumn("ID");
+		int no = 1;
+
+		model.addColumn("NO");
 		model.addColumn("Hari");
 		model.addColumn("Jam Mulai");
 		model.addColumn("Jam Selesai");
@@ -38,7 +40,7 @@ public class Jadwal extends javax.swing.JPanel {
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
-				model.addRow(new Object[]{rs.getString(1), getDay(rs.getInt(2)), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)});
+				model.addRow(new Object[]{no++, getDay(rs.getInt(2)), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)});
 			}
 			table1.setModel(model);
 		} catch (SQLException ex) {

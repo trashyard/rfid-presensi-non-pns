@@ -24,7 +24,7 @@ public final class Report extends javax.swing.JPanel {
 
 	public void tableReport() {
 		DefaultTableModel model = new DefaultTableModel();
-		model.addColumn("ID");
+		model.addColumn("NIK");
 		model.addColumn("Hari");
 		model.addColumn("Jam Mulai");
 		model.addColumn("Jam Selesai");
@@ -34,7 +34,7 @@ public final class Report extends javax.swing.JPanel {
 		model.addColumn("Masuk");
 		try {
 
-			String sql = "select dj.id, dj.hari, dj.jam as \"jam mulai\", addtime(dj.jam, dj.durasi) as \"jam selesai\", k.nama, m.nama as \"mapel\", r.nama as \"ruangan\", p.tanggal as \"masuk\" from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id join tb_karyawan as k on k.id = dj.id_karyawan join tb_jadwal as j on j.id = dj.id_jadwal join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on kls.id_ruang = r.id";
+			String sql = "select k.nik, dj.hari, dj.jam as \"jam mulai\", addtime(dj.jam, dj.durasi) as \"jam selesai\", k.nama, m.nama as \"mapel\", r.nama as \"ruangan\", p.tanggal as \"masuk\" from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id join tb_karyawan as k on k.id = dj.id_karyawan join tb_jadwal as j on j.id = dj.id_jadwal join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on kls.id_ruang = r.id";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -90,6 +90,8 @@ public final class Report extends javax.swing.JPanel {
                 panelShadow1 = new com.presensikeun.swing.PanelShadow();
                 searchPresensi = new com.presensikeun.swing.Searchbar();
                 jLabel2 = new javax.swing.JLabel();
+                button1 = new com.presensikeun.swing.Button();
+                button2 = new com.presensikeun.swing.Button();
                 panelShadow2 = new com.presensikeun.swing.PanelShadow();
                 jScrollPane1 = new javax.swing.JScrollPane();
                 table1 = new com.presensikeun.swing.Table();
@@ -155,11 +157,36 @@ public final class Report extends javax.swing.JPanel {
                         }
                 });
 
+                button1.setBackground(new java.awt.Color(102, 255, 102));
+                button1.setForeground(new java.awt.Color(255, 255, 255));
+                button1.setText("Export XLS");
+                button1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                button1.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                button1ActionPerformed(evt);
+                        }
+                });
+
+                button2.setBackground(new java.awt.Color(255, 102, 102));
+                button2.setForeground(new java.awt.Color(255, 255, 255));
+                button2.setText("Export PDF");
+                button2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                button2.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                button2ActionPerformed(evt);
+                        }
+                });
+
                 javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
                 panelShadow1.setLayout(panelShadow1Layout);
                 panelShadow1Layout.setHorizontalGroup(
                         panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
                                 .addComponent(searchPresensi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel2)
@@ -170,7 +197,10 @@ public final class Report extends javax.swing.JPanel {
                         .addGroup(panelShadow1Layout.createSequentialGroup()
                                 .addGroup(panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(searchPresensi, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(searchPresensi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 0, Short.MAX_VALUE))
                 );
 
@@ -212,7 +242,7 @@ public final class Report extends javax.swing.JPanel {
                         panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow2Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
                                 .addContainerGap())
                 );
 
@@ -247,7 +277,16 @@ public final class Report extends javax.swing.JPanel {
 		// TODO add your handling code here:
         }//GEN-LAST:event_table1MousePressed
 
+        private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
+        }//GEN-LAST:event_button1ActionPerformed
+
+        private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
+		// TODO add your handling code here:
+        }//GEN-LAST:event_button2ActionPerformed
+
         // Variables declaration - do not modify//GEN-BEGIN:variables
+        private com.presensikeun.swing.Button button1;
+        private com.presensikeun.swing.Button button2;
         private javax.swing.JLabel jLabel1;
         private javax.swing.JLabel jLabel2;
         private javax.swing.JPanel jPanel1;

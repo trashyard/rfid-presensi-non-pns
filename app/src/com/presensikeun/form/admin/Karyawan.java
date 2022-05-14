@@ -254,6 +254,7 @@ public class Karyawan extends javax.swing.JPanel {
         private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
 		PopUp p = new PopUp((JFrame) SwingUtilities.getWindowAncestor(this));
 		p.showMessage(null);
+		tableKaryawan();
         }//GEN-LAST:event_button1ActionPerformed
 
         // Variables declaration - do not modify//GEN-BEGIN:variables

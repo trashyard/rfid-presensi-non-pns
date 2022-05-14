@@ -37,7 +37,7 @@ public final class Presensi extends javax.swing.JPanel {
 		model.addColumn("Tanggal");
 		try {
 
-			String sql = "select k.nik, k.nama, p.keterangan, mp.nama, p.tanggal from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id join tb_jadwal as j on j.id = dj.id_jadwal join tb_mapel as mp on j.id_mapel = mp.id join tb_karyawan as k on dj.id_karyawan = k.id where k.nama like '%" + query + "%' order by p.tanggal desc";
+			String sql = "select k.nik, k.nama, p.keterangan, mp.nama, p.tanggal from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id join tb_jadwal as j on j.id = dj.id_jadwal join tb_mapel as mp on j.id_mapel = mp.id join tb_karyawan as k on dj.id_karyawan = k.id where k.nama like '%" + query + "%' and date(p.tanggal) = current_date order by p.tanggal desc";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -169,6 +169,7 @@ public final class Presensi extends javax.swing.JPanel {
 
                 nik.setBackground(new java.awt.Color(252, 254, 255));
                 nik.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+                nik.setToolTipText("");
                 nik.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
                 nik.setLabelText("NIK");
                 nik.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -203,8 +204,8 @@ public final class Presensi extends javax.swing.JPanel {
                         .addGroup(panelShadow1Layout.createSequentialGroup()
                                 .addGap(0, 0, 0)
                                 .addGroup(panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(button1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(nik, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(button1, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                                        .addComponent(nik, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                                 .addGap(0, 0, 0))
                 );
 

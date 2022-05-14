@@ -1,5 +1,6 @@
 package com.presensikeun.form.popup;
 
+import com.presensikeun.form.admin.Karyawan;
 import com.presensikeun.swing.Glass;
 import java.awt.Color;
 import java.awt.event.WindowAdapter;
@@ -13,11 +14,11 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 public class PopUp extends javax.swing.JDialog {
 
-	private final JFrame fram;
 	private Animator animator;
 	private Glass glass;
 	private boolean show;
 	private MessageType messageType = MessageType.CANCEL;
+	private final JFrame fram;
 
 	public PopUp(JFrame fram) {
 		super(fram, true);
