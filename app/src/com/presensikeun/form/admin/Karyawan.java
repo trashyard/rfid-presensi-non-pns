@@ -135,8 +135,14 @@ public class Karyawan extends javax.swing.JPanel {
                 );
 
                 panelShadow1.setBackground(new java.awt.Color(252, 254, 255));
+                panelShadow1.setPreferredSize(new java.awt.Dimension(234, 72));
 
                 searchPresensi.setAnimationColor(new java.awt.Color(85, 65, 118));
+                searchPresensi.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                searchPresensiActionPerformed(evt);
+                        }
+                });
 
                 jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icon/add.png"))); // NOI18N
                 jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -159,21 +165,24 @@ public class Karyawan extends javax.swing.JPanel {
                 panelShadow1Layout.setHorizontalGroup(
                         panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createSequentialGroup()
-                                .addGap(0, 0, 0)
-                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addContainerGap()
                                 .addComponent(searchPresensi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(10, 10, 10)
                                 .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
                 );
                 panelShadow1Layout.setVerticalGroup(
                         panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(panelShadow1Layout.createSequentialGroup()
                                 .addGroup(panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addGroup(panelShadow1Layout.createSequentialGroup()
+                                                .addGap(0, 0, 0)
                                                 .addComponent(searchPresensi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGap(1, 1, 1))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 0, Short.MAX_VALUE))
                 );
@@ -216,7 +225,7 @@ public class Karyawan extends javax.swing.JPanel {
                         panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow2Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE)
                                 .addContainerGap())
                 );
 
@@ -229,7 +238,7 @@ public class Karyawan extends javax.swing.JPanel {
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(panelShadow2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, 1011, Short.MAX_VALUE))
                                 .addContainerGap())
                 );
                 layout.setVerticalGroup(
@@ -256,6 +265,10 @@ public class Karyawan extends javax.swing.JPanel {
 		p.showMessage(null);
 		tableKaryawan();
         }//GEN-LAST:event_button1ActionPerformed
+
+        private void searchPresensiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchPresensiActionPerformed
+		// TODO add your handling code here:
+        }//GEN-LAST:event_searchPresensiActionPerformed
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private com.presensikeun.swing.Button button1;

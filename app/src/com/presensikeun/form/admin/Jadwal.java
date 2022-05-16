@@ -53,25 +53,25 @@ public final class Jadwal extends javax.swing.JPanel {
 		String string;
 
 		switch (day) {
-			case 1:
+			case 0:
 				string = "Senin";
 				break;
-			case 2:
+			case 1:
 				string = "Selasa";
 				break;
-			case 3:
+			case 2:
 				string = "Rabu";
 				break;
-			case 4:
+			case 3:
 				string = "Kamis";
 				break;
-			case 5:
+			case 4:
 				string = "Jumat";
 				break;
-			case 6:
+			case 5:
 				string = "Sabtu";
 				break;
-			case 7:
+			case 6:
 				string = "Minggu";
 				break;
 			default:
@@ -183,6 +183,7 @@ public final class Jadwal extends javax.swing.JPanel {
                 panelShadow1Layout.setHorizontalGroup(
                         panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createSequentialGroup()
+                                .addContainerGap()
                                 .addComponent(searchPresensi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel2)

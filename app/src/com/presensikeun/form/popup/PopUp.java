@@ -1,6 +1,5 @@
 package com.presensikeun.form.popup;
 
-import com.presensikeun.form.admin.Karyawan;
 import com.presensikeun.swing.Glass;
 import java.awt.Color;
 import java.awt.event.WindowAdapter;
@@ -17,7 +16,7 @@ public class PopUp extends javax.swing.JDialog {
 	private Animator animator;
 	private Glass glass;
 	private boolean show;
-	private MessageType messageType = MessageType.CANCEL;
+	private final MessageType messageType = MessageType.CANCEL;
 	private final JFrame fram;
 
 	public PopUp(JFrame fram) {
@@ -144,8 +143,7 @@ public class PopUp extends javax.swing.JDialog {
 
                 txtNyet.setLabelText("So dive in to my home");
 
-                combobox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "kontol", "memek", "angsa", " " }));
-                combobox1.setSelectedIndex(-1);
+                combobox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", " " }));
 
                 txtTime.setEditable(false);
                 txtTime.setBackground(new java.awt.Color(255, 255, 255));

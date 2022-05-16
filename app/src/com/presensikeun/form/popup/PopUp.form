@@ -155,14 +155,11 @@
         <Component class="com.presensikeun.swing.Combobox" name="combobox1">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="kontol"/>
-                <StringItem index="1" value="memek"/>
-                <StringItem index="2" value="angsa"/>
-                <StringItem index="3" value=" "/>
+              <StringArray count="2">
+                <StringItem index="0" value=" "/>
+                <StringItem index="1" value=" "/>
               </StringArray>
             </Property>
-            <Property name="selectedIndex" type="int" value="-1"/>
           </Properties>
         </Component>
         <Component class="com.presensikeun.swing.TextField" name="txtTime">

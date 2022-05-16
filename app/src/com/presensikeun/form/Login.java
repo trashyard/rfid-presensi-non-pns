@@ -250,16 +250,16 @@ public class Login extends javax.swing.JFrame {
 		loginDek();
     }//GEN-LAST:event_jPanel2MousePressed
 
+        private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+		// TODO add your handling code here:
+        }//GEN-LAST:event_formKeyPressed
+
         private void txt_passKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_passKeyPressed
 		// TODO add your handling code here:
 		if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 			loginDek();
 		}
         }//GEN-LAST:event_txt_passKeyPressed
-
-        private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-		// TODO add your handling code here:
-        }//GEN-LAST:event_formKeyPressed
 
 	/**
 	 * @param args the command line arguments

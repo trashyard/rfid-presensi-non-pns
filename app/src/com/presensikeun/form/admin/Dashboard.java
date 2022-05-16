@@ -2,22 +2,32 @@ package com.presensikeun.form.admin;
 
 import com.presensikeun.chart.ModelChart;
 import com.presensikeun.chart.ModelPolarAreaChart;
+import com.presensikeun.controller.Koneksi;
 import com.presensikeun.model.ModelCard;
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.ImageIcon;
 
 public final class Dashboard extends javax.swing.JPanel {
 
+	Connection con = null;
+	ResultSet rs = null;
+	PreparedStatement pst = null;
+
 	public Dashboard() {
+		this.con = Koneksi.getKoneksi();
 		initComponents();
 		setData();
 	}
 
 	public void setData() {
 		// card
-		card1.setData(new ModelCard(new ImageIcon(getClass().getResource("/com/presensikeun/images/icon/presensi.png")), "Total Presensi", "10"));
-		card2.setData(new ModelCard(new ImageIcon(getClass().getResource("/com/presensikeun/images/icon/karyawan.png")), "Karyawan", "9"));
-		card3.setData(new ModelCard(new ImageIcon(getClass().getResource("/com/presensikeun/images/icon/admin.png")), "Admin", "1"));
+		card1.setData(new ModelCard(new ImageIcon(getClass().getResource("/com/presensikeun/images/icon/presensi.png")), "Total Presensi", getTotalPresensi()));
+		card2.setData(new ModelCard(new ImageIcon(getClass().getResource("/com/presensikeun/images/icon/karyawan.png")), "Karyawan", getKaryawan()));
+		card3.setData(new ModelCard(new ImageIcon(getClass().getResource("/com/presensikeun/images/icon/admin.png")), "Admin", getAdmin()));
 		// chart 
 		chart.addLegend("Minggu 1", new Color(245, 189, 135));
 		chart.addLegend("Minggu 2", new Color(135, 189, 245));
@@ -31,10 +41,74 @@ public final class Dashboard extends javax.swing.JPanel {
 		chart.addData(new ModelChart("Juni", new double[]{1, 35, 4, 20}));
 
 		// telat hadir sakit izin alpa
-		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(52, 148, 203), "Januari", 60));
-		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(175, 67, 237), "Maret", 50));
-		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(87, 218, 137), "Juni", 30));
+		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(227, 148, 0), "Jan - Mar", getMonth("1", "3")));
+		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(92, 204, 150), "Apr - Jun", getMonth("4", "6")));
+		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(179, 161, 230), "Jul - Sept", getMonth("7", "9")));
+		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(0, 163, 204), "Okt - Des", getMonth("10", "12")));
 		polarAreaChart1.start();
+	}
+
+	private String getTotalPresensi() {
+		String tot = "";
+		try {
+			String sql = "select count(*) tb_presensi";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				tot = rs.getString(1);
+			}
+		} catch (SQLException ex) {
+			tot = "0";
+		}
+		return tot;
+	}
+
+	private String getKaryawan() {
+		String tot = "";
+		try {
+
+			String sql = "select count(*) from tb_karyawan where status != 'admin'";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				tot = rs.getString(1);
+			}
+		} catch (SQLException ex) {
+			tot = "0";
+		}
+		return tot;
+	}
+
+	private String getAdmin() {
+		String tot = "";
+		try {
+
+			String sql = "select count(*) from tb_karyawan where status = 'admin'";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				tot = rs.getString(1);
+			}
+		} catch (SQLException ex) {
+			tot = "0";
+		}
+		return tot;
+	}
+
+	private double getMonth(String first, String second) {
+		double tot = 0;
+		try {
+
+			String sql = "select count(*) from tb_presensi where month(tanggal) between " + first + " and " + second + "";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				tot = rs.getDouble(1);
+			}
+		} catch (SQLException ex) {
+			tot = 0;
+		}
+		return tot;
 	}
 
 //	public void get 
@@ -132,6 +206,8 @@ public final class Dashboard extends javax.swing.JPanel {
 
                 panelShadow2.setBackground(new java.awt.Color(252, 254, 255));
 
+                polarAreaChart1.setPreferredSize(new java.awt.Dimension(250, 250));
+
                 javax.swing.GroupLayout panelShadow2Layout = new javax.swing.GroupLayout(panelShadow2);
                 panelShadow2.setLayout(panelShadow2Layout);
                 panelShadow2Layout.setHorizontalGroup(
@@ -159,11 +235,12 @@ public final class Dashboard extends javax.swing.JPanel {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(card2, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(card3, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE))
+                                                .addComponent(card3, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addComponent(panelShadow1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(panelShadow2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                                .addComponent(panelShadow2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addContainerGap())
                 );
                 layout.setVerticalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

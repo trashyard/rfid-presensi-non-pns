@@ -117,7 +117,8 @@ public class Logout extends javax.swing.JDialog {
 
                 button1.setBackground(new java.awt.Color(0, 204, 0));
                 button1.setForeground(new java.awt.Color(255, 255, 255));
-                button1.setText("Gas");
+                button1.setText("Ya");
+                button1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
                 button1.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
                                 button1ActionPerformed(evt);
@@ -126,7 +127,8 @@ public class Logout extends javax.swing.JDialog {
 
                 button2.setBackground(new java.awt.Color(255, 0, 51));
                 button2.setForeground(new java.awt.Color(255, 255, 255));
-                button2.setText("loldek");
+                button2.setText("Tidak");
+                button2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
                 button2.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
                                 button2ActionPerformed(evt);
@@ -135,7 +137,7 @@ public class Logout extends javax.swing.JDialog {
 
                 jLabel1.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
                 jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                jLabel1.setText("janji gak goodbye?");
+                jLabel1.setText("Logout?");
 
                 javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
                 jPanel1.setLayout(jPanel1Layout);
@@ -155,7 +157,7 @@ public class Logout extends javax.swing.JDialog {
                 jPanel1Layout.setVerticalGroup(
                         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addContainerGap(84, Short.MAX_VALUE)
+                                .addContainerGap(83, Short.MAX_VALUE)
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
