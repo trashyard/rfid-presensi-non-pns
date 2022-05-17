@@ -3,8 +3,7 @@ package com.presensikeun.form.admin;
 import com.presensikeun.controller.Koneksi;
 import com.presensikeun.event.EventCallBack;
 import com.presensikeun.event.EventTextField;
-import com.presensikeun.form.popup.PopUp;
-import java.awt.Frame;
+import com.presensikeun.form.popup.PopUpAddKaryawan;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-public class Karyawan extends javax.swing.JPanel {
+public final class Karyawan extends javax.swing.JPanel {
 
 	Connection con = null;
 	ResultSet rs = null;
@@ -79,7 +78,6 @@ public class Karyawan extends javax.swing.JPanel {
                 panelShadow1 = new com.presensikeun.swing.PanelShadow();
                 searchPresensi = new com.presensikeun.swing.Searchbar();
                 jLabel2 = new javax.swing.JLabel();
-                button1 = new com.presensikeun.swing.Button();
                 panelShadow2 = new com.presensikeun.swing.PanelShadow();
                 jScrollPane1 = new javax.swing.JScrollPane();
                 table1 = new com.presensikeun.swing.Table();
@@ -151,15 +149,6 @@ public class Karyawan extends javax.swing.JPanel {
                         }
                 });
 
-                button1.setBackground(new java.awt.Color(85, 65, 118));
-                button1.setForeground(new java.awt.Color(255, 255, 255));
-                button1.setText("Show PopUp");
-                button1.addActionListener(new java.awt.event.ActionListener() {
-                        public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                button1ActionPerformed(evt);
-                        }
-                });
-
                 javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
                 panelShadow1.setLayout(panelShadow1Layout);
                 panelShadow1Layout.setHorizontalGroup(
@@ -167,10 +156,8 @@ public class Karyawan extends javax.swing.JPanel {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(searchPresensi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(10, 10, 10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
                 );
                 panelShadow1Layout.setVerticalGroup(
@@ -178,12 +165,9 @@ public class Karyawan extends javax.swing.JPanel {
                         .addGroup(panelShadow1Layout.createSequentialGroup()
                                 .addGroup(panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addGroup(panelShadow1Layout.createSequentialGroup()
-                                                .addGap(0, 0, 0)
                                                 .addComponent(searchPresensi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addGap(1, 1, 1))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))
                 );
 
@@ -254,24 +238,20 @@ public class Karyawan extends javax.swing.JPanel {
 
         private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
 		// TODO add your handling code here:
+		PopUpAddKaryawan p = new PopUpAddKaryawan((JFrame) SwingUtilities.getWindowAncestor(this));
+		p.showMessage(null);
+		tableKaryawan();
         }//GEN-LAST:event_jLabel2MousePressed
 
         private void table1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table1MousePressed
 		// TODO add your handling code here:
         }//GEN-LAST:event_table1MousePressed
 
-        private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
-		PopUp p = new PopUp((JFrame) SwingUtilities.getWindowAncestor(this));
-		p.showMessage(null);
-		tableKaryawan();
-        }//GEN-LAST:event_button1ActionPerformed
-
         private void searchPresensiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchPresensiActionPerformed
 		// TODO add your handling code here:
         }//GEN-LAST:event_searchPresensiActionPerformed
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
-        private com.presensikeun.swing.Button button1;
         private javax.swing.JLabel jLabel1;
         private javax.swing.JLabel jLabel2;
         private javax.swing.JPanel jPanel1;

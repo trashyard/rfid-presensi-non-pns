@@ -11,7 +11,7 @@ import javax.swing.text.StyleConstants;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 
-public class PopUp extends javax.swing.JDialog {
+public class PopUpAddJadwal extends javax.swing.JDialog {
 
 	private Animator animator;
 	private Glass glass;
@@ -19,7 +19,7 @@ public class PopUp extends javax.swing.JDialog {
 	private final MessageType messageType = MessageType.CANCEL;
 	private final JFrame fram;
 
-	public PopUp(JFrame fram) {
+	public PopUpAddJadwal(JFrame fram) {
 		super(fram, true);
 		this.fram = fram;
 		initComponents();
