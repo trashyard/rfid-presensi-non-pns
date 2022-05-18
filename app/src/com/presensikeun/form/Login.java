@@ -49,6 +49,12 @@ public class Login extends javax.swing.JFrame {
 					panel.showNotification();
 					txt_user.setText("");
 					txt_pass.setText("");
+				} else {
+					Notification panel = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_CENTER, "Username atau Password salah");
+					panel.showNotification();
+					txt_user.setText("");
+					txt_pass.setText("");
+
 				}
 
 			} else {

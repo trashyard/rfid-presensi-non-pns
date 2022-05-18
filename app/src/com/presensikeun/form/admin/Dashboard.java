@@ -124,8 +124,10 @@ public final class Dashboard extends javax.swing.JPanel {
                 card3 = new com.presensikeun.component.Card();
                 panelShadow1 = new com.presensikeun.swing.PanelShadow();
                 chart = new com.presensikeun.chart.Chart();
+                jLabel3 = new javax.swing.JLabel();
                 panelShadow2 = new com.presensikeun.swing.PanelShadow();
                 polarAreaChart1 = new com.presensikeun.chart.PolarAreaChart();
+                jLabel2 = new javax.swing.JLabel();
 
                 setBackground(new java.awt.Color(250, 250, 250));
 
@@ -187,20 +189,24 @@ public final class Dashboard extends javax.swing.JPanel {
 
                 chart.setOpaque(false);
 
+                jLabel3.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+                jLabel3.setText("Diagram Batang");
+
                 javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
                 panelShadow1.setLayout(panelShadow1Layout);
                 panelShadow1Layout.setHorizontalGroup(
                         panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(chart, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
                         .addGroup(panelShadow1Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(chart, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
-                                .addContainerGap())
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 );
                 panelShadow1Layout.setVerticalGroup(
                         panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(chart, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(chart, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                 .addContainerGap())
                 );
 
@@ -208,17 +214,22 @@ public final class Dashboard extends javax.swing.JPanel {
 
                 polarAreaChart1.setPreferredSize(new java.awt.Dimension(250, 250));
 
+                jLabel2.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+                jLabel2.setText("Pie Chart");
+
                 javax.swing.GroupLayout panelShadow2Layout = new javax.swing.GroupLayout(panelShadow2);
                 panelShadow2.setLayout(panelShadow2Layout);
                 panelShadow2Layout.setHorizontalGroup(
                         panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(polarAreaChart1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(polarAreaChart1, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 );
                 panelShadow2Layout.setVerticalGroup(
                         panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(panelShadow2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(polarAreaChart1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow2Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(polarAreaChart1, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
                                 .addContainerGap())
                 );
 
@@ -264,6 +275,8 @@ public final class Dashboard extends javax.swing.JPanel {
         private com.presensikeun.component.Card card3;
         private com.presensikeun.chart.Chart chart;
         private javax.swing.JLabel jLabel1;
+        private javax.swing.JLabel jLabel2;
+        private javax.swing.JLabel jLabel3;
         private javax.swing.JPanel jPanel1;
         private javax.swing.JPanel jPanel2;
         private com.presensikeun.swing.PanelShadow panelShadow1;

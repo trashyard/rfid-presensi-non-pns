@@ -95,8 +95,6 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
                 timePicker1 = new com.presensikeun.swing.TimePicker();
                 jPanel1 = new javax.swing.JPanel();
                 jPanel2 = new javax.swing.JPanel();
-                button1 = new com.presensikeun.swing.Button();
-                button2 = new com.presensikeun.swing.Button();
                 txtNyet = new com.presensikeun.swing.TextField();
                 combobox1 = new com.presensikeun.swing.Combobox();
                 txtTime = new com.presensikeun.swing.TextField();
@@ -122,24 +120,6 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
                         jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGap(0, 40, Short.MAX_VALUE)
                 );
-
-                button1.setBackground(new java.awt.Color(0, 204, 0));
-                button1.setForeground(new java.awt.Color(255, 255, 255));
-                button1.setText("Submit");
-                button1.addActionListener(new java.awt.event.ActionListener() {
-                        public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                button1ActionPerformed(evt);
-                        }
-                });
-
-                button2.setBackground(new java.awt.Color(255, 0, 51));
-                button2.setForeground(new java.awt.Color(255, 255, 255));
-                button2.setText("Cancel");
-                button2.addActionListener(new java.awt.event.ActionListener() {
-                        public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                button2ActionPerformed(evt);
-                        }
-                });
 
                 txtNyet.setLabelText("So dive in to my home");
 
@@ -167,11 +147,7 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addContainerGap(89, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(txtNyet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtNyet, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
                                         .addComponent(combobox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(txtTime, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -190,11 +166,7 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(txtTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 139, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(81, 81, 81))
+                                .addContainerGap(249, Short.MAX_VALUE))
                 );
 
                 javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -211,16 +183,6 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
                 pack();
         }// </editor-fold>//GEN-END:initComponents
 
-        private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
-		// TODO add your handling code here:
-		closeMessage();
-        }//GEN-LAST:event_button1ActionPerformed
-
-        private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
-		closeMessage();
-		// TODO add your handling code here:
-        }//GEN-LAST:event_button2ActionPerformed
-
         private void button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button3ActionPerformed
 		// TODO add your handling code here:
 		timePicker1.showPopup(this, (getWidth() - timePicker1.getPreferredSize().width) / 2, (getHeight() - timePicker1.getPreferredSize().height) / 2);
@@ -231,8 +193,6 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
 	}
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
-        private com.presensikeun.swing.Button button1;
-        private com.presensikeun.swing.Button button2;
         private com.presensikeun.swing.Button button3;
         private com.presensikeun.swing.Combobox combobox1;
         private javax.swing.JPanel jPanel1;
