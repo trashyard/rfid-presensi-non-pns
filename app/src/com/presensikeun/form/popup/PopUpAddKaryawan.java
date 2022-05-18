@@ -100,7 +100,16 @@ public class PopUpAddKaryawan extends javax.swing.JDialog {
 	private void verifyFields() {
 		if (nik.getText().split("").length != 16) {
 			notify("warning", "Format NIK Salah");
+		} else if (nama.getText().split("").length < 3) {
+			notify("warning", "Nama tidak boleh kurang dari 3 huruf");
+		} else if (jk.getSelectedIndex() == -1) {
+			notify("warning", "Mohon isi jenis kelamin");
+		} else if (jabatan.getSelectedIndex() == -1) {
+			notify("warning", "Mohon isi jabatan");
+		} else {
+			insertAndLeave();
 		}
+
 	}
 
 	private void init() {
