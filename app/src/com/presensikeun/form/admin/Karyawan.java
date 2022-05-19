@@ -4,11 +4,14 @@ import com.presensikeun.controller.Koneksi;
 import com.presensikeun.event.EventCallBack;
 import com.presensikeun.event.EventTextField;
 import com.presensikeun.form.popup.PopUpAddKaryawan;
+import com.presensikeun.form.popup.PopUpEditKaryawan;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JFrame;
+import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
@@ -34,7 +37,7 @@ public final class Karyawan extends javax.swing.JPanel {
 		model.addColumn("Jabatan");
 		try {
 
-			String sql = "select tbk.nik, tbk.nama, jenis_kelamin, tbj.nama as jabatan from tb_karyawan as tbk join tb_jabatan as tbj on tbk.id_jabatan = tbj.id";
+			String sql = "select tbk.nik, tbk.nama, jenis_kelamin, tbj.nama as jabatan from tb_karyawan as tbk join tb_jabatan as tbj on tbk.id_jabatan = tbj.id order by tbk.nik asc";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -245,6 +248,15 @@ public final class Karyawan extends javax.swing.JPanel {
 
         private void table1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table1MousePressed
 		// TODO add your handling code here:
+		int row = table1.rowAtPoint(evt.getPoint());
+		String nik = table1.getValueAt(row, 0).toString();
+
+		if (evt.getClickCount() == 2 && table1.getSelectedRow() != -1) {
+			// your valueChanged overridden method 
+			PopUpEditKaryawan p = new PopUpEditKaryawan((JFrame) SwingUtilities.getWindowAncestor(this), nik);
+			p.showMessage(null);
+			tableKaryawan();
+		}
         }//GEN-LAST:event_table1MousePressed
 
         private void searchPresensiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchPresensiActionPerformed
