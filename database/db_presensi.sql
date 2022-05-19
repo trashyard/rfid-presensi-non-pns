@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 13, 2022 at 04:47 PM
+-- Generation Time: May 19, 2022 at 09:11 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -41,13 +41,11 @@ CREATE TABLE `tb_detail_jadwal` (
 --
 
 INSERT INTO `tb_detail_jadwal` (`id`, `hari`, `jam`, `durasi`, `id_karyawan`, `id_jadwal`) VALUES
-(1, 1, '13:00:00', '02:00:00', 6, 4),
-(2, 1, '15:00:00', '02:00:00', 6, 4),
-(3, 2, '20:00:00', '02:00:00', 6, 5),
-(4, 1, '23:00:00', '02:00:00', 7, 8),
-(11, 4, '21:20:00', '02:00:00', 6, 9),
-(13, 0, '22:00:00', '02:00:00', 6, 8),
-(14, 1, '10:00:00', '02:00:00', 6, 9);
+(1, 0, '13:00:00', '02:00:00', 2, 1),
+(2, 1, '15:00:00', '02:00:00', 2, 2),
+(3, 2, '20:00:00', '02:00:00', 2, 3),
+(4, 4, '23:00:00', '02:00:00', 2, 4),
+(5, 5, '21:20:00', '02:00:00', 2, 5);
 
 -- --------------------------------------------------------
 
@@ -90,12 +88,12 @@ CREATE TABLE `tb_jadwal` (
 --
 
 INSERT INTO `tb_jadwal` (`id`, `id_mapel`, `id_kelas`, `status`) VALUES
-(4, 1, 1, 'mengajar'),
-(5, 2, 1, 'mengajar'),
-(6, 3, 1, 'mengajar'),
-(7, 4, 1, 'mengajar'),
-(8, 5, 1, 'mengajar'),
-(9, 6, 1, 'mengajar');
+(1, 1, 1, 'mengajar'),
+(2, 2, 1, 'mengajar'),
+(3, 3, 1, 'mengajar'),
+(4, 4, 1, 'mengajar'),
+(5, 5, 1, 'mengajar'),
+(6, 6, 1, 'mengajar');
 
 -- --------------------------------------------------------
 
@@ -130,8 +128,8 @@ INSERT INTO `tb_jurusan` (`id`, `id_jurusan`, `nama`) VALUES
 CREATE TABLE `tb_karyawan` (
   `id` int(11) NOT NULL,
   `nik` varchar(16) NOT NULL,
-  `username` varchar(6) NOT NULL,
-  `password` varchar(6) NOT NULL,
+  `username` varchar(6) DEFAULT NULL,
+  `password` varchar(6) DEFAULT NULL,
   `nama` varchar(50) NOT NULL,
   `status` enum('admin','user') NOT NULL,
   `jenis_kelamin` enum('P','L') NOT NULL,
@@ -143,12 +141,16 @@ CREATE TABLE `tb_karyawan` (
 --
 
 INSERT INTO `tb_karyawan` (`id`, `nik`, `username`, `password`, `nama`, `status`, `jenis_kelamin`, `id_jabatan`) VALUES
-(1, '3525010609510002', 'ADM001', 'admin', 'Andini Ayuningsih', 'admin', 'P', 1),
-(6, '3525017006750042', 'r', 'r', 'Raihan', 'user', 'L', 4),
-(7, '3525016611770002', 'a', 'a', 'Andini <3', 'user', 'P', 4),
-(8, '3525016812770001', '', '', 'Farhan', 'user', 'L', 4),
-(9, '3525013006770017', '', '', 'Ayunda', 'user', 'P', 4),
-(10, '3525012005590001', 'x', 'x', 'Samsul', 'admin', 'L', 2);
+(1, '3525010609510002', 'ADM001', 'admin', 'Yomama', 'admin', 'P', 1),
+(2, '3525017006750042', 'r', 'r', 'Raihan', 'admin', 'L', 4),
+(3, '3525016611770002', 'a', 'a', 'Andini', 'user', 'P', 3),
+(4, '3525016812770001', NULL, NULL, 'Azel', 'user', 'P', 4),
+(5, '3525013006770017', NULL, NULL, 'Ayunda', 'user', 'P', 4),
+(6, '3525012005590001', 'x', 'x', 'Samsul', 'admin', 'L', 2),
+(7, '3525012005596332', NULL, NULL, 'Devi cantik', 'user', 'P', 4),
+(8, '3525012005534534', NULL, NULL, 'David', 'user', 'P', 2),
+(9, '3525012005598643', NULL, NULL, 'Akber', 'user', 'P', 2),
+(10, '3203020402492049', NULL, NULL, 'Eliza', 'user', 'P', 4);
 
 -- --------------------------------------------------------
 
@@ -211,13 +213,6 @@ CREATE TABLE `tb_presensi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tb_presensi`
---
-
-INSERT INTO `tb_presensi` (`id`, `tanggal`, `keterangan`, `id_detail_jadwal`) VALUES
-(29, '2022-05-13 21:43:07', 'Telat', 11);
-
---
 -- Triggers `tb_presensi`
 --
 DELIMITER $$
@@ -274,8 +269,8 @@ INSERT INTO `tb_ruang` (`id`, `nama`) VALUES
 --
 ALTER TABLE `tb_detail_jadwal`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_karyawan` (`id_karyawan`),
-  ADD KEY `id_jadwal` (`id_jadwal`);
+  ADD KEY `id_jadwal` (`id_jadwal`),
+  ADD KEY `id_karyawan` (`id_karyawan`);
 
 --
 -- Indexes for table `tb_jabatan`
@@ -343,13 +338,31 @@ ALTER TABLE `tb_ruang`
 -- AUTO_INCREMENT for table `tb_detail_jadwal`
 --
 ALTER TABLE `tb_detail_jadwal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `tb_jabatan`
+--
+ALTER TABLE `tb_jabatan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tb_jadwal`
 --
 ALTER TABLE `tb_jadwal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `tb_jurusan`
+--
+ALTER TABLE `tb_jurusan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `tb_karyawan`
+--
+ALTER TABLE `tb_karyawan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tb_kelas`
@@ -367,7 +380,13 @@ ALTER TABLE `tb_mapel`
 -- AUTO_INCREMENT for table `tb_presensi`
 --
 ALTER TABLE `tb_presensi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tb_ruang`
+--
+ALTER TABLE `tb_ruang`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
@@ -377,8 +396,8 @@ ALTER TABLE `tb_presensi`
 -- Constraints for table `tb_detail_jadwal`
 --
 ALTER TABLE `tb_detail_jadwal`
-  ADD CONSTRAINT `tb_detail_jadwal_ibfk_1` FOREIGN KEY (`id_karyawan`) REFERENCES `tb_karyawan` (`id`),
-  ADD CONSTRAINT `tb_detail_jadwal_ibfk_2` FOREIGN KEY (`id_jadwal`) REFERENCES `tb_jadwal` (`id`);
+  ADD CONSTRAINT `tb_detail_jadwal_ibfk_1` FOREIGN KEY (`id_jadwal`) REFERENCES `tb_jadwal` (`id`),
+  ADD CONSTRAINT `tb_detail_jadwal_ibfk_2` FOREIGN KEY (`id_karyawan`) REFERENCES `tb_karyawan` (`id`);
 
 --
 -- Constraints for table `tb_jadwal`
