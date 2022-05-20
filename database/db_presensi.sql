@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 19, 2022 at 09:11 AM
+-- Generation Time: May 20, 2022 at 06:27 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `tb_detail_jadwal` (
-  `id` int(11) NOT NULL,
+  `id` varchar(7) NOT NULL,
   `hari` int(1) NOT NULL,
   `jam` time DEFAULT NULL,
   `durasi` time DEFAULT NULL,
@@ -41,11 +41,27 @@ CREATE TABLE `tb_detail_jadwal` (
 --
 
 INSERT INTO `tb_detail_jadwal` (`id`, `hari`, `jam`, `durasi`, `id_karyawan`, `id_jadwal`) VALUES
-(1, 0, '13:00:00', '02:00:00', 2, 1),
-(2, 1, '15:00:00', '02:00:00', 2, 2),
-(3, 2, '20:00:00', '02:00:00', 2, 3),
-(4, 4, '23:00:00', '02:00:00', 2, 4),
-(5, 5, '21:20:00', '02:00:00', 2, 5);
+('JD00002', 1, '07:00:00', '02:00:00', 3, 5),
+('JD00003', 4, '20:00:00', '02:00:01', 7, 5),
+('JD00004', 4, '11:00:00', '02:00:00', 3, 4);
+
+--
+-- Triggers `tb_detail_jadwal`
+--
+DELIMITER $$
+CREATE TRIGGER `format_idDetailJadwal` BEFORE INSERT ON `tb_detail_jadwal` FOR EACH ROW BEGIN
+	DECLARE countColumn INT;
+    DECLARE lastColumn INT;
+    SET @countColumn = (select count(*) from tb_detail_jadwal);
+	SET @lastColumn = (select REPLACE(LTRIM(REPLACE(substring((select id from tb_detail_jadwal order by id desc limit 1),3), '0', ' ')),' ', '0'));
+	IF @countColumn = 0 THEN
+		SET NEW.id = CONCAT("JD", RIGHT(CONCAT('0000', (@countColumn + 1)),5));
+	ELSE
+		SET NEW.id = CONCAT("JD", RIGHT(CONCAT('0000', @lastColumn + 1),5));
+	END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -54,8 +70,7 @@ INSERT INTO `tb_detail_jadwal` (`id`, `hari`, `jam`, `durasi`, `id_karyawan`, `i
 --
 
 CREATE TABLE `tb_jabatan` (
-  `id` int(11) NOT NULL,
-  `id_jabatan` varchar(6) NOT NULL,
+  `id` varchar(5) NOT NULL,
   `nama` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -63,12 +78,29 @@ CREATE TABLE `tb_jabatan` (
 -- Dumping data for table `tb_jabatan`
 --
 
-INSERT INTO `tb_jabatan` (`id`, `id_jabatan`, `nama`) VALUES
-(1, 'JB001', 'P3K'),
-(2, 'JB002', 'Satpam'),
-(3, 'JB003', 'Non PNS'),
-(4, 'JB004', 'Pegawai'),
-(5, 'JB005', 'Admin');
+INSERT INTO `tb_jabatan` (`id`, `nama`) VALUES
+('JB001', 'P3K'),
+('JB002', 'Satpam'),
+('JB003', 'Non PNS'),
+('JB004', 'Pegawai');
+
+--
+-- Triggers `tb_jabatan`
+--
+DELIMITER $$
+CREATE TRIGGER `format_idJabatan` BEFORE INSERT ON `tb_jabatan` FOR EACH ROW BEGIN
+	DECLARE countColumn INT;
+    DECLARE lastColumn INT;
+    SET @countColumn = (select count(*) from tb_jabatan);
+	SET @lastColumn = (select REPLACE(LTRIM(REPLACE(substring((select id from tb_jabatan order by id desc limit 1),3), '0', ' ')),' ', '0'));
+	IF @countColumn = 0 THEN
+		SET NEW.id = CONCAT("JB", RIGHT(CONCAT('00', (@countColumn + 1)),3));
+	ELSE
+		SET NEW.id = CONCAT("JB", RIGHT(CONCAT('00', @lastColumn + 1),3));
+	END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -133,7 +165,7 @@ CREATE TABLE `tb_karyawan` (
   `nama` varchar(50) NOT NULL,
   `status` enum('admin','user') NOT NULL,
   `jenis_kelamin` enum('P','L') NOT NULL,
-  `id_jabatan` int(11) DEFAULT NULL
+  `id_jabatan` varchar(5) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -141,16 +173,14 @@ CREATE TABLE `tb_karyawan` (
 --
 
 INSERT INTO `tb_karyawan` (`id`, `nik`, `username`, `password`, `nama`, `status`, `jenis_kelamin`, `id_jabatan`) VALUES
-(1, '3525010609510002', 'ADM001', 'admin', 'Yomama', 'admin', 'P', 1),
-(2, '3525017006750042', 'r', 'r', 'Raihan', 'admin', 'L', 4),
-(3, '3525016611770002', 'a', 'a', 'Andini', 'user', 'P', 3),
-(4, '3525016812770001', NULL, NULL, 'Azel', 'user', 'P', 4),
-(5, '3525013006770017', NULL, NULL, 'Ayunda', 'user', 'P', 4),
-(6, '3525012005590001', 'x', 'x', 'Samsul', 'admin', 'L', 2),
-(7, '3525012005596332', NULL, NULL, 'Devi cantik', 'user', 'P', 4),
-(8, '3525012005534534', NULL, NULL, 'David', 'user', 'P', 2),
-(9, '3525012005598643', NULL, NULL, 'Akber', 'user', 'P', 2),
-(10, '3203020402492049', NULL, NULL, 'Eliza', 'user', 'P', 4);
+(1, '3525010609510002', 'ADM001', 'admin', 'Yomama', 'admin', 'P', 'JB001'),
+(2, '3525017006750042', 'r', 'r', 'Raihan', 'admin', 'L', 'JB003'),
+(3, '3525016611770002', 'a', 'a', 'Andini', 'user', 'P', 'JB004'),
+(4, '3525016812770001', NULL, NULL, 'Azel', 'user', 'P', 'JB003'),
+(7, '3525012005596332', NULL, NULL, 'Devi', 'user', 'P', 'JB003'),
+(8, '3525012005534534', NULL, NULL, 'David', 'user', 'P', 'JB001'),
+(9, '3525012005598643', NULL, NULL, 'Akber', 'user', 'P', 'JB001'),
+(10, '3203020402492049', NULL, NULL, 'Elizabeth', 'user', 'P', 'JB003');
 
 -- --------------------------------------------------------
 
@@ -209,8 +239,15 @@ CREATE TABLE `tb_presensi` (
   `id` int(11) NOT NULL,
   `tanggal` datetime NOT NULL DEFAULT current_timestamp(),
   `keterangan` enum('Hadir','Telat','Alpa','?') CHARACTER SET latin1 COLLATE latin1_general_cs NOT NULL,
-  `id_detail_jadwal` int(11) NOT NULL
+  `id_detail_jadwal` varchar(7) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tb_presensi`
+--
+
+INSERT INTO `tb_presensi` (`id`, `tanggal`, `keterangan`, `id_detail_jadwal`) VALUES
+(2, '2022-05-20 11:17:17', 'Telat', 'JD00004');
 
 --
 -- Triggers `tb_presensi`
@@ -276,8 +313,7 @@ ALTER TABLE `tb_detail_jadwal`
 -- Indexes for table `tb_jabatan`
 --
 ALTER TABLE `tb_jabatan`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_jabatan` (`id_jabatan`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `tb_jadwal`
@@ -335,18 +371,6 @@ ALTER TABLE `tb_ruang`
 --
 
 --
--- AUTO_INCREMENT for table `tb_detail_jadwal`
---
-ALTER TABLE `tb_detail_jadwal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `tb_jabatan`
---
-ALTER TABLE `tb_jabatan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
 -- AUTO_INCREMENT for table `tb_jadwal`
 --
 ALTER TABLE `tb_jadwal`
@@ -362,7 +386,7 @@ ALTER TABLE `tb_jurusan`
 -- AUTO_INCREMENT for table `tb_karyawan`
 --
 ALTER TABLE `tb_karyawan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tb_kelas`
@@ -380,7 +404,7 @@ ALTER TABLE `tb_mapel`
 -- AUTO_INCREMENT for table `tb_presensi`
 --
 ALTER TABLE `tb_presensi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tb_ruang`

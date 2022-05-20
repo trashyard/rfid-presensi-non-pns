@@ -35,7 +35,7 @@ public class Searchbar extends JTextField {
 	private final Icon iconSearch;
 	private final Icon iconClose;
 	private final Icon iconLoading;
-	private String hintText = "Search ...";
+	private String hintText = "Cari ...";
 	private boolean show;
 	private double location = -1;
 	private EventTextField event;

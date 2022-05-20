@@ -169,6 +169,7 @@ public final class PopUpEditKaryawan extends javax.swing.JDialog {
 			notify("success", "Delete Berhasil!");
 			closeMessage();
 		} catch (SQLException ex) {
+			notify("warning", "Mohon hapus jadwal terlebih dahulu!");
 			System.out.println("error: " + ex.getMessage());
 		}
 	}
@@ -272,6 +273,8 @@ public final class PopUpEditKaryawan extends javax.swing.JDialog {
                 nama = new com.presensikeun.swing.TextField();
                 jk = new com.presensikeun.swing.Combobox();
                 jabatan = new com.presensikeun.swing.Combobox();
+                delete = new com.presensikeun.swing.Button();
+                see = new com.presensikeun.swing.Button();
 
                 timePicker1.setForeground(new java.awt.Color(85, 65, 118));
 
@@ -293,9 +296,9 @@ public final class PopUpEditKaryawan extends javax.swing.JDialog {
                         .addGap(0, 40, Short.MAX_VALUE)
                 );
 
-                button1.setBackground(new java.awt.Color(204, 204, 0));
+                button1.setBackground(new java.awt.Color(153, 255, 102));
                 button1.setForeground(new java.awt.Color(255, 255, 255));
-                button1.setText("Update");
+                button1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-edit-24.png"))); // NOI18N
                 button1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
                 button1.setPreferredSize(new java.awt.Dimension(80, 30));
                 button1.addActionListener(new java.awt.event.ActionListener() {
@@ -304,7 +307,7 @@ public final class PopUpEditKaryawan extends javax.swing.JDialog {
                         }
                 });
 
-                button2.setBackground(new java.awt.Color(255, 0, 51));
+                button2.setBackground(new java.awt.Color(255, 51, 51));
                 button2.setForeground(new java.awt.Color(255, 255, 255));
                 button2.setText("Cancel");
                 button2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
@@ -342,6 +345,28 @@ public final class PopUpEditKaryawan extends javax.swing.JDialog {
                         }
                 });
 
+                delete.setBackground(new java.awt.Color(255, 153, 153));
+                delete.setForeground(new java.awt.Color(255, 255, 255));
+                delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-remove-24.png"))); // NOI18N
+                delete.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                delete.setPreferredSize(new java.awt.Dimension(80, 30));
+                delete.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                deleteActionPerformed(evt);
+                        }
+                });
+
+                see.setBackground(new java.awt.Color(153, 153, 255));
+                see.setForeground(new java.awt.Color(255, 255, 255));
+                see.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-uchiha-eyes-24.png"))); // NOI18N
+                see.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                see.setPreferredSize(new java.awt.Dimension(80, 30));
+                see.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                seeActionPerformed(evt);
+                        }
+                });
+
                 javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
                 jPanel1.setLayout(jPanel1Layout);
                 jPanel1Layout.setHorizontalGroup(
@@ -349,14 +374,16 @@ public final class PopUpEditKaryawan extends javax.swing.JDialog {
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(39, 39, 39)
-                                                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(43, 43, 43))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(see, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(12, 12, 12)
+                                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(nik, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                         .addComponent(nama, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -377,9 +404,12 @@ public final class PopUpEditKaryawan extends javax.swing.JDialog {
                                 .addGap(18, 18, 18)
                                 .addComponent(jabatan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(see, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(30, 30, 30))
                 );
 
@@ -469,6 +499,15 @@ public final class PopUpEditKaryawan extends javax.swing.JDialog {
 		}
         }//GEN-LAST:event_namaKeyPressed
 
+        private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+		// TODO add your handling code here:
+		deleteAndLeave();
+        }//GEN-LAST:event_deleteActionPerformed
+
+        private void seeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seeActionPerformed
+		// TODO add your handling code here:
+        }//GEN-LAST:event_seeActionPerformed
+
 	public static enum MessageType {
 		CANCEL, OK
 	}
@@ -476,12 +515,14 @@ public final class PopUpEditKaryawan extends javax.swing.JDialog {
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private com.presensikeun.swing.Button button1;
         private com.presensikeun.swing.Button button2;
+        private com.presensikeun.swing.Button delete;
         private javax.swing.JPanel jPanel1;
         private javax.swing.JPanel jPanel2;
         private com.presensikeun.swing.Combobox jabatan;
         private com.presensikeun.swing.Combobox jk;
         private com.presensikeun.swing.TextField nama;
         private com.presensikeun.swing.TextField nik;
+        private com.presensikeun.swing.Button see;
         private com.presensikeun.swing.TimePicker timePicker1;
         // End of variables declaration//GEN-END:variables
 }

@@ -74,7 +74,7 @@ public final class Presensi extends javax.swing.JPanel {
 
 	public void submitAttendance(String id) {
 		try {
-			String sql = "INSERT INTO tb_presensi (id, tanggal, keterangan, id_detail_jadwal) VALUES (NULL, current_timestamp(), '?', " + id + ")";
+			String sql = "INSERT INTO tb_presensi (id, tanggal, keterangan, id_detail_jadwal) VALUES (NULL, current_timestamp(), '?', '" + id + "')";
 			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			pst.executeUpdate();
