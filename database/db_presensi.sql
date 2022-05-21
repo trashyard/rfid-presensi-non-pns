@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 20, 2022 at 06:27 AM
+-- Generation Time: May 21, 2022 at 10:56 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -33,7 +33,7 @@ CREATE TABLE `tb_detail_jadwal` (
   `jam` time DEFAULT NULL,
   `durasi` time DEFAULT NULL,
   `id_karyawan` int(11) NOT NULL,
-  `id_jadwal` int(11) NOT NULL
+  `id_jadwal` varchar(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -41,9 +41,7 @@ CREATE TABLE `tb_detail_jadwal` (
 --
 
 INSERT INTO `tb_detail_jadwal` (`id`, `hari`, `jam`, `durasi`, `id_karyawan`, `id_jadwal`) VALUES
-('JD00002', 1, '07:00:00', '02:00:00', 3, 5),
-('JD00003', 4, '20:00:00', '02:00:01', 7, 5),
-('JD00004', 4, '11:00:00', '02:00:00', 3, 4);
+('JD00001', 5, '15:00:00', '02:00:00', 3, 'J00011');
 
 --
 -- Triggers `tb_detail_jadwal`
@@ -109,7 +107,7 @@ DELIMITER ;
 --
 
 CREATE TABLE `tb_jadwal` (
-  `id` int(11) NOT NULL,
+  `id` varchar(6) NOT NULL,
   `id_mapel` int(11) DEFAULT NULL,
   `id_kelas` int(11) DEFAULT NULL,
   `status` enum('datang','mengajar','pulang') NOT NULL
@@ -120,12 +118,23 @@ CREATE TABLE `tb_jadwal` (
 --
 
 INSERT INTO `tb_jadwal` (`id`, `id_mapel`, `id_kelas`, `status`) VALUES
-(1, 1, 1, 'mengajar'),
-(2, 2, 1, 'mengajar'),
-(3, 3, 1, 'mengajar'),
-(4, 4, 1, 'mengajar'),
-(5, 5, 1, 'mengajar'),
-(6, 6, 1, 'mengajar');
+('J00011', 1, 1, 'mengajar'),
+('J00021', 2, 1, 'mengajar'),
+('J00031', 3, 1, 'mengajar'),
+('J00041', 4, 1, 'mengajar'),
+('J00051', 5, 1, 'mengajar'),
+('J00052', 5, 2, 'mengajar'),
+('J00061', 6, 1, 'mengajar');
+
+--
+-- Triggers `tb_jadwal`
+--
+DELIMITER $$
+CREATE TRIGGER `format_idJadwal` BEFORE INSERT ON `tb_jadwal` FOR EACH ROW BEGIN
+		SET NEW.id = CONCAT("J", RIGHT(CONCAT('00000', NEW.id_mapel, NEW.id_kelas),5));
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -213,7 +222,7 @@ INSERT INTO `tb_kelas` (`id`, `id_kelas`, `nama`, `angkatan`, `id_ruang`, `id_ju
 
 CREATE TABLE `tb_mapel` (
   `id` int(11) NOT NULL,
-  `id_mapel` varchar(11) DEFAULT NULL,
+  `kode` varchar(11) DEFAULT NULL,
   `nama` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -221,7 +230,7 @@ CREATE TABLE `tb_mapel` (
 -- Dumping data for table `tb_mapel`
 --
 
-INSERT INTO `tb_mapel` (`id`, `id_mapel`, `nama`) VALUES
+INSERT INTO `tb_mapel` (`id`, `kode`, `nama`) VALUES
 (1, 'MATDAS', 'Matematika Dasar'),
 (2, 'PEMDAS', 'Pemrograman Dasar'),
 (3, 'FISIKA', 'Fisika'),
@@ -247,7 +256,7 @@ CREATE TABLE `tb_presensi` (
 --
 
 INSERT INTO `tb_presensi` (`id`, `tanggal`, `keterangan`, `id_detail_jadwal`) VALUES
-(2, '2022-05-20 11:17:17', 'Telat', 'JD00004');
+(3, '2022-05-21 15:41:32', 'Telat', 'JD00001');
 
 --
 -- Triggers `tb_presensi`
@@ -351,7 +360,7 @@ ALTER TABLE `tb_kelas`
 --
 ALTER TABLE `tb_mapel`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_mapel` (`id_mapel`);
+  ADD UNIQUE KEY `id_mapel` (`kode`);
 
 --
 -- Indexes for table `tb_presensi`
@@ -369,12 +378,6 @@ ALTER TABLE `tb_ruang`
 --
 -- AUTO_INCREMENT for dumped tables
 --
-
---
--- AUTO_INCREMENT for table `tb_jadwal`
---
-ALTER TABLE `tb_jadwal`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tb_jurusan`
@@ -404,7 +407,7 @@ ALTER TABLE `tb_mapel`
 -- AUTO_INCREMENT for table `tb_presensi`
 --
 ALTER TABLE `tb_presensi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tb_ruang`
@@ -420,8 +423,8 @@ ALTER TABLE `tb_ruang`
 -- Constraints for table `tb_detail_jadwal`
 --
 ALTER TABLE `tb_detail_jadwal`
-  ADD CONSTRAINT `tb_detail_jadwal_ibfk_1` FOREIGN KEY (`id_jadwal`) REFERENCES `tb_jadwal` (`id`),
-  ADD CONSTRAINT `tb_detail_jadwal_ibfk_2` FOREIGN KEY (`id_karyawan`) REFERENCES `tb_karyawan` (`id`);
+  ADD CONSTRAINT `tb_detail_jadwal_ibfk_2` FOREIGN KEY (`id_karyawan`) REFERENCES `tb_karyawan` (`id`),
+  ADD CONSTRAINT `tb_detail_jadwal_ibfk_3` FOREIGN KEY (`id_jadwal`) REFERENCES `tb_jadwal` (`id`);
 
 --
 -- Constraints for table `tb_jadwal`
