@@ -11,7 +11,7 @@ import javax.swing.text.StyleConstants;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 
-public class PopUpEditJadwal extends javax.swing.JDialog {
+public class PopUpEditDetailJadwal extends javax.swing.JDialog {
 
 	private Animator animator;
 	private Glass glass;
@@ -19,7 +19,7 @@ public class PopUpEditJadwal extends javax.swing.JDialog {
 	private final MessageType messageType = MessageType.CANCEL;
 	private final JFrame fram;
 
-	public PopUpEditJadwal(JFrame fram) {
+	public PopUpEditDetailJadwal(JFrame fram) {
 		super(fram, true);
 		this.fram = fram;
 		initComponents();
@@ -116,7 +116,7 @@ public class PopUpEditJadwal extends javax.swing.JDialog {
                         .addGap(0, 40, Short.MAX_VALUE)
                 );
 
-                jLabel1.setText("jadwal");
+                jLabel1.setText("buat detail jadwal");
 
                 javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
                 jPanel1.setLayout(jPanel1Layout);
@@ -126,7 +126,7 @@ public class PopUpEditJadwal extends javax.swing.JDialog {
                                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(143, 143, 143)
+                                .addGap(73, 73, 73)
                                 .addComponent(jLabel1)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 );
@@ -134,9 +134,9 @@ public class PopUpEditJadwal extends javax.swing.JDialog {
                         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(204, 204, 204)
+                                .addGap(187, 187, 187)
                                 .addComponent(jLabel1)
-                                .addContainerGap(260, Short.MAX_VALUE))
+                                .addContainerGap(277, Short.MAX_VALUE))
                 );
 
                 javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

@@ -180,16 +180,20 @@ public final class Dashboard extends javax.swing.JPanel {
                 );
 
                 card1.setBackground(new java.awt.Color(252, 254, 255));
+                card1.setForeground(new java.awt.Color(85, 65, 118));
 
                 card2.setBackground(new java.awt.Color(252, 254, 255));
+                card2.setForeground(new java.awt.Color(85, 65, 118));
 
                 card3.setBackground(new java.awt.Color(252, 254, 255));
+                card3.setForeground(new java.awt.Color(85, 65, 118));
 
                 panelShadow1.setBackground(new java.awt.Color(252, 254, 255));
 
                 chart.setOpaque(false);
 
                 jLabel3.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+                jLabel3.setForeground(new java.awt.Color(85, 65, 118));
                 jLabel3.setText("Diagram Batang");
 
                 javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
@@ -215,6 +219,7 @@ public final class Dashboard extends javax.swing.JPanel {
                 polarAreaChart1.setPreferredSize(new java.awt.Dimension(250, 250));
 
                 jLabel2.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+                jLabel2.setForeground(new java.awt.Color(85, 65, 118));
                 jLabel2.setText("Pie Chart");
 
                 javax.swing.GroupLayout panelShadow2Layout = new javax.swing.GroupLayout(panelShadow2);

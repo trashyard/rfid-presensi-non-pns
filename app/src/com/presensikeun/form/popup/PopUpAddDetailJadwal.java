@@ -11,7 +11,7 @@ import javax.swing.text.StyleConstants;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 
-public class PopUpAddJadwal extends javax.swing.JDialog {
+public class PopUpAddDetailJadwal extends javax.swing.JDialog {
 
 	private Animator animator;
 	private Glass glass;
@@ -19,7 +19,7 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
 	private final MessageType messageType = MessageType.CANCEL;
 	private final JFrame fram;
 
-	public PopUpAddJadwal(JFrame fram) {
+	public PopUpAddDetailJadwal(JFrame fram) {
 		super(fram, true);
 		this.fram = fram;
 		initComponents();
@@ -101,7 +101,6 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
                 combobox2 = new com.presensikeun.swing.Combobox();
                 button2 = new com.presensikeun.swing.Button();
                 button1 = new com.presensikeun.swing.Button();
-                jLabel1 = new javax.swing.JLabel();
 
                 timePicker1.setForeground(new java.awt.Color(85, 65, 118));
                 timePicker1.setDisplayText(txtTime);
@@ -164,8 +163,6 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
                         }
                 });
 
-                jLabel1.setText("kontol");
-
                 javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
                 jPanel1.setLayout(jPanel1Layout);
                 jPanel1Layout.setHorizontalGroup(
@@ -189,10 +186,6 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
                                                 .addGap(18, 18, 18)
                                                 .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(60, 60, 60))))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(150, 150, 150)
-                                .addComponent(jLabel1)
-                                .addGap(0, 0, Short.MAX_VALUE))
                 );
                 jPanel1Layout.setVerticalGroup(
                         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -206,9 +199,7 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(txtTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(49, 49, 49)
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 163, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -253,7 +244,6 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
         private com.presensikeun.swing.Button button3;
         private com.presensikeun.swing.Combobox combobox1;
         private com.presensikeun.swing.Combobox combobox2;
-        private javax.swing.JLabel jLabel1;
         private javax.swing.JPanel jPanel1;
         private javax.swing.JPanel jPanel2;
         private com.presensikeun.swing.TimePicker timePicker1;
