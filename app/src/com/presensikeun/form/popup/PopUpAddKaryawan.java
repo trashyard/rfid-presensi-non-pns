@@ -93,11 +93,14 @@ public class PopUpAddKaryawan extends javax.swing.JDialog {
 			panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.SUCCESS, Notification.Location.TOP_CENTER, msg);
 		} else if (version.equals("warning")) {
 			panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.WARNING, Notification.Location.TOP_CENTER, msg);
+		} else if (version.equals("info")) {
+			panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.INFO, Notification.Location.TOP_CENTER, msg);
 		}
 		panel.showNotification();
 	}
 
 	private void verifyFields() {
+
 		if (nik.getText().split("").length != 16) {
 			notify("warning", "Format NIK Salah");
 		} else if (nama.getText().split("").length < 3) {

@@ -14,75 +14,84 @@ import java.util.List;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public class TimePicker extends javax.swing.JPanel {
 
-    private final SimpleDateFormat format = new SimpleDateFormat("hh:mm aa");
-    private final DecimalFormat numberFormat = new DecimalFormat("00");
-    private JTextField displayText;
-    private List<EventTimePicker> events;
-    private JPopupMenu menu;
+	private final SimpleDateFormat format = new SimpleDateFormat("hh:mm aa");
+	private final DecimalFormat numberFormat = new DecimalFormat("00");
+	private JTextField displayText;
+	private List<EventTimePicker> events;
+	private JPopupMenu menu;
 
-    public TimePicker() {
-        initComponents();
-        init();
-    }
+	public TimePicker() {
+		initComponents();
+		init();
+	}
 
-    private void init() {
-        events = new ArrayList<>();
-        now();
-        EventTimeSelected event = new EventTimeSelected() {
-            @Override
-            public void hourSelected(int hour) {
-                cmdHour.setText(numberFormat.format(hour));
-                displayOnText();
-                runEvent();
-            }
+	private void init() {
+		events = new ArrayList<>();
+		EventTimeSelected event = new EventTimeSelected() {
+			@Override
+			public void hourSelected(int hour) {
+				cmdHour.setText(numberFormat.format(hour));
+				displayOnText();
+				runEvent();
+			}
 
-            @Override
-            public void minuteSelected(int minute) {
-                cmdMinute.setText(numberFormat.format(minute));
-                displayOnText();
-                runEvent();
-            }
-        };
-        timeComponent.addEventTimeSelected(event);
-        timeComponent.setEventTimeChange(new EventTimeChange() {
-            @Override
-            public void timeChange(boolean isHour) {
-                if (isHour) {
-                    cmdHour.setForeground(Color.WHITE);
-                    cmdMinute.setForeground(new Color(178, 178, 178));
-                } else {
-                    cmdMinute.setForeground(Color.WHITE);
-                    cmdHour.setForeground(new Color(178, 178, 178));
-                }
-                displayOnText();
-                runEvent();
-            }
-        });
-        setForeground(new Color(37, 88, 207));
-    }
+			@Override
+			public void minuteSelected(int minute) {
+				cmdMinute.setText(numberFormat.format(minute));
+				displayOnText();
+				runEvent();
+			}
+		};
+		timeComponent.addEventTimeSelected(event);
+		timeComponent.setEventTimeChange(new EventTimeChange() {
+			@Override
+			public void timeChange(boolean isHour) {
+				if (isHour) {
+					cmdHour.setForeground(Color.WHITE);
+					cmdMinute.setForeground(new Color(178, 178, 178));
+				} else {
+					cmdMinute.setForeground(Color.WHITE);
+					cmdHour.setForeground(new Color(178, 178, 178));
+				}
+				displayOnText();
+				runEvent();
+			}
+		});
+		setForeground(new Color(37, 88, 207));
+	}
 
-    private void changeAM(boolean am) {
-        if (am) {
-            cmdAM.setForeground(Color.WHITE);
-            cmdPM.setForeground(new Color(178, 178, 178));
-        } else {
-            cmdPM.setForeground(Color.WHITE);
-            cmdAM.setForeground(new Color(178, 178, 178));
-        }
-        displayOnText();
-        runEvent();
-    }
+	private void changeAM(boolean am) {
+		if (am) {
+			cmdAM.setForeground(Color.WHITE);
+			cmdPM.setForeground(new Color(178, 178, 178));
+		} else {
+			cmdPM.setForeground(Color.WHITE);
+			cmdAM.setForeground(new Color(178, 178, 178));
+		}
+		displayOnText();
+		runEvent();
+	}
 
-    private void displayOnText() {
-        if (displayText != null) {
-            displayText.setText(cmdHour.getText() + ":" + cmdMinute.getText() + " " + (cmdAM.getForeground() == Color.WHITE ? "AM" : "MP"));
-        }
-    }
+	private void displayOnText() {
+		if (displayText != null) {
+			String lTime = cmdHour.getText() + ":" + cmdMinute.getText() + " " + (cmdAM.getForeground() == Color.WHITE ? "AM" : "PM");
 
-    @SuppressWarnings("unchecked")
+			DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm aa");
+			DateTimeFormatter myFormatObj = DateTimeFormat.forPattern("HH:mm:ss");
+			LocalTime formattedTime = fmt.parseLocalTime(lTime);
+			String loldek = myFormatObj.print(formattedTime);
+
+			displayText.setText(loldek);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
         // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
         private void initComponents() {
 
@@ -271,116 +280,116 @@ public class TimePicker extends javax.swing.JPanel {
         }// </editor-fold>//GEN-END:initComponents
 
     private void cmdHourActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdHourActionPerformed
-        timeComponent.changeToHour();
+		timeComponent.changeToHour();
     }//GEN-LAST:event_cmdHourActionPerformed
 
     private void cmdMinuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMinuteActionPerformed
-        timeComponent.changeToMinute();
+		timeComponent.changeToMinute();
     }//GEN-LAST:event_cmdMinuteActionPerformed
 
     private void cmdAMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdAMActionPerformed
-        changeAM(true);
+		changeAM(true);
     }//GEN-LAST:event_cmdAMActionPerformed
 
     private void cmdPMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdPMActionPerformed
-        changeAM(false);
+		changeAM(false);
     }//GEN-LAST:event_cmdPMActionPerformed
 
     private void cmdCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCancelActionPerformed
-        if (menu != null) {
-            menu.setVisible(false);
-        }
+		if (menu != null) {
+			menu.setVisible(false);
+		}
     }//GEN-LAST:event_cmdCancelActionPerformed
 
     private void cmdOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdOKActionPerformed
-        if (menu != null) {
-            menu.setVisible(false);
-        }
+		if (menu != null) {
+			menu.setVisible(false);
+		}
     }//GEN-LAST:event_cmdOKActionPerformed
-    private int x;
-    private int y;
+	private int x;
+	private int y;
     private void headerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_headerMousePressed
-        x = evt.getX();
-        y = evt.getY() + 6;
+		x = evt.getX();
+		y = evt.getY() + 6;
     }//GEN-LAST:event_headerMousePressed
 
     private void headerMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_headerMouseDragged
-        if (menu != null && menu.isVisible()) {
-            if (SwingUtilities.isLeftMouseButton(evt)) {
-                int xs = evt.getXOnScreen();
-                int ys = evt.getYOnScreen();
-                menu.setLocation(xs - x, ys - y);
+		if (menu != null && menu.isVisible()) {
+			if (SwingUtilities.isLeftMouseButton(evt)) {
+				int xs = evt.getXOnScreen();
+				int ys = evt.getYOnScreen();
+				menu.setLocation(xs - x, ys - y);
 
-            }
-        }
+			}
+		}
     }//GEN-LAST:event_headerMouseDragged
 
-    @Override
-    public void setForeground(Color color) {
-        super.setForeground(color);
-        if (header != null) {
-            header.setBackground(color);
-            timeComponent.setColor(color);
-            cmdCancel.setForeground(color);
-            cmdOK.setForeground(color);
-            cmdHour.setBackground(color);
-            cmdMinute.setBackground(color);
-            cmdAM.setBackground(color);
-            cmdPM.setBackground(color);
-            if (menu != null) {
-                menu.setBackground(color);
-            }
-        }
-    }
+	@Override
+	public void setForeground(Color color) {
+		super.setForeground(color);
+		if (header != null) {
+			header.setBackground(color);
+			timeComponent.setColor(color);
+			cmdCancel.setForeground(color);
+			cmdOK.setForeground(color);
+			cmdHour.setBackground(color);
+			cmdMinute.setBackground(color);
+			cmdAM.setBackground(color);
+			cmdPM.setBackground(color);
+			if (menu != null) {
+				menu.setBackground(color);
+			}
+		}
+	}
 
-    public JTextField getDisplayText() {
-        return displayText;
-    }
+	public JTextField getDisplayText() {
+		return displayText;
+	}
 
-    public void setDisplayText(JTextField displayText) {
-        this.displayText = displayText;
-    }
+	public void setDisplayText(JTextField displayText) {
+		this.displayText = displayText;
+	}
 
-    public void setSelectedTime(Date date) {
-        String now = format.format(date);
-        int hour = Integer.valueOf(now.split(":")[0]);
-        int minute = Integer.valueOf(now.split(":")[1].split(" ")[0]);
-        changeAM(now.split(" ")[1].equals("AM"));
-        cmdHour.setText(numberFormat.format(hour));
-        cmdMinute.setText(numberFormat.format(minute));
-        timeComponent.setSelectedHour(hour, minute);
-    }
+	public void setSelectedTime(Date date) {
+		String now = format.format(date);
+		int hour = Integer.valueOf(now.split(":")[0]);
+		int minute = Integer.valueOf(now.split(":")[1].split(" ")[0]);
+		changeAM(now.split(" ")[1].equals("AM"));
+		cmdHour.setText(numberFormat.format(hour));
+		cmdMinute.setText(numberFormat.format(minute));
+		timeComponent.setSelectedHour(hour, minute);
+	}
 
-    public void now() {
-        setSelectedTime(new Date());
-    }
+	public void now() {
+		setSelectedTime(new Date());
+	}
 
-    public String getSelectedTime() {
-        return cmdHour.getText() + ":" + cmdMinute.getText() + " " + (cmdAM.getForeground() == Color.WHITE ? "AM" : "PM");
-    }
+	public String getSelectedTime() {
+		return cmdHour.getText() + ":" + cmdMinute.getText() + " " + (cmdAM.getForeground() == Color.WHITE ? "AM" : "PM");
+	}
 
-    private void runEvent() {
-        for (EventTimePicker event : events) {
-            event.timeSelected(getSelectedTime());
-        }
-    }
+	private void runEvent() {
+		for (EventTimePicker event : events) {
+			event.timeSelected(getSelectedTime());
+		}
+	}
 
-    public void addEventTimePicker(EventTimePicker event) {
-        events.add(event);
-    }
+	public void addEventTimePicker(EventTimePicker event) {
+		events.add(event);
+	}
 
-    public void addActionListener(ActionListener event) {
-        cmdOK.addActionListener(event);
-    }
+	public void addActionListener(ActionListener event) {
+		cmdOK.addActionListener(event);
+	}
 
-    public void showPopup(Component com, int x, int y) {
-        if (menu == null) {
-            menu = new TimePickerMenu();
-            menu.setBackground(getForeground());
-            menu.add(this);
-        }
-        menu.show(com, x, y);
-    }
+	public void showPopup(Component com, int x, int y) {
+		if (menu == null) {
+			menu = new TimePickerMenu();
+			menu.setBackground(getForeground());
+			menu.add(this);
+		}
+		menu.show(com, x, y);
+	}
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private com.presensikeun.swing.TimePickerButton cmdAM;

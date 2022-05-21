@@ -19,11 +19,14 @@ public class PopUpEditDetailJadwal extends javax.swing.JDialog {
 	private final MessageType messageType = MessageType.CANCEL;
 	private final JFrame fram;
 
-	public PopUpEditDetailJadwal(JFrame fram) {
+	public PopUpEditDetailJadwal(JFrame fram, String id) {
 		super(fram, true);
 		this.fram = fram;
 		initComponents();
 		init();
+		timePicker1.setDisplayText(txtTime);
+		txtTime.disable();
+		txtTime.setText("21:00:00");
 	}
 
 	private void init() {
@@ -94,7 +97,8 @@ public class PopUpEditDetailJadwal extends javax.swing.JDialog {
                 timePicker1 = new com.presensikeun.swing.TimePicker();
                 jPanel1 = new javax.swing.JPanel();
                 jPanel2 = new javax.swing.JPanel();
-                jLabel1 = new javax.swing.JLabel();
+                button3 = new com.presensikeun.swing.Button();
+                txtTime = new com.presensikeun.swing.TextField();
 
                 timePicker1.setForeground(new java.awt.Color(85, 65, 118));
 
@@ -116,7 +120,19 @@ public class PopUpEditDetailJadwal extends javax.swing.JDialog {
                         .addGap(0, 40, Short.MAX_VALUE)
                 );
 
-                jLabel1.setText("buat detail jadwal");
+                button3.setBackground(new java.awt.Color(204, 204, 204));
+                button3.setForeground(new java.awt.Color(255, 255, 255));
+                button3.setText("...");
+                button3.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                button3ActionPerformed(evt);
+                        }
+                });
+
+                txtTime.setEditable(false);
+                txtTime.setBackground(new java.awt.Color(255, 255, 255));
+                txtTime.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+                txtTime.setLabelText("Date");
 
                 javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
                 jPanel1.setLayout(jPanel1Layout);
@@ -126,17 +142,21 @@ public class PopUpEditDetailJadwal extends javax.swing.JDialog {
                                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(73, 73, 73)
-                                .addComponent(jLabel1)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(20, 20, 20)
+                                .addComponent(txtTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(32, 32, 32))
                 );
                 jPanel1Layout.setVerticalGroup(
                         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(187, 187, 187)
-                                .addComponent(jLabel1)
-                                .addContainerGap(277, Short.MAX_VALUE))
+                                .addGap(169, 169, 169)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(265, Short.MAX_VALUE))
                 );
 
                 javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -153,14 +173,20 @@ public class PopUpEditDetailJadwal extends javax.swing.JDialog {
                 pack();
         }// </editor-fold>//GEN-END:initComponents
 
+        private void button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button3ActionPerformed
+		// TODO add your handling code here:
+		timePicker1.showPopup(this, (getWidth() - timePicker1.getPreferredSize().width) / 2, (getHeight() - timePicker1.getPreferredSize().height) / 2);
+        }//GEN-LAST:event_button3ActionPerformed
+
 	public static enum MessageType {
 		CANCEL, OK
 	}
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
-        private javax.swing.JLabel jLabel1;
+        private com.presensikeun.swing.Button button3;
         private javax.swing.JPanel jPanel1;
         private javax.swing.JPanel jPanel2;
         private com.presensikeun.swing.TimePicker timePicker1;
+        private com.presensikeun.swing.TextField txtTime;
         // End of variables declaration//GEN-END:variables
 }

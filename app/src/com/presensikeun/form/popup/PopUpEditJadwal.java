@@ -19,7 +19,7 @@ public class PopUpEditJadwal extends javax.swing.JDialog {
 	private final MessageType messageType = MessageType.CANCEL;
 	private final JFrame fram;
 
-	public PopUpEditJadwal(JFrame fram) {
+	public PopUpEditJadwal(JFrame fram, String id) {
 		super(fram, true);
 		this.fram = fram;
 		initComponents();

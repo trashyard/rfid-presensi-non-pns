@@ -106,7 +106,7 @@ public final class Jadwal extends javax.swing.JPanel {
 		}
 	}
 
-	private void whichPopUpAndRefresh(String which) {
+	private void whichPopUpAndRefresh(String which, String addValue) {
 		switch (which) {
 			case "add":
 				if (mode) {
@@ -119,10 +119,10 @@ public final class Jadwal extends javax.swing.JPanel {
 				break;
 			case "edit":
 				if (mode) {
-					PopUpEditJadwal p = new PopUpEditJadwal((JFrame) SwingUtilities.getWindowAncestor(this));
+					PopUpEditJadwal p = new PopUpEditJadwal((JFrame) SwingUtilities.getWindowAncestor(this), addValue);
 					p.showMessage(null);
 				} else {
-					PopUpEditDetailJadwal p = new PopUpEditDetailJadwal((JFrame) SwingUtilities.getWindowAncestor(this));
+					PopUpEditDetailJadwal p = new PopUpEditDetailJadwal((JFrame) SwingUtilities.getWindowAncestor(this), addValue);
 					p.showMessage(null);
 				}
 				break;
@@ -390,18 +390,20 @@ public final class Jadwal extends javax.swing.JPanel {
 
         private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
 		// TODO add your handling code here:
-		whichPopUpAndRefresh("add");
+		whichPopUpAndRefresh("add", null);
 		refreshTable();
         }//GEN-LAST:event_jLabel2MousePressed
 
         private void table1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table1MousePressed
 		// TODO add your handling code here:
-		int row = table1.rowAtPoint(evt.getPoint());
-		String nik = table1.getValueAt(row, 0).toString();
+		try {
+			int row = table1.rowAtPoint(evt.getPoint());
+			String columnOne = table1.getValueAt(row, 0).toString();
 
-		if (evt.getClickCount() == 2 && table1.getSelectedRow() != -1) {
-			// your valueChanged overridden method 
-			whichPopUpAndRefresh("edit");
+			if (evt.getClickCount() == 2 && table1.getSelectedRow() != -1) {
+				whichPopUpAndRefresh("edit", columnOne);
+			}
+		} catch (ArrayIndexOutOfBoundsException ex) {
 		}
         }//GEN-LAST:event_table1MousePressed
 
