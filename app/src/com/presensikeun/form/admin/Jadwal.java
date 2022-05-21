@@ -129,6 +129,7 @@ public final class Jadwal extends javax.swing.JPanel {
 			default:
 				break;
 		}
+		refreshTable();
 	}
 
 	private void notify(String version, String msg) {
@@ -391,7 +392,6 @@ public final class Jadwal extends javax.swing.JPanel {
         private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
 		// TODO add your handling code here:
 		whichPopUpAndRefresh("add", null);
-		refreshTable();
         }//GEN-LAST:event_jLabel2MousePressed
 
         private void table1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table1MousePressed
