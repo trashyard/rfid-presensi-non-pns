@@ -160,9 +160,22 @@ public class PopUpEditDetailJadwal extends javax.swing.JDialog {
 			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			pst.executeUpdate();
-			notify("success", "Insert Berhasil!");
+			notify("success", "Update Berhasil!");
 			closeMessage();
 		} catch (SQLException ex) {
+			System.out.println("error: " + ex.getMessage());
+		}
+	}
+
+	private void deleteAndLeave() {
+		try {
+			String sql = "delete from tb_detail_jadwal where id = '" + this.id + "'";
+			pst = con.prepareStatement(sql);
+			pst.executeUpdate();
+			notify("success", "Delete Berhasil!");
+			closeMessage();
+		} catch (SQLException ex) {
+			notify("warning", "ada yang salah kh? :(");
 			System.out.println("error: " + ex.getMessage());
 		}
 	}
@@ -333,8 +346,9 @@ public class PopUpEditDetailJadwal extends javax.swing.JDialog {
                 button3 = new com.presensikeun.swing.Button();
                 durasi = new com.presensikeun.swing.Combobox();
                 button2 = new com.presensikeun.swing.Button();
-                button1 = new com.presensikeun.swing.Button();
                 hari = new com.presensikeun.swing.Combobox();
+                button1 = new com.presensikeun.swing.Button();
+                delete = new com.presensikeun.swing.Button();
 
                 timePicker1.setForeground(new java.awt.Color(85, 65, 118));
                 timePicker1.setDisplayText(txtTime);
@@ -422,9 +436,15 @@ public class PopUpEditDetailJadwal extends javax.swing.JDialog {
                         }
                 });
 
-                button1.setBackground(new java.awt.Color(0, 204, 0));
+                hari.setForeground(new java.awt.Color(85, 65, 118));
+                hari.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Senin", "Selasa", "Rabu", "Kamis", "Jumat" }));
+                hari.setSelectedIndex(-1);
+                hari.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                hari.setLabeText("Hari");
+
+                button1.setBackground(new java.awt.Color(102, 255, 51));
                 button1.setForeground(new java.awt.Color(255, 255, 255));
-                button1.setText("Submit");
+                button1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-edit-24.png"))); // NOI18N
                 button1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
                 button1.setPreferredSize(new java.awt.Dimension(80, 30));
                 button1.addActionListener(new java.awt.event.ActionListener() {
@@ -433,11 +453,16 @@ public class PopUpEditDetailJadwal extends javax.swing.JDialog {
                         }
                 });
 
-                hari.setForeground(new java.awt.Color(85, 65, 118));
-                hari.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Senin", "Selasa", "Rabu", "Kamis", "Jumat" }));
-                hari.setSelectedIndex(-1);
-                hari.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-                hari.setLabeText("Hari");
+                delete.setBackground(new java.awt.Color(255, 102, 102));
+                delete.setForeground(new java.awt.Color(255, 255, 255));
+                delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-remove-24.png"))); // NOI18N
+                delete.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                delete.setPreferredSize(new java.awt.Dimension(80, 30));
+                delete.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                deleteActionPerformed(evt);
+                        }
+                });
 
                 javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
                 jPanel1.setLayout(jPanel1Layout);
@@ -446,12 +471,18 @@ public class PopUpEditDetailJadwal extends javax.swing.JDialog {
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(38, 38, 38)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(durasi, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(hari, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(button2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(durasi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(hari, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(karyawan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(karyawan, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
                                                         .addComponent(jadwal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                         .addComponent(txtTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -460,12 +491,6 @@ public class PopUpEditDetailJadwal extends javax.swing.JDialog {
                                                         .addComponent(detailJadwal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                         .addComponent(detailKaryawan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                                 .addGap(30, 30, 30))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 75, Short.MAX_VALUE)
-                                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(69, Short.MAX_VALUE))
                 );
                 jPanel1Layout.setVerticalGroup(
                         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -487,11 +512,12 @@ public class PopUpEditDetailJadwal extends javax.swing.JDialog {
                                 .addComponent(hari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(10, 10, 10)
                                 .addComponent(durasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addGap(41, 41, 41)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(41, 41, 41))
+                                        .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(44, Short.MAX_VALUE))
                 );
 
                 javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -518,11 +544,6 @@ public class PopUpEditDetailJadwal extends javax.swing.JDialog {
 		// TODO add your handling code here:
         }//GEN-LAST:event_button2ActionPerformed
 
-        private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
-		// TODO add your handling code here:
-		verifyFields();
-        }//GEN-LAST:event_button1ActionPerformed
-
         private void detailKaryawanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detailKaryawanActionPerformed
 		// TODO add your handling code here:
 		getInfo("karyawan");
@@ -533,6 +554,17 @@ public class PopUpEditDetailJadwal extends javax.swing.JDialog {
 		getInfo("jadwal");
         }//GEN-LAST:event_detailJadwalActionPerformed
 
+        private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
+		// TODO add your handling code here:
+		//		insertAndLeave();
+		verifyFields();
+        }//GEN-LAST:event_button1ActionPerformed
+
+        private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+		// TODO add your handling code here:
+		deleteAndLeave();
+        }//GEN-LAST:event_deleteActionPerformed
+
 	public static enum MessageType {
 		CANCEL, OK
 	}
@@ -541,6 +573,7 @@ public class PopUpEditDetailJadwal extends javax.swing.JDialog {
         private com.presensikeun.swing.Button button1;
         private com.presensikeun.swing.Button button2;
         private com.presensikeun.swing.Button button3;
+        private com.presensikeun.swing.Button delete;
         private com.presensikeun.swing.Button detailJadwal;
         private com.presensikeun.swing.Button detailKaryawan;
         private com.presensikeun.swing.Combobox durasi;

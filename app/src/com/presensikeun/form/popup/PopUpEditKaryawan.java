@@ -296,7 +296,7 @@ public final class PopUpEditKaryawan extends javax.swing.JDialog {
                         .addGap(0, 40, Short.MAX_VALUE)
                 );
 
-                button1.setBackground(new java.awt.Color(153, 255, 102));
+                button1.setBackground(new java.awt.Color(0, 204, 0));
                 button1.setForeground(new java.awt.Color(255, 255, 255));
                 button1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-edit-24.png"))); // NOI18N
                 button1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
@@ -345,7 +345,7 @@ public final class PopUpEditKaryawan extends javax.swing.JDialog {
                         }
                 });
 
-                delete.setBackground(new java.awt.Color(255, 153, 153));
+                delete.setBackground(new java.awt.Color(255, 102, 102));
                 delete.setForeground(new java.awt.Color(255, 255, 255));
                 delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-remove-24.png"))); // NOI18N
                 delete.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
@@ -356,7 +356,7 @@ public final class PopUpEditKaryawan extends javax.swing.JDialog {
                         }
                 });
 
-                see.setBackground(new java.awt.Color(153, 153, 255));
+                see.setBackground(new java.awt.Color(153, 102, 255));
                 see.setForeground(new java.awt.Color(255, 255, 255));
                 see.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-uchiha-eyes-24.png"))); // NOI18N
                 see.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
@@ -405,9 +405,8 @@ public final class PopUpEditKaryawan extends javax.swing.JDialog {
                                 .addComponent(jabatan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(see, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(30, 30, 30))

@@ -441,11 +441,6 @@ public class PopUpAddDetailJadwal extends javax.swing.JDialog {
 		// TODO add your handling code here:
         }//GEN-LAST:event_button2ActionPerformed
 
-        private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
-		// TODO add your handling code here:
-		verifyFields();
-        }//GEN-LAST:event_button1ActionPerformed
-
         private void detailKaryawanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detailKaryawanActionPerformed
 		// TODO add your handling code here:
 		getInfo("karyawan");
@@ -455,6 +450,11 @@ public class PopUpAddDetailJadwal extends javax.swing.JDialog {
 		// TODO add your handling code here:
 		getInfo("jadwal");
         }//GEN-LAST:event_detailJadwalActionPerformed
+
+        private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
+		// TODO add your handling code here:
+		verifyFields();
+        }//GEN-LAST:event_button1ActionPerformed
 
 	public static enum MessageType {
 		CANCEL, OK
