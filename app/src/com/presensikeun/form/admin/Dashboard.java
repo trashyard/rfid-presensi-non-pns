@@ -28,18 +28,27 @@ public final class Dashboard extends javax.swing.JPanel {
 		card1.setData(new ModelCard(new ImageIcon(getClass().getResource("/com/presensikeun/images/icon/presensi.png")), "Total Presensi", getTotalPresensi()));
 		card2.setData(new ModelCard(new ImageIcon(getClass().getResource("/com/presensikeun/images/icon/karyawan.png")), "Karyawan", getKaryawan()));
 		card3.setData(new ModelCard(new ImageIcon(getClass().getResource("/com/presensikeun/images/icon/admin.png")), "Admin", getAdmin()));
-		// chart 
+		// diagram chart 
 		chart.addLegend("Minggu 1", new Color(245, 189, 135));
 		chart.addLegend("Minggu 2", new Color(135, 189, 245));
 		chart.addLegend("Minggu 3", new Color(189, 135, 245));
 		chart.addLegend("Minggu 4", new Color(245, 135, 189));
-		chart.addData(new ModelChart("Januari", new double[]{10, 5, 7, 10}));
-		chart.addData(new ModelChart("Februari", new double[]{5, 5, 4, 15}));
-		chart.addData(new ModelChart("Maret", new double[]{5, 15, 4, 20}));
-		chart.addData(new ModelChart("April", new double[]{30, 25, 4, 10}));
-		chart.addData(new ModelChart("Mei", new double[]{5, 10, 2, 15}));
-		chart.addData(new ModelChart("Juni", new double[]{1, 35, 4, 20}));
 
+		// ^ data
+		chart.addData(new ModelChart("Jan", new double[]{getWeekly(1, 1), getWeekly(1, 2), getWeekly(1, 3), getWeekly(1, 4)}));
+		chart.addData(new ModelChart("Feb", new double[]{getWeekly(2, 1), getWeekly(2, 2), getWeekly(2, 3), getWeekly(2, 4)}));
+		chart.addData(new ModelChart("Mar", new double[]{getWeekly(3, 1), getWeekly(3, 2), getWeekly(3, 3), getWeekly(3, 4)}));
+		chart.addData(new ModelChart("Apr", new double[]{getWeekly(4, 1), getWeekly(4, 2), getWeekly(4, 3), getWeekly(4, 4)}));
+		chart.addData(new ModelChart("Mei", new double[]{getWeekly(5, 1), getWeekly(5, 2), getWeekly(5, 3), getWeekly(5, 4)}));
+		chart.addData(new ModelChart("Juni", new double[]{getWeekly(6, 1), getWeekly(6, 2), getWeekly(6, 3), getWeekly(6, 4)}));
+		chart.addData(new ModelChart("Juli", new double[]{getWeekly(7, 1), getWeekly(7, 2), getWeekly(7, 3), getWeekly(7, 4)}));
+		chart.addData(new ModelChart("Agu", new double[]{getWeekly(8, 1), getWeekly(8, 2), getWeekly(8, 3), getWeekly(8, 4)}));
+		chart.addData(new ModelChart("Sep", new double[]{getWeekly(9, 1), getWeekly(9, 2), getWeekly(9, 3), getWeekly(9, 4)}));
+		chart.addData(new ModelChart("Okt", new double[]{getWeekly(10, 1), getWeekly(10, 2), getWeekly(10, 3), getWeekly(10, 4)}));
+		chart.addData(new ModelChart("Nov", new double[]{getWeekly(11, 1), getWeekly(11, 2), getWeekly(11, 3), getWeekly(11, 4)}));
+		chart.addData(new ModelChart("Des", new double[]{getWeekly(12, 1), getWeekly(12, 2), getWeekly(12, 3), getWeekly(12, 4)}));
+
+		// pie chart
 		// telat hadir sakit izin alpa
 		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(227, 148, 0), "Jan - Mar", getMonth("1", "3")));
 		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(92, 204, 150), "Apr - Jun", getMonth("4", "6")));
@@ -100,6 +109,22 @@ public final class Dashboard extends javax.swing.JPanel {
 		try {
 
 			String sql = "select count(*) from tb_presensi where month(tanggal) between " + first + " and " + second + "";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				tot = rs.getDouble(1);
+			}
+		} catch (SQLException ex) {
+			tot = 0;
+		}
+		return tot;
+	}
+
+	private double getWeekly(int month, int week) {
+		double tot = 0;
+		try {
+
+			String sql = "SELECT count(*) from tb_presensi where month(tanggal) = " + month + " && FLOOR((DayOfMonth(tanggal)-1)/7)+1 = " + week + "";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			if (rs.next()) {
