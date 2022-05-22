@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 21, 2022 at 10:56 AM
+-- Generation Time: May 22, 2022 at 07:38 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -28,12 +28,12 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `tb_detail_jadwal` (
-  `id` varchar(7) NOT NULL,
+  `id` varchar(12) NOT NULL,
   `hari` int(1) NOT NULL,
   `jam` time DEFAULT NULL,
   `durasi` time DEFAULT NULL,
   `id_karyawan` int(11) NOT NULL,
-  `id_jadwal` varchar(6) NOT NULL
+  `id_jadwal` varchar(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -41,7 +41,8 @@ CREATE TABLE `tb_detail_jadwal` (
 --
 
 INSERT INTO `tb_detail_jadwal` (`id`, `hari`, `jam`, `durasi`, `id_karyawan`, `id_jadwal`) VALUES
-('JD00001', 5, '15:00:00', '02:00:00', 3, 'J00011');
+('JD00001', 1, '06:00:00', '02:00:00', 2, 'JBINDORPL1.1'),
+('JD00002', 6, '11:00:00', '01:00:00', 2, 'JBINDORPL1.1');
 
 --
 -- Triggers `tb_detail_jadwal`
@@ -107,9 +108,9 @@ DELIMITER ;
 --
 
 CREATE TABLE `tb_jadwal` (
-  `id` varchar(6) NOT NULL,
-  `id_mapel` int(11) DEFAULT NULL,
-  `id_kelas` int(11) DEFAULT NULL,
+  `id` varchar(12) NOT NULL,
+  `id_mapel` varchar(11) DEFAULT NULL,
+  `id_kelas` varchar(10) DEFAULT NULL,
   `status` enum('datang','mengajar','pulang') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -118,20 +119,24 @@ CREATE TABLE `tb_jadwal` (
 --
 
 INSERT INTO `tb_jadwal` (`id`, `id_mapel`, `id_kelas`, `status`) VALUES
-('J00011', 1, 1, 'mengajar'),
-('J00021', 2, 1, 'mengajar'),
-('J00031', 3, 1, 'mengajar'),
-('J00041', 4, 1, 'mengajar'),
-('J00051', 5, 1, 'mengajar'),
-('J00052', 5, 2, 'mengajar'),
-('J00061', 6, 1, 'mengajar');
+('J0ALGOTKJ1.3', 'ALGO', 'TKJ1.3', 'mengajar'),
+('JBINDORPL1.1', 'BINDO', 'RPL1.1', 'mengajar'),
+('JBINDOTKJ1.3', 'BINDO', 'TKJ1.3', 'mengajar'),
+('JFISIKRPL1.1', 'FISIKA', 'RPL1.1', 'mengajar'),
+('JFISIKTKJ1.3', 'FISIKA', 'TKJ1.3', 'mengajar');
 
 --
 -- Triggers `tb_jadwal`
 --
 DELIMITER $$
 CREATE TRIGGER `format_idJadwal` BEFORE INSERT ON `tb_jadwal` FOR EACH ROW BEGIN
-		SET NEW.id = CONCAT("J", RIGHT(CONCAT('00000', NEW.id_mapel, NEW.id_kelas),5));
+		SET NEW.id = CONCAT("J", RIGHT(CONCAT('0000', LEFT(NEW.id_mapel, 5), NEW.id_kelas),11));
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `update_idJadwal` BEFORE UPDATE ON `tb_jadwal` FOR EACH ROW BEGIN
+		SET NEW.id = CONCAT("J", RIGHT(CONCAT('000000', LEFT(NEW.id_mapel, 3), NEW.id_kelas),9)) ;
 END
 $$
 DELIMITER ;
@@ -182,12 +187,12 @@ CREATE TABLE `tb_karyawan` (
 --
 
 INSERT INTO `tb_karyawan` (`id`, `nik`, `username`, `password`, `nama`, `status`, `jenis_kelamin`, `id_jabatan`) VALUES
-(1, '3525010609510002', 'ADM001', 'admin', 'Yomama', 'admin', 'P', 'JB001'),
-(2, '3525017006750042', 'r', 'r', 'Raihan', 'admin', 'L', 'JB003'),
+(1, '3525010609510002', 'ADM001', 'admin', 'Yomama', 'admin', 'P', 'JB003'),
+(2, '3525017006750017', 'r', 'r', 'Raihan', 'admin', 'L', 'JB003'),
 (3, '3525016611770002', 'a', 'a', 'Andini', 'user', 'P', 'JB004'),
 (4, '3525016812770001', NULL, NULL, 'Azel', 'user', 'P', 'JB003'),
 (7, '3525012005596332', NULL, NULL, 'Devi', 'user', 'P', 'JB003'),
-(8, '3525012005534534', NULL, NULL, 'David', 'user', 'P', 'JB001'),
+(8, '3525012005534534', NULL, NULL, 'David', 'user', 'P', 'JB003'),
 (9, '3525012005598643', NULL, NULL, 'Akber', 'user', 'P', 'JB001'),
 (10, '3203020402492049', NULL, NULL, 'Elizabeth', 'user', 'P', 'JB003');
 
@@ -198,8 +203,7 @@ INSERT INTO `tb_karyawan` (`id`, `nik`, `username`, `password`, `nama`, `status`
 --
 
 CREATE TABLE `tb_kelas` (
-  `id` int(11) NOT NULL,
-  `id_kelas` varchar(10) NOT NULL,
+  `id` varchar(10) NOT NULL,
   `nama` varchar(10) NOT NULL,
   `angkatan` enum('1','2','3') NOT NULL,
   `id_ruang` int(11) DEFAULT NULL,
@@ -210,9 +214,25 @@ CREATE TABLE `tb_kelas` (
 -- Dumping data for table `tb_kelas`
 --
 
-INSERT INTO `tb_kelas` (`id`, `id_kelas`, `nama`, `angkatan`, `id_ruang`, `id_jurusan`) VALUES
-(1, 'RPL1.1', 'RPL 1', '1', 1, 1),
-(2, 'RPL2.1', 'RPL 2', '1', 2, 1);
+INSERT INTO `tb_kelas` (`id`, `nama`, `angkatan`, `id_ruang`, `id_jurusan`) VALUES
+('RPL1.1', 'RPL 1', '1', 1, 1),
+('TKJ1.3', 'TKJ 1', '3', 5, 2);
+
+--
+-- Triggers `tb_kelas`
+--
+DELIMITER $$
+CREATE TRIGGER `format_idKelas` BEFORE INSERT ON `tb_kelas` FOR EACH ROW BEGIN
+	SET NEW.id = CONCAT(REPLACE(NEW.nama, ' ', ''), ".", NEW.angkatan);
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `update_idKelas` BEFORE UPDATE ON `tb_kelas` FOR EACH ROW BEGIN
+	SET NEW.id = CONCAT(REPLACE(NEW.nama, ' ', ''), ".", NEW.angkatan);
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -221,8 +241,7 @@ INSERT INTO `tb_kelas` (`id`, `id_kelas`, `nama`, `angkatan`, `id_ruang`, `id_ju
 --
 
 CREATE TABLE `tb_mapel` (
-  `id` int(11) NOT NULL,
-  `kode` varchar(11) DEFAULT NULL,
+  `id` varchar(11) NOT NULL,
   `nama` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -230,13 +249,13 @@ CREATE TABLE `tb_mapel` (
 -- Dumping data for table `tb_mapel`
 --
 
-INSERT INTO `tb_mapel` (`id`, `kode`, `nama`) VALUES
-(1, 'MATDAS', 'Matematika Dasar'),
-(2, 'PEMDAS', 'Pemrograman Dasar'),
-(3, 'FISIKA', 'Fisika'),
-(4, 'SEJINDO', 'Sejarah Indonesia'),
-(5, 'BINDO', 'Bahasa Indonesia'),
-(6, 'ALGO', 'Algoritma');
+INSERT INTO `tb_mapel` (`id`, `nama`) VALUES
+('ALGO', 'Algoritma'),
+('BINDO', 'Bahasa Indonesia'),
+('FISIKA', 'Fisika'),
+('MATDAS', 'Matematika Dasar'),
+('PEMDAS', 'Pemrograman Dasar'),
+('SEJINDO', 'Sejarah Indonesia');
 
 -- --------------------------------------------------------
 
@@ -248,7 +267,7 @@ CREATE TABLE `tb_presensi` (
   `id` int(11) NOT NULL,
   `tanggal` datetime NOT NULL DEFAULT current_timestamp(),
   `keterangan` enum('Hadir','Telat','Alpa','?') CHARACTER SET latin1 COLLATE latin1_general_cs NOT NULL,
-  `id_detail_jadwal` varchar(7) NOT NULL
+  `id_detail_jadwal` varchar(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -256,7 +275,7 @@ CREATE TABLE `tb_presensi` (
 --
 
 INSERT INTO `tb_presensi` (`id`, `tanggal`, `keterangan`, `id_detail_jadwal`) VALUES
-(3, '2022-05-21 15:41:32', 'Telat', 'JD00001');
+(4, '2022-05-22 11:52:20', 'Alpa', 'JD00002');
 
 --
 -- Triggers `tb_presensi`
@@ -359,8 +378,7 @@ ALTER TABLE `tb_kelas`
 -- Indexes for table `tb_mapel`
 --
 ALTER TABLE `tb_mapel`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_mapel` (`kode`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `tb_presensi`
@@ -389,25 +407,13 @@ ALTER TABLE `tb_jurusan`
 -- AUTO_INCREMENT for table `tb_karyawan`
 --
 ALTER TABLE `tb_karyawan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
--- AUTO_INCREMENT for table `tb_kelas`
---
-ALTER TABLE `tb_kelas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `tb_mapel`
---
-ALTER TABLE `tb_mapel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tb_presensi`
 --
 ALTER TABLE `tb_presensi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tb_ruang`
@@ -430,9 +436,8 @@ ALTER TABLE `tb_detail_jadwal`
 -- Constraints for table `tb_jadwal`
 --
 ALTER TABLE `tb_jadwal`
-  ADD CONSTRAINT `tb_jadwal_ibfk_6` FOREIGN KEY (`id_mapel`) REFERENCES `tb_mapel` (`id`),
-  ADD CONSTRAINT `tb_jadwal_ibfk_7` FOREIGN KEY (`id_mapel`) REFERENCES `tb_mapel` (`id`),
-  ADD CONSTRAINT `tb_jadwal_ibfk_8` FOREIGN KEY (`id_kelas`) REFERENCES `tb_kelas` (`id`);
+  ADD CONSTRAINT `tb_jadwal_ibfk_8` FOREIGN KEY (`id_kelas`) REFERENCES `tb_kelas` (`id`),
+  ADD CONSTRAINT `tb_jadwal_ibfk_9` FOREIGN KEY (`id_mapel`) REFERENCES `tb_mapel` (`id`);
 
 --
 -- Constraints for table `tb_karyawan`
