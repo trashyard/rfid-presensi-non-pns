@@ -442,7 +442,7 @@ public class PopUpEditDetailJadwal extends javax.swing.JDialog {
                 hari.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
                 hari.setLabeText("Hari");
 
-                button1.setBackground(new java.awt.Color(102, 255, 51));
+                button1.setBackground(new java.awt.Color(0, 204, 0));
                 button1.setForeground(new java.awt.Color(255, 255, 255));
                 button1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icons/icons8-edit-24.png"))); // NOI18N
                 button1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N

@@ -1,11 +1,19 @@
 package com.presensikeun.form.popup;
 
+import com.presensikeun.controller.Koneksi;
 import com.presensikeun.swing.Glass;
+import com.presensikeun.swing.Notification;
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import org.jdesktop.animation.timing.Animator;
@@ -19,12 +27,122 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
 	private final MessageType messageType = MessageType.CANCEL;
 	private final JFrame fram;
 
+	Connection con = null;
+	ResultSet rs = null;
+	PreparedStatement pst = null;
+
 	public PopUpAddJadwal(JFrame fram) {
 		super(fram, true);
 		this.fram = fram;
+		this.con = Koneksi.getKoneksi();
 		initComponents();
 		init();
-		txtTime.disable();
+
+		// initialize
+		getMapel();
+		getKelas();
+	}
+
+	private void getMapel() {
+		mapel.removeAllItems();
+		try {
+			String sql = "select id from tb_mapel";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				mapel.addItem(rs.getString(1));
+			}
+		} catch (SQLException ex) {
+			System.out.println("error: " + ex);
+		}
+		mapel.setSelectedIndex(-1);
+	}
+
+	private void getKelas() {
+		kelas.removeAllItems();
+		try {
+			String sql = "select id from tb_kelas";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				kelas.addItem(rs.getString(1));
+			}
+		} catch (SQLException ex) {
+			System.out.println("error: " + ex);
+		}
+		kelas.setSelectedIndex(-1);
+	}
+
+	private void getInfo(String type) {
+		String sql = null;
+		try {
+			switch (type) {
+				case "mapel":
+					sql = "select nama from tb_mapel where id = '" + mapel.getSelectedItem() + "'";
+					pst = con.prepareStatement(sql);
+					rs = pst.executeQuery();
+					if (rs.next()) {
+						notify("info", "Mata Pelajaran" + ": " + rs.getString(1));
+					}
+					break;
+				case "kelas":
+					sql = "select nama, angkatan from tb_kelas where id = '" + kelas.getSelectedItem() + "'";
+					pst = con.prepareStatement(sql);
+					rs = pst.executeQuery();
+					if (rs.next()) {
+						notify("info", rs.getString(1) + ", Kelas " + rs.getString(2));
+					}
+					break;
+				default:
+					break;
+			}
+		} catch (SQLException ex) {
+			notify("info", "Mohon isi terlebih dahulu. err: " + ex.getMessage());
+		}
+
+	}
+
+	private void insertAndLeave() {
+		try {
+			String sql = "insert into tb_jadwal values ('', '" + mapel.getSelectedItem() + "', '" + kelas.getSelectedItem() + "', 'mengajar')";
+			System.out.println(sql);
+			pst = con.prepareStatement(sql);
+			pst.executeUpdate();
+			notify("success", "Insert Berhasil!");
+			closeMessage();
+		} catch (SQLException ex) {
+			System.out.println("error: " + ex.getMessage());
+		}
+	}
+
+	private void verifyFields() {
+		if (mapel.getSelectedIndex() == -1) {
+			notify("warning", "Mohon isi ID Mapel");
+		} else if (kelas.getSelectedIndex() == -1) {
+			notify("warning", "Mohon isi ID Kelas");
+		} else {
+			insertAndLeave();
+		}
+
+	}
+
+	private void notify(String version, String msg) {
+		Notification panel;
+		switch (version) {
+			case "success":
+				panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.SUCCESS, Notification.Location.TOP_CENTER, msg);
+				break;
+			case "warning":
+				panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.WARNING, Notification.Location.TOP_CENTER, msg);
+				break;
+			case "info":
+				panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.INFO, Notification.Location.TOP_CENTER, msg);
+				break;
+			default:
+				panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.INFO, Notification.Location.TOP_CENTER, "Maksud?");
+				break;
+		}
+		panel.showNotification();
 	}
 
 	private void init() {
@@ -95,16 +213,14 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
                 timePicker1 = new com.presensikeun.swing.TimePicker();
                 jPanel1 = new javax.swing.JPanel();
                 jPanel2 = new javax.swing.JPanel();
-                combobox1 = new com.presensikeun.swing.Combobox();
-                txtTime = new com.presensikeun.swing.TextField();
-                button3 = new com.presensikeun.swing.Button();
-                combobox2 = new com.presensikeun.swing.Combobox();
+                mapel = new com.presensikeun.swing.Combobox();
+                kelas = new com.presensikeun.swing.Combobox();
                 button2 = new com.presensikeun.swing.Button();
                 button1 = new com.presensikeun.swing.Button();
-                jLabel1 = new javax.swing.JLabel();
+                detailMapel = new com.presensikeun.swing.Button();
+                detailKelas = new com.presensikeun.swing.Button();
 
                 timePicker1.setForeground(new java.awt.Color(85, 65, 118));
-                timePicker1.setDisplayText(txtTime);
 
                 setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
                 setUndecorated(true);
@@ -124,23 +240,13 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
                         .addGap(0, 40, Short.MAX_VALUE)
                 );
 
-                combobox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", " " }));
+                mapel.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", " " }));
+                mapel.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                mapel.setLabeText("ID Mapel");
 
-                txtTime.setEditable(false);
-                txtTime.setBackground(new java.awt.Color(255, 255, 255));
-                txtTime.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-                txtTime.setLabelText("Date");
-
-                button3.setBackground(new java.awt.Color(204, 204, 204));
-                button3.setForeground(new java.awt.Color(255, 255, 255));
-                button3.setText("...");
-                button3.addActionListener(new java.awt.event.ActionListener() {
-                        public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                button3ActionPerformed(evt);
-                        }
-                });
-
-                combobox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", " " }));
+                kelas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", " " }));
+                kelas.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                kelas.setLabeText("ID Kelas");
 
                 button2.setBackground(new java.awt.Color(255, 0, 51));
                 button2.setForeground(new java.awt.Color(255, 255, 255));
@@ -164,7 +270,25 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
                         }
                 });
 
-                jLabel1.setText("kontol");
+                detailMapel.setBackground(new java.awt.Color(85, 65, 118));
+                detailMapel.setForeground(new java.awt.Color(255, 255, 255));
+                detailMapel.setText("D");
+                detailMapel.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                detailMapel.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                detailMapelActionPerformed(evt);
+                        }
+                });
+
+                detailKelas.setBackground(new java.awt.Color(85, 65, 118));
+                detailKelas.setForeground(new java.awt.Color(255, 255, 255));
+                detailKelas.setText("D");
+                detailKelas.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                detailKelas.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                detailKelasActionPerformed(evt);
+                        }
+                });
 
                 javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
                 jPanel1.setLayout(jPanel1Layout);
@@ -172,43 +296,37 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
                         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addContainerGap(38, Short.MAX_VALUE)
+                                .addGap(38, 38, 38)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(combobox2, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                                                        .addComponent(txtTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                        .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                .addComponent(combobox1, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addGap(30, 30, 30))
+                                                        .addComponent(kelas, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(mapel, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(detailMapel, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                                                        .addComponent(detailKelas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addGap(34, 34, 34))
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                .addGap(0, 0, Short.MAX_VALUE)
                                                 .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(18, 18, 18)
                                                 .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(60, 60, 60))))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(150, 150, 150)
-                                .addComponent(jLabel1)
-                                .addGap(0, 0, Short.MAX_VALUE))
                 );
                 jPanel1Layout.setVerticalGroup(
                         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(59, 59, 59)
-                                .addComponent(combobox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(mapel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(detailMapel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(13, 13, 13)
-                                .addComponent(combobox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(49, 49, 49)
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(kelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(detailKelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -229,11 +347,6 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
                 pack();
         }// </editor-fold>//GEN-END:initComponents
 
-        private void button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button3ActionPerformed
-		// TODO add your handling code here:
-		timePicker1.showPopup(this, (getWidth() - timePicker1.getPreferredSize().width) / 2, (getHeight() - timePicker1.getPreferredSize().height) / 2);
-        }//GEN-LAST:event_button3ActionPerformed
-
         private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
 		closeMessage();
 		// TODO add your handling code here:
@@ -241,7 +354,18 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
 
         private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
 		// TODO add your handling code here:
+		verifyFields();
         }//GEN-LAST:event_button1ActionPerformed
+
+        private void detailMapelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detailMapelActionPerformed
+		// TODO add your handling code here:
+		getInfo("mapel");
+        }//GEN-LAST:event_detailMapelActionPerformed
+
+        private void detailKelasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detailKelasActionPerformed
+		// TODO add your handling code here:
+		getInfo("kelas");
+        }//GEN-LAST:event_detailKelasActionPerformed
 
 	public static enum MessageType {
 		CANCEL, OK
@@ -250,13 +374,12 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private com.presensikeun.swing.Button button1;
         private com.presensikeun.swing.Button button2;
-        private com.presensikeun.swing.Button button3;
-        private com.presensikeun.swing.Combobox combobox1;
-        private com.presensikeun.swing.Combobox combobox2;
-        private javax.swing.JLabel jLabel1;
+        private com.presensikeun.swing.Button detailKelas;
+        private com.presensikeun.swing.Button detailMapel;
         private javax.swing.JPanel jPanel1;
         private javax.swing.JPanel jPanel2;
+        private com.presensikeun.swing.Combobox kelas;
+        private com.presensikeun.swing.Combobox mapel;
         private com.presensikeun.swing.TimePicker timePicker1;
-        private com.presensikeun.swing.TextField txtTime;
         // End of variables declaration//GEN-END:variables
 }

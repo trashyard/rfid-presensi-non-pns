@@ -71,7 +71,7 @@ public final class Jadwal extends javax.swing.JPanel {
 		model.addColumn("Kelas");
 		try {
 
-			String sql = "select j.id, m.kode, m.nama, r.nama, concat(k.id_kelas, \": Kelas \", k.angkatan, \" - \", k.nama)  from tb_jadwal as j join tb_mapel as m on j.id_mapel = m.id join tb_kelas as k on j.id_kelas = k.id join tb_ruang as r on k.id_ruang = r.id";
+			String sql = "select j.id, m.id, m.nama, r.nama, concat(k.id, \": Kelas \", k.angkatan, \" - \", k.nama)  from tb_jadwal as j join tb_mapel as m on j.id_mapel = m.id join tb_kelas as k on j.id_kelas = k.id join tb_ruang as r on k.id_ruang = r.id";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {

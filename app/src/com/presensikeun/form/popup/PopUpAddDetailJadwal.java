@@ -86,11 +86,11 @@ public class PopUpAddDetailJadwal extends javax.swing.JDialog {
 					}
 					break;
 				case "jadwal":
-					sql = "select m.nama, k.nama from tb_jadwal as j join tb_mapel as m on j.id_mapel = m.id join tb_kelas as k on j.id_kelas = k.id where j.id = '" + jadwal.getSelectedItem() + "'";
+					sql = "select m.nama, k.nama, k.angkatan from tb_jadwal as j join tb_mapel as m on j.id_mapel = m.id join tb_kelas as k on j.id_kelas = k.id where j.id = '" + jadwal.getSelectedItem() + "'";
 					pst = con.prepareStatement(sql);
 					rs = pst.executeQuery();
 					if (rs.next()) {
-						notify("info", rs.getString(1) + ": " + rs.getString(2));
+						notify("info", rs.getString(1) + ": " + rs.getString(2) + " Kelas: " + rs.getString(3));
 					}
 					break;
 				default:
