@@ -40,7 +40,8 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
 
 		// initialize
 		getMapel();
-		getKelas();
+		getKelas("");
+		getJurusan();
 	}
 
 	private void getMapel() {
@@ -58,10 +59,10 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
 		mapel.setSelectedIndex(-1);
 	}
 
-	private void getKelas() {
+	private void getKelas(String jurusan) {
 		kelas.removeAllItems();
 		try {
-			String sql = "select id from tb_kelas";
+			String sql = "select k.id from tb_kelas as k join tb_jurusan as j on k.id_jurusan = j.id where j.id_jurusan like '%" + jurusan + "%'";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -71,6 +72,21 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
 			System.out.println("error: " + ex);
 		}
 		kelas.setSelectedIndex(-1);
+	}
+
+	private void getJurusan() {
+		jurusan.removeAllItems();
+		try {
+			String sql = "select id_jurusan from tb_jurusan";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				jurusan.addItem(rs.getString(1));
+			}
+		} catch (SQLException ex) {
+			System.out.println("error: " + ex);
+		}
+		jurusan.setSelectedIndex(-1);
 	}
 
 	private void getInfo(String type) {
@@ -111,6 +127,7 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
 			notify("success", "Insert Berhasil!");
 			closeMessage();
 		} catch (SQLException ex) {
+			notify("warning", "Jadwal sudah ada");
 			System.out.println("error: " + ex.getMessage());
 		}
 	}
@@ -219,6 +236,7 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
                 button1 = new com.presensikeun.swing.Button();
                 detailMapel = new com.presensikeun.swing.Button();
                 detailKelas = new com.presensikeun.swing.Button();
+                jurusan = new com.presensikeun.swing.Combobox();
 
                 timePicker1.setForeground(new java.awt.Color(85, 65, 118));
 
@@ -290,6 +308,20 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
                         }
                 });
 
+                jurusan.setForeground(new java.awt.Color(85, 65, 118));
+                jurusan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", " " }));
+                jurusan.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                jurusan.setLabeText("Cari Jurusan");
+                jurusan.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+                        public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                        }
+                        public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                                jurusanPopupMenuWillBecomeInvisible(evt);
+                        }
+                        public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+                        }
+                });
+
                 javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
                 jPanel1.setLayout(jPanel1Layout);
                 jPanel1Layout.setHorizontalGroup(
@@ -299,9 +331,12 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
                                 .addGap(38, 38, 38)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(kelas, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(mapel, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                        .addComponent(mapel, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                .addComponent(jurusan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(kelas, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(detailMapel, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
@@ -322,11 +357,13 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(mapel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(detailMapel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(13, 13, 13)
+                                .addGap(10, 10, 10)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(kelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(kelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jurusan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addComponent(detailKelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -367,6 +404,11 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
 		getInfo("kelas");
         }//GEN-LAST:event_detailKelasActionPerformed
 
+        private void jurusanPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_jurusanPopupMenuWillBecomeInvisible
+		// TODO add your handling code here:
+		getKelas((String) jurusan.getSelectedItem());
+        }//GEN-LAST:event_jurusanPopupMenuWillBecomeInvisible
+
 	public static enum MessageType {
 		CANCEL, OK
 	}
@@ -378,7 +420,9 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
         private com.presensikeun.swing.Button detailMapel;
         private javax.swing.JPanel jPanel1;
         private javax.swing.JPanel jPanel2;
+        private com.presensikeun.swing.Combobox jurusan;
         private com.presensikeun.swing.Combobox kelas;
+        private com.presensikeun.swing.Combobox kelas1;
         private com.presensikeun.swing.Combobox mapel;
         private com.presensikeun.swing.TimePicker timePicker1;
         // End of variables declaration//GEN-END:variables
