@@ -19,10 +19,10 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-//import net.sf.jasperreports.engine.JRException;
-//import net.sf.jasperreports.engine.JasperFillManager;
-//import net.sf.jasperreports.engine.JasperPrint;
-//import net.sf.jasperreports.view.JasperViewer;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 
@@ -127,16 +127,16 @@ public final class PopUpEditKaryawan extends javax.swing.JDialog {
 	}
 
 	private void getBarcode() {
-//            try{
-//                String namaFile = "/com/presensikeun/model/Barcode.jasper";
-//                InputStream Report;
-//                Report = getClass().getResourceAsStream(namaFile);
-//                HashMap param = new HashMap();
-//                param.put("nik", nik.getText());
-//                JasperPrint JPrint = JasperFillManager.fillReport(Report, param, con);
-//                JasperViewer.viewReport(JPrint, false);
-//            }catch(JRException ex){
-//            }
+		try {
+			String namaFile = "/com/presensikeun/model/Barcode.jasper";
+			InputStream Report;
+			Report = getClass().getResourceAsStream(namaFile);
+			HashMap param = new HashMap();
+			param.put("nik", nik.getText());
+			JasperPrint JPrint = JasperFillManager.fillReport(Report, param, con);
+			JasperViewer.viewReport(JPrint, false);
+		} catch (JRException ex) {
+		}
 	}
 
 	private void addJabatan() {

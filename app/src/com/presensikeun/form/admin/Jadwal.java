@@ -90,10 +90,13 @@ public final class Jadwal extends javax.swing.JPanel {
 			mode = false;
 			// abis load detail jadwal set mode ke false
 			// berarti mode false == state detail jadwal
+
+			switchBtn.setText("Ke Jadwal");
 		} else {
 			tableJadwal();
 			mode = true;
 			// sama, kek di atas intinya tapi jadwal hahaha
+			switchBtn.setText("Ke Detail");
 		}
 	}
 
@@ -209,7 +212,7 @@ public final class Jadwal extends javax.swing.JPanel {
                 panelShadow1 = new com.presensikeun.swing.PanelShadow();
                 searchPresensi = new com.presensikeun.swing.Searchbar();
                 jLabel2 = new javax.swing.JLabel();
-                button1 = new com.presensikeun.swing.Button();
+                switchBtn = new com.presensikeun.swing.Button();
                 panelShadow2 = new com.presensikeun.swing.PanelShadow();
                 jScrollPane1 = new javax.swing.JScrollPane();
                 table1 = new com.presensikeun.swing.Table();
@@ -282,13 +285,13 @@ public final class Jadwal extends javax.swing.JPanel {
                         }
                 });
 
-                button1.setBackground(new java.awt.Color(85, 65, 118));
-                button1.setForeground(new java.awt.Color(255, 255, 255));
-                button1.setText("Switch!");
-                button1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-                button1.addActionListener(new java.awt.event.ActionListener() {
+                switchBtn.setBackground(new java.awt.Color(85, 65, 118));
+                switchBtn.setForeground(new java.awt.Color(255, 255, 255));
+                switchBtn.setText("Switch!");
+                switchBtn.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                switchBtn.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                button1ActionPerformed(evt);
+                                switchBtnActionPerformed(evt);
                         }
                 });
 
@@ -298,7 +301,7 @@ public final class Jadwal extends javax.swing.JPanel {
                         panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createSequentialGroup()
                                 .addGap(14, 14, 14)
-                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(switchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(searchPresensi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -312,7 +315,7 @@ public final class Jadwal extends javax.swing.JPanel {
                                         .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                 .addComponent(searchPresensi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addComponent(switchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 0, Short.MAX_VALUE))
                 );
 
@@ -407,13 +410,12 @@ public final class Jadwal extends javax.swing.JPanel {
 		}
         }//GEN-LAST:event_table1MousePressed
 
-        private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
+        private void switchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_switchBtnActionPerformed
 		// TODO add your handling code here:
 		switchTable();
-        }//GEN-LAST:event_button1ActionPerformed
+        }//GEN-LAST:event_switchBtnActionPerformed
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
-        private com.presensikeun.swing.Button button1;
         private javax.swing.JLabel jLabel1;
         private javax.swing.JLabel jLabel2;
         private javax.swing.JMenu jMenu1;
@@ -426,6 +428,7 @@ public final class Jadwal extends javax.swing.JPanel {
         private com.presensikeun.swing.PanelShadow panelShadow1;
         private com.presensikeun.swing.PanelShadow panelShadow2;
         private com.presensikeun.swing.Searchbar searchPresensi;
+        private com.presensikeun.swing.Button switchBtn;
         private com.presensikeun.swing.Table table1;
         // End of variables declaration//GEN-END:variables
 }
