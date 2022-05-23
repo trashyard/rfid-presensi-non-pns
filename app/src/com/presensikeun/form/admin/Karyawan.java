@@ -5,13 +5,11 @@ import com.presensikeun.event.EventCallBack;
 import com.presensikeun.event.EventTextField;
 import com.presensikeun.form.popup.PopUpAddKaryawan;
 import com.presensikeun.form.popup.PopUpEditKaryawan;
-import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JFrame;
-import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 

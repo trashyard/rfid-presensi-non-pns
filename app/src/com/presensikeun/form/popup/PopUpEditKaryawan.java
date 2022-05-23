@@ -19,10 +19,10 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.view.JasperViewer;
+//import net.sf.jasperreports.engine.JRException;
+//import net.sf.jasperreports.engine.JasperFillManager;
+//import net.sf.jasperreports.engine.JasperPrint;
+//import net.sf.jasperreports.view.JasperViewer;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 
@@ -125,19 +125,19 @@ public final class PopUpEditKaryawan extends javax.swing.JDialog {
 			jk.setSelectedItem("Perempuan");
 		}
 	}
-        
-        private void getBarcode(){
-            try{
-                String namaFile = "/com/presensikeun/model/Barcode.jasper";
-                InputStream Report;
-                Report = getClass().getResourceAsStream(namaFile);
-                HashMap param = new HashMap();
-                param.put("nik", nik.getText());
-                JasperPrint JPrint = JasperFillManager.fillReport(Report, param, con);
-                JasperViewer.viewReport(JPrint, false);
-            }catch(JRException ex){
-            }
-        }
+
+	private void getBarcode() {
+//            try{
+//                String namaFile = "/com/presensikeun/model/Barcode.jasper";
+//                InputStream Report;
+//                Report = getClass().getResourceAsStream(namaFile);
+//                HashMap param = new HashMap();
+//                param.put("nik", nik.getText());
+//                JasperPrint JPrint = JasperFillManager.fillReport(Report, param, con);
+//                JasperViewer.viewReport(JPrint, false);
+//            }catch(JRException ex){
+//            }
+	}
 
 	private void addJabatan() {
 		jabatan.removeAllItems();
@@ -524,8 +524,8 @@ public final class PopUpEditKaryawan extends javax.swing.JDialog {
 
         private void seeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seeActionPerformed
 		// TODO add your handling code here:
-                getBarcode();
-                closeMessage();
+		getBarcode();
+		closeMessage();
         }//GEN-LAST:event_seeActionPerformed
 
 	public static enum MessageType {

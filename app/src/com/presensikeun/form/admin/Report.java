@@ -11,16 +11,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import javax.swing.table.DefaultTableModel;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.view.JasperViewer;
 
 public final class Report extends javax.swing.JPanel {
 
 	Connection con = null;
 	ResultSet rs = null;
 	PreparedStatement pst = null;
+
+	private static String OS = System.getProperty("os.name").toLowerCase();
 
 	public Report() {
 		this.con = Koneksi.getKoneksi();
@@ -108,41 +106,55 @@ public final class Report extends javax.swing.JPanel {
 		});
 
 	}
-        
-        private void getPDF(){
-            
-        String filename =
-            "C:\\Documents and Settings\\" +System.getProperty("user.name")+ "\\My Documents\\NetBeansProjects\\myjdbcfile.csv";
-        try {
-            FileWriter fw = new FileWriter(filename);
-            fw.append("NIK");
-                fw.append(',');
-                fw.append("KONTOL");
-                fw.append(',');
-                fw.append("WKWK");
-                fw.append(',');
-                fw.append("LOL");
-                fw.append('\n');
-            String sql = "select k.nik, dj.hari, dj.jam as \"jam mulai\", addtime(dj.jam, dj.durasi) as \"jam selesai\", k.nama, m.nama as \"mapel\", r.nama as \"ruangan\", p.tanggal as \"masuk\" from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id join tb_karyawan as k on k.id = dj.id_karyawan join tb_jadwal as j on j.id = dj.id_jadwal join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on kls.id_ruang = r.id";
-            pst = con.prepareStatement(sql);
-            rs = pst.executeQuery();
-            while (rs.next()) {
-                fw.append(rs.getString(1));
-                fw.append(',');
-                fw.append(rs.getString(2));
-                fw.append(',');
-                fw.append(rs.getString(3));
-                fw.append(',');
-                fw.append(rs.getString(4));
-                fw.append('\n');
-            }
-            fw.flush();
-            fw.close();
-            System.out.println("CSV File is created successfully.");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        }
+
+	public static boolean isUnix() {
+		return (OS.contains("nix") || OS.contains("nux") || OS.contains("aix"));
+	}
+
+	public static boolean isWindows() {
+		return OS.contains("win");
+	}
+
+	private void getPDF() {
+
+		String filename = null;
+
+		if (isWindows()) {
+			filename = "C:\\Documents and Settings\\" + System.getProperty("user.name") + "\\My Documents\\NetBeansProjects\\Presensi.csv";
+		} else if (isUnix()) {
+			filename = "/home/" + System.getProperty("user.name") + "/Documents/Presensi.csv";
+		}
+
+		try {
+			FileWriter fw = new FileWriter(filename);
+			fw.append("NIK");
+			fw.append(',');
+			fw.append("KONTOL");
+			fw.append(',');
+			fw.append("WKWK");
+			fw.append(',');
+			fw.append("LOL");
+			fw.append('\n');
+			String sql = "select k.nik, dj.hari, dj.jam as \"jam mulai\", addtime(dj.jam, dj.durasi) as \"jam selesai\", k.nama, m.nama as \"mapel\", r.nama as \"ruangan\", p.tanggal as \"masuk\" from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id join tb_karyawan as k on k.id = dj.id_karyawan join tb_jadwal as j on j.id = dj.id_jadwal join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on kls.id_ruang = r.id";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				fw.append(rs.getString(1));
+				fw.append(',');
+				fw.append(rs.getString(2));
+				fw.append(',');
+				fw.append(rs.getString(3));
+				fw.append(',');
+				fw.append(rs.getString(4));
+				fw.append('\n');
+			}
+			fw.flush();
+			fw.close();
+			System.out.println("CSV File is created successfully.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -321,7 +333,7 @@ public final class Report extends javax.swing.JPanel {
 
         private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
 		// TODO add your handling code here:
-                getPDF();
+		getPDF();
         }//GEN-LAST:event_button2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
