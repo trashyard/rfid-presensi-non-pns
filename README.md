@@ -29,3 +29,13 @@ displayText.setText(time);
 ```
 
 E: Pick two formatter, one is to format the am and pm time and the other one is to format the formatted time before. and after that declare string variable for the localtime, then set the display text for "datefield" field.
+
+# Dependencies or Libraries
+
+<br/>
+<h2> - Jasper and Barcode (barbeque)</h2>
+
+- [Link to Drive][drive]
+  > put eveything into /library folder
+
+[drive]: https://drive.google.com/drive/folders/1EyxCKHCxhPsAVwV6uqeS992AF_4Budya/
