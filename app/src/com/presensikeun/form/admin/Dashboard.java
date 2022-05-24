@@ -3,15 +3,23 @@ package com.presensikeun.form.admin;
 import com.presensikeun.chart.ModelChart;
 import com.presensikeun.chart.ModelPolarAreaChart;
 import com.presensikeun.controller.Koneksi;
+import com.presensikeun.main.Main;
 import com.presensikeun.model.ModelCard;
+import com.presensikeun.model.WhatOS;
+import com.presensikeun.model.WindowButton;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 public final class Dashboard extends javax.swing.JPanel {
+
+	WindowButton w = new WindowButton();
+	JFrame f3 = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
 
 	Connection con = null;
 	ResultSet rs = null;
@@ -20,7 +28,20 @@ public final class Dashboard extends javax.swing.JPanel {
 	public Dashboard() {
 		this.con = Koneksi.getKoneksi();
 		initComponents();
+
+		showWinButton();
 		setData();
+	}
+
+	private void showWinButton() {
+		if (WhatOS.isWindows()) {
+			min.setVisible(true);
+			max.setVisible(true);
+		} else {
+			// i use arch btw + wm hahahahahahahahhahahahahha
+			min.setVisible(false);
+			max.setVisible(false);
+		}
 	}
 
 	public void setData() {
@@ -60,7 +81,7 @@ public final class Dashboard extends javax.swing.JPanel {
 	private String getTotalPresensi() {
 		String tot = "";
 		try {
-			String sql = "select count(*) tb_presensi";
+			String sql = "select count(*) from tb_presensi";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			if (rs.next()) {
@@ -144,6 +165,8 @@ public final class Dashboard extends javax.swing.JPanel {
                 jPanel1 = new javax.swing.JPanel();
                 jLabel1 = new javax.swing.JLabel();
                 jPanel2 = new javax.swing.JPanel();
+                min = new javax.swing.JLabel();
+                max = new javax.swing.JLabel();
                 card1 = new com.presensikeun.component.Card();
                 card2 = new com.presensikeun.component.Card();
                 card3 = new com.presensikeun.component.Card();
@@ -179,27 +202,50 @@ public final class Dashboard extends javax.swing.JPanel {
                         .addGap(0, 8, Short.MAX_VALUE)
                 );
 
+                min.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icon/windows-button/icons8-minus-18.png"))); // NOI18N
+                min.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                minMouseClicked(evt);
+                        }
+                });
+
+                max.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icon/windows-button/icons8-maximized-18.png"))); // NOI18N
+                max.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                maxMouseClicked(evt);
+                        }
+                });
+
                 javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
                 jPanel1.setLayout(jPanel1Layout);
                 jPanel1Layout.setHorizontalGroup(
                         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(24, 24, 24)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGap(6, 6, 6)
-                                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addContainerGap())
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addComponent(jLabel1)
-                                                .addGap(0, 810, Short.MAX_VALUE)))
-                                .addContainerGap())
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(min, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(max, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 );
                 jPanel1Layout.setVerticalGroup(
                         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addContainerGap(22, Short.MAX_VALUE)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addContainerGap(22, Short.MAX_VALUE)
+                                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(max, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(min, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18))
                 );
@@ -299,6 +345,16 @@ public final class Dashboard extends javax.swing.JPanel {
                 );
         }// </editor-fold>//GEN-END:initComponents
 
+        private void minMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minMouseClicked
+		// TODO add your handling code here:
+		w.setWindow("min", (JFrame) SwingUtilities.getWindowAncestor(this), null);
+        }//GEN-LAST:event_minMouseClicked
+
+        private void maxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_maxMouseClicked
+		// TODO add your handling code here:
+		w.setWindow("max", (JFrame) SwingUtilities.getWindowAncestor(this), max);
+        }//GEN-LAST:event_maxMouseClicked
+
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private com.presensikeun.component.Card card1;
         private com.presensikeun.component.Card card2;
@@ -309,6 +365,8 @@ public final class Dashboard extends javax.swing.JPanel {
         private javax.swing.JLabel jLabel3;
         private javax.swing.JPanel jPanel1;
         private javax.swing.JPanel jPanel2;
+        private javax.swing.JLabel max;
+        private javax.swing.JLabel min;
         private com.presensikeun.swing.PanelShadow panelShadow1;
         private com.presensikeun.swing.PanelShadow panelShadow2;
         private com.presensikeun.chart.PolarAreaChart polarAreaChart1;

@@ -1,12 +1,26 @@
 package com.presensikeun.form;
 
+import com.presensikeun.model.WhatOS;
+import com.presensikeun.model.WindowButton;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 
 public class Auth extends javax.swing.JFrame {
 
+	WindowButton w = new WindowButton();
+
 	public Auth() {
 		initComponents();
+		showWinButton();
+	}
+
+	private void showWinButton() {
+		if (WhatOS.isWindows()) {
+			min.setVisible(true);
+		} else {
+			// i use arch btw + wm hahahahahahahahhahahahahha
+			min.setVisible(false);
+		}
 	}
 
 	public void enterLog() {
@@ -19,6 +33,8 @@ public class Auth extends javax.swing.JFrame {
         private void initComponents() {
 
                 jPanel1 = new javax.swing.JPanel();
+                close = new javax.swing.JLabel();
+                min = new javax.swing.JLabel();
                 jPanel3 = new javax.swing.JPanel();
                 jLabel17 = new javax.swing.JLabel();
                 jLabel18 = new javax.swing.JLabel();
@@ -40,6 +56,22 @@ public class Auth extends javax.swing.JFrame {
                         }
                 });
                 jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+                close.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icon/windows-button/icons8-close-18.png"))); // NOI18N
+                close.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                closeMouseClicked(evt);
+                        }
+                });
+                jPanel1.add(close, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 0, 30, 40));
+
+                min.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icon/windows-button/icons8-minus-18.png"))); // NOI18N
+                min.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                minMouseClicked(evt);
+                        }
+                });
+                jPanel1.add(min, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 0, 30, 40));
 
                 jPanel3.setBackground(new java.awt.Color(53, 33, 89));
                 jPanel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -98,7 +130,7 @@ public class Auth extends javax.swing.JFrame {
                 getContentPane().setLayout(layout);
                 layout.setHorizontalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 920, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 974, Short.MAX_VALUE)
                 );
                 layout.setVerticalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,6 +168,16 @@ public class Auth extends javax.swing.JFrame {
 		// TODO add your handling code here:
 		enterLog();
         }//GEN-LAST:event_formKeyPressed
+
+        private void minMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minMouseClicked
+		// TODO add your handling code here:
+		w.setWindow("min", this, null);
+        }//GEN-LAST:event_minMouseClicked
+
+        private void closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMouseClicked
+		// TODO add your handling code here:
+		w.setWindow("close", this, null);
+        }//GEN-LAST:event_closeMouseClicked
 
 	/**
 	 * @param args the command line arguments
@@ -176,11 +218,13 @@ public class Auth extends javax.swing.JFrame {
 	}
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
+        private javax.swing.JLabel close;
         private javax.swing.JLabel jLabel17;
         private javax.swing.JLabel jLabel18;
         private javax.swing.JLabel jLabel2;
         private javax.swing.JLabel jLabel3;
         private javax.swing.JPanel jPanel1;
         private javax.swing.JPanel jPanel3;
+        private javax.swing.JLabel min;
         // End of variables declaration//GEN-END:variables
 }

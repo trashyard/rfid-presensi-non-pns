@@ -17,6 +17,7 @@ public class Table extends JTable {
 		setRowHeight(40);
 		setShowVerticalLines(false);
 		setFillsViewportHeight(true);
+		setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		getTableHeader().setReorderingAllowed(false);
 		getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
 			@Override

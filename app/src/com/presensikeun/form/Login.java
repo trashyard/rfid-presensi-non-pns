@@ -2,6 +2,8 @@ package com.presensikeun.form;
 
 import com.presensikeun.controller.Koneksi;
 import com.presensikeun.main.Main;
+import com.presensikeun.model.WhatOS;
+import com.presensikeun.model.WindowButton;
 import com.presensikeun.swing.Notification;
 import java.awt.Color;
 import javax.swing.JOptionPane;
@@ -14,8 +16,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 public class Login extends javax.swing.JFrame {
+
+	WindowButton w = new WindowButton();
 
 	Connection conn = Koneksi.getKoneksi();
 	ResultSet rs = null;
@@ -23,6 +29,16 @@ public class Login extends javax.swing.JFrame {
 
 	public Login() {
 		initComponents();
+		showWinButton();
+	}
+
+	private void showWinButton() {
+		if (WhatOS.isWindows()) {
+			min.setVisible(true);
+		} else {
+			// i use arch btw + wm hahahahahahahahhahahahahha
+			min.setVisible(false);
+		}
 	}
 
 	public void loginDek() {
@@ -86,6 +102,8 @@ public class Login extends javax.swing.JFrame {
                 jPanel2 = new javax.swing.JPanel();
                 jLabel12 = new javax.swing.JLabel();
                 jLabel13 = new javax.swing.JLabel();
+                min = new javax.swing.JLabel();
+                close = new javax.swing.JLabel();
                 jLabel2 = new javax.swing.JLabel();
 
                 setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -193,6 +211,22 @@ public class Login extends javax.swing.JFrame {
 
                 getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 340, 660));
 
+                min.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icon/windows-button/icons8-minus-18.png"))); // NOI18N
+                min.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                minMouseClicked(evt);
+                        }
+                });
+                getContentPane().add(min, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 0, 30, 40));
+
+                close.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icon/windows-button/icons8-close-18.png"))); // NOI18N
+                close.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                closeMouseClicked(evt);
+                        }
+                });
+                getContentPane().add(close, new org.netbeans.lib.awtextra.AbsoluteConstraints(1300, 0, 30, 40));
+
                 jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/login/background login.PNG"))); // NOI18N
                 getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 0, 990, 660));
 
@@ -267,6 +301,16 @@ public class Login extends javax.swing.JFrame {
 		}
         }//GEN-LAST:event_txt_passKeyPressed
 
+        private void closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMouseClicked
+		// TODO add your handling code here:
+		w.setWindow("close",this, null);
+        }//GEN-LAST:event_closeMouseClicked
+
+        private void minMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minMouseClicked
+		// TODO add your handling code here:
+		w.setWindow("min", this, null);
+        }//GEN-LAST:event_minMouseClicked
+
 	/**
 	 * @param args the command line arguments
 	 */
@@ -283,13 +327,7 @@ public class Login extends javax.swing.JFrame {
 					break;
 				}
 			}
-		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
 			java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
 		//</editor-fold>
@@ -300,16 +338,24 @@ public class Login extends javax.swing.JFrame {
 		//</editor-fold>
 		//</editor-fold>
 		//</editor-fold>
+		
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
 
 		/* Create and display the form */
-		java.awt.EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				new Login().setVisible(true);
-			}
+		java.awt.EventQueue.invokeLater(() -> {
+			new Login().setVisible(true);
 		});
 	}
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
+        private javax.swing.JLabel close;
         private javax.swing.JLabel jLabel1;
         private javax.swing.JLabel jLabel11;
         private javax.swing.JLabel jLabel12;
@@ -323,6 +369,7 @@ public class Login extends javax.swing.JFrame {
         private javax.swing.JLabel jLabel9;
         private javax.swing.JPanel jPanel1;
         private javax.swing.JPanel jPanel2;
+        private javax.swing.JLabel min;
         private javax.swing.JPasswordField txt_pass;
         private javax.swing.JTextField txt_user;
         // End of variables declaration//GEN-END:variables
