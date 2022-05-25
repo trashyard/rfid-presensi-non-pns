@@ -164,7 +164,7 @@ public final class Report extends javax.swing.JPanel {
 		String sql = "select k.nik, weekday(p.tanggal), dj.jam as \"jam mulai\", addtime(dj.jam, dj.durasi) as \"jam selesai\", k.nama, m.nama as \"mapel\", r.nama as \"ruangan\", p.tanggal as \"masuk\" from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id join tb_karyawan as k on k.id = dj.id_karyawan join tb_jadwal as j on j.id = dj.id_jadwal join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on kls.id_ruang = r.id";
 
 		if (WhatOS.isWindows()) {
-			filename = "C:\\Documents and Settings\\" + System.getProperty("user.name") + "\\My Documents\\Presensi.csv";
+			filename = "C:\\Users\\" + System.getProperty("user.name") + "\\Documents\\Presensi.csv";
 		} else if (WhatOS.isUnix()) {
 			filename = "/home/" + System.getProperty("user.name") + "/Documents/Presensi.csv";
 		}
