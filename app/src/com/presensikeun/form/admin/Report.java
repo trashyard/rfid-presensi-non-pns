@@ -1,8 +1,6 @@
 package com.presensikeun.form.admin;
 
 import com.presensikeun.controller.Koneksi;
-import com.presensikeun.event.EventCallBack;
-import com.presensikeun.event.EventTextField;
 import com.presensikeun.model.WhatOS;
 import com.presensikeun.model.WindowButton;
 import com.presensikeun.swing.Notification;
@@ -28,10 +26,14 @@ public final class Report extends javax.swing.JPanel {
 	public Report() {
 		this.con = Koneksi.getKoneksi();
 		initComponents();
+
+		// initialize
 		showWinButton();
 		table1.scroll(jScrollPane1);
 		tableReport();
-		searchBar();
+
+		// get
+		getNIK();
 	}
 
 	private void showWinButton() {
@@ -43,6 +45,33 @@ public final class Report extends javax.swing.JPanel {
 			min.setVisible(false);
 			max.setVisible(false);
 		}
+	}
+
+	private void verifyFields() {
+		if (nik.getSelectedIndex() == -1) {
+			notify("warning", "Mohon isi NIK");
+		} else if (dari.getText().length() == 0 || sampai.getText().length() == 0) {
+			notify("warning", "Mohon isi rentang jadwal terlebih dahulu");
+		} else {
+			tableReport();
+		}
+
+	}
+
+	private void getNIK() {
+		nik.setLabeText("NIK");
+		nik.removeAllItems();
+		try {
+			String sql = "select nik from tb_karyawan order by nik desc";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				nik.addItem(rs.getString(1));
+			}
+		} catch (SQLException ex) {
+			System.out.println("error: " + ex);
+		}
+		nik.setSelectedIndex(-1);
 	}
 
 	public void tableReport() {
@@ -101,28 +130,6 @@ public final class Report extends javax.swing.JPanel {
 		}
 
 		return string;
-	}
-
-	private void searchBar() {
-		searchPresensi.addEvent(new EventTextField() {
-			@Override
-			public void onPressed(EventCallBack call) {
-				//  Test
-				try {
-					Thread.sleep(500);
-					call.done();
-				} catch (InterruptedException e) {
-					System.err.println(e);
-				}
-			}
-
-			@Override
-			public void onCancel() {
-
-			}
-
-		});
-
 	}
 
 	private void notify(String version, String msg) {
@@ -201,6 +208,27 @@ public final class Report extends javax.swing.JPanel {
 		}
 	}
 
+	private void getInfo(String type) {
+		String sql = null;
+		try {
+			switch (type) {
+				case "karyawan":
+					sql = "select k.nama, j.nama from tb_karyawan as k join tb_jabatan as j on k.id_jabatan = j.id where k.nik = " + nik.getSelectedItem();
+					pst = con.prepareStatement(sql);
+					rs = pst.executeQuery();
+					if (rs.next()) {
+						notify("info", rs.getString(1) + ": " + rs.getString(2));
+					}
+					break;
+				default:
+					break;
+			}
+		} catch (SQLException ex) {
+			notify("info", "Mohon isi terlebih dahulu. err: " + ex.getMessage());
+		}
+
+	}
+
 	@SuppressWarnings("unchecked")
         // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
         private void initComponents() {
@@ -211,8 +239,14 @@ public final class Report extends javax.swing.JPanel {
                 max = new javax.swing.JLabel();
                 min = new javax.swing.JLabel();
                 panelShadow1 = new com.presensikeun.swing.PanelShadow();
-                searchPresensi = new com.presensikeun.swing.Searchbar();
                 button2 = new com.presensikeun.swing.Button();
+                jLabel3 = new javax.swing.JLabel();
+                labelTable1 = new javax.swing.JLabel();
+                dari = new com.presensikeun.swing.TextField();
+                sampai = new com.presensikeun.swing.TextField();
+                getDari = new com.presensikeun.swing.Button();
+                getSampai = new com.presensikeun.swing.Button();
+                nik = new com.presensikeun.swing.Combobox();
                 panelShadow2 = new com.presensikeun.swing.PanelShadow();
                 jScrollPane1 = new javax.swing.JScrollPane();
                 table1 = new com.presensikeun.swing.Table();
@@ -270,7 +304,7 @@ public final class Report extends javax.swing.JPanel {
                                                 .addContainerGap())
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addComponent(jLabel1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 685, Short.MAX_VALUE)
                                                 .addComponent(min, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(max, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -293,8 +327,6 @@ public final class Report extends javax.swing.JPanel {
 
                 panelShadow1.setBackground(new java.awt.Color(252, 254, 255));
 
-                searchPresensi.setAnimationColor(new java.awt.Color(85, 65, 118));
-
                 button2.setBackground(new java.awt.Color(51, 153, 0));
                 button2.setForeground(new java.awt.Color(255, 255, 255));
                 button2.setText("Export CSV");
@@ -305,24 +337,119 @@ public final class Report extends javax.swing.JPanel {
                         }
                 });
 
+                jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icon/icons8-reset-24.png"))); // NOI18N
+                jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                jLabel3MouseClicked(evt);
+                        }
+                });
+
+                labelTable1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+                labelTable1.setForeground(new java.awt.Color(85, 65, 118));
+                labelTable1.setText("Filter:");
+
+                dari.setEditable(false);
+                dari.setBackground(new java.awt.Color(252, 254, 255));
+                dari.setForeground(new java.awt.Color(85, 65, 118));
+                dari.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+                dari.setToolTipText("");
+                dari.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                dari.setLabelText("Dari");
+                dari.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                dariMouseClicked(evt);
+                        }
+                });
+                dari.addKeyListener(new java.awt.event.KeyAdapter() {
+                        public void keyReleased(java.awt.event.KeyEvent evt) {
+                                dariKeyReleased(evt);
+                        }
+                });
+
+                sampai.setEditable(false);
+                sampai.setBackground(new java.awt.Color(252, 254, 255));
+                sampai.setForeground(new java.awt.Color(85, 65, 118));
+                sampai.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+                sampai.setToolTipText("");
+                sampai.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                sampai.setLabelText("Sampai");
+                sampai.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                sampaiMouseClicked(evt);
+                        }
+                });
+                sampai.addKeyListener(new java.awt.event.KeyAdapter() {
+                        public void keyReleased(java.awt.event.KeyEvent evt) {
+                                sampaiKeyReleased(evt);
+                        }
+                });
+
+                getDari.setBackground(new java.awt.Color(85, 65, 118));
+                getDari.setForeground(new java.awt.Color(255, 255, 255));
+                getDari.setText("D");
+                getDari.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                getDari.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                getDariActionPerformed(evt);
+                        }
+                });
+
+                getSampai.setBackground(new java.awt.Color(85, 65, 118));
+                getSampai.setForeground(new java.awt.Color(255, 255, 255));
+                getSampai.setText("D");
+                getSampai.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+
+                nik.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                nik.setLabeText("NIK");
+                nik.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+                        public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                        }
+                        public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                                nikPopupMenuWillBecomeInvisible(evt);
+                        }
+                        public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+                        }
+                });
+                nik.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                nikActionPerformed(evt);
+                        }
+                });
+
                 javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
                 panelShadow1.setLayout(panelShadow1Layout);
                 panelShadow1Layout.setHorizontalGroup(
                         panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(searchPresensi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labelTable1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(dari, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(getDari, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(sampai, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(getSampai, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(nik, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
                 );
                 panelShadow1Layout.setVerticalGroup(
                         panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(panelShadow1Layout.createSequentialGroup()
-                                .addGroup(panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(searchPresensi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(labelTable1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(sampai, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addComponent(getDari, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(dari, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(button2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(getSampai, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(nik, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 );
 
                 panelShadow2.setBackground(new java.awt.Color(252, 254, 255));
@@ -361,7 +488,7 @@ public final class Report extends javax.swing.JPanel {
                         .addGroup(panelShadow2Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 951, Short.MAX_VALUE)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 855, Short.MAX_VALUE)
                                         .addComponent(labelTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addContainerGap())
                 );
@@ -370,7 +497,7 @@ public final class Report extends javax.swing.JPanel {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow2Layout.createSequentialGroup()
                                 .addComponent(labelTable)
                                 .addGap(10, 10, 10)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
                                 .addContainerGap())
                 );
 
@@ -378,7 +505,7 @@ public final class Report extends javax.swing.JPanel {
                 this.setLayout(layout);
                 layout.setHorizontalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1007, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 911, Short.MAX_VALUE)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -403,7 +530,8 @@ public final class Report extends javax.swing.JPanel {
 
         private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
 		// TODO add your handling code here:
-		getPDF();
+//		getPDF();
+		verifyFields();
         }//GEN-LAST:event_button2ActionPerformed
 
         private void maxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_maxMouseClicked
@@ -416,18 +544,59 @@ public final class Report extends javax.swing.JPanel {
 		w.setWindow("min", (JFrame) SwingUtilities.getWindowAncestor(this), null);
         }//GEN-LAST:event_minMouseClicked
 
+        private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+		// TODO add your handling code here:
+        }//GEN-LAST:event_jLabel3MouseClicked
+
+        private void dariKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dariKeyReleased
+		// TODO add your handling code here:
+        }//GEN-LAST:event_dariKeyReleased
+
+        private void sampaiKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_sampaiKeyReleased
+		// TODO add your handling code here:
+        }//GEN-LAST:event_sampaiKeyReleased
+
+        private void nikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nikActionPerformed
+		// TODO add your handling code here:
+        }//GEN-LAST:event_nikActionPerformed
+
+        private void nikPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_nikPopupMenuWillBecomeInvisible
+		// TODO add your handling code here:
+		getInfo("karyawan");
+        }//GEN-LAST:event_nikPopupMenuWillBecomeInvisible
+
+        private void dariMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dariMouseClicked
+		// TODO add your handling code here:
+		getDari.doClick();
+        }//GEN-LAST:event_dariMouseClicked
+
+        private void getDariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getDariActionPerformed
+		// TODO add your handling code here:
+        }//GEN-LAST:event_getDariActionPerformed
+
+        private void sampaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sampaiMouseClicked
+		// TODO add your handling code here:
+		getSampai.doClick();
+        }//GEN-LAST:event_sampaiMouseClicked
+
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private com.presensikeun.swing.Button button2;
+        private com.presensikeun.swing.TextField dari;
+        private com.presensikeun.swing.Button getDari;
+        private com.presensikeun.swing.Button getSampai;
         private javax.swing.JLabel jLabel1;
+        private javax.swing.JLabel jLabel3;
         private javax.swing.JPanel jPanel1;
         private javax.swing.JPanel jPanel2;
         private javax.swing.JScrollPane jScrollPane1;
         private javax.swing.JLabel labelTable;
+        private javax.swing.JLabel labelTable1;
         private javax.swing.JLabel max;
         private javax.swing.JLabel min;
+        private com.presensikeun.swing.Combobox nik;
         private com.presensikeun.swing.PanelShadow panelShadow1;
         private com.presensikeun.swing.PanelShadow panelShadow2;
-        private com.presensikeun.swing.Searchbar searchPresensi;
+        private com.presensikeun.swing.TextField sampai;
         private com.presensikeun.swing.Table table1;
         // End of variables declaration//GEN-END:variables
 }
