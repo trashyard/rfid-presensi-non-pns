@@ -120,6 +120,7 @@ public final class Report extends javax.swing.JPanel {
 			public void onCancel() {
 
 			}
+
 		});
 
 	}

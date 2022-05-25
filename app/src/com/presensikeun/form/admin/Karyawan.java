@@ -26,10 +26,14 @@ public final class Karyawan extends javax.swing.JPanel {
 	public Karyawan() {
 		this.con = Koneksi.getKoneksi();
 		initComponents();
+
+		// init
 		showWinButton();
-		table1.scroll(jScrollPane1);
-		tableKaryawan("");
 		searchBar();
+		table1.scroll(jScrollPane1);
+		getJabatan();
+		getGender();
+		tableKaryawan("");
 	}
 
 	private void showWinButton() {
@@ -43,15 +47,71 @@ public final class Karyawan extends javax.swing.JPanel {
 		}
 	}
 
+	private void reset() {
+		first.setSelectedIndex(-1);
+		kelas.setSelectedIndex(-1);
+		kelas.setSelectedIndex(-1);
+		searchNama.setText("");
+
+		tableKaryawan("");
+	}
+
+	private void getGender() {
+		kelas.removeAllItems();
+		kelas.addItem("Laki-Laki");
+		kelas.addItem("Perempuan");
+		kelas.setSelectedIndex(-1);
+	}
+
+	private String getSelectedGender() {
+		String selected = "";
+		if (kelas.getSelectedItem().equals("Laki-Laki")) {
+			selected = "L";
+		} else {
+			selected = "P";
+		}
+		return selected;
+	}
+
+	private void getJabatan() {
+		first.removeAllItems();
+		try {
+			String sql = "select nama from tb_jabatan";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				first.addItem(rs.getString(1));
+			}
+		} catch (SQLException ex) {
+			System.out.println("error: " + ex);
+		}
+		first.setSelectedIndex(-1);
+	}
+
 	public void tableKaryawan(String src) {
+		String sql = "select tbk.nik, tbk.nama, jenis_kelamin, tbj.nama as jabatan from tb_karyawan as tbk join tb_jabatan as tbj on tbk.id_jabatan = tbj.id where tbk.nama like '%" + src + "%'";
 		DefaultTableModel model = new DefaultTableModel();
 		model.addColumn("NIK");
 		model.addColumn("Nama");
 		model.addColumn("Jenis Kelamin");
 		model.addColumn("Jabatan");
 
-		String sql = "select tbk.nik, tbk.nama, jenis_kelamin, tbj.nama as jabatan from tb_karyawan as tbk join tb_jabatan as tbj on tbk.id_jabatan = tbj.id where tbk.nama like '%" + src + "%' order by tbk.nik asc";
+		// all if elses kalo pas jabatan check, jenis kelamin check, ama dua duanya
+		if (first.getSelectedIndex() != -1) {
+			sql = sql + "&& tbj.id = (select id from tb_jabatan where nama = '" + first.getSelectedItem() + "')";
+		}
+		if (kelas.getSelectedIndex() != -1) {
+			sql = sql + "&& tbk.jenis_kelamin = '" + getSelectedGender() + "'";
+		}
+		if (first.getSelectedIndex() != -1 && kelas.getSelectedIndex() != -1) {
+			sql = sql + "&& tbk.jenis_kelamin = '" + getSelectedGender() + "' && tbj.id = (select id from tb_jabatan where nama = '" + first.getSelectedItem() + "')";
+		}
+
+		// order by nik dari bawah
+		sql = sql + " order by tbk.nik desc";
+
 		try {
+			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -65,7 +125,7 @@ public final class Karyawan extends javax.swing.JPanel {
 	}
 
 	private void searchBar() {
-		searchPresensi.addEvent(new EventTextField() {
+		searchNama.addEvent(new EventTextField() {
 			@Override
 			public void onPressed(EventCallBack call) {
 				//  Test
@@ -87,25 +147,32 @@ public final class Karyawan extends javax.swing.JPanel {
 	}
 
 	private void searchStuff() {
-		tableKaryawan(searchPresensi.getText());
+		tableKaryawan(searchNama.getText());
 	}
 
 	@SuppressWarnings("unchecked")
         // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
         private void initComponents() {
 
+                jTextField1 = new javax.swing.JTextField();
                 jPanel1 = new javax.swing.JPanel();
                 jLabel1 = new javax.swing.JLabel();
                 jPanel2 = new javax.swing.JPanel();
                 min = new javax.swing.JLabel();
                 max = new javax.swing.JLabel();
                 panelShadow1 = new com.presensikeun.swing.PanelShadow();
-                searchPresensi = new com.presensikeun.swing.Searchbar();
+                searchNama = new com.presensikeun.swing.Searchbar();
                 jLabel2 = new javax.swing.JLabel();
+                labelTable1 = new javax.swing.JLabel();
+                jLabel3 = new javax.swing.JLabel();
+                first = new com.presensikeun.swing.Combobox();
+                kelas = new com.presensikeun.swing.Combobox();
                 panelShadow2 = new com.presensikeun.swing.PanelShadow();
                 jScrollPane1 = new javax.swing.JScrollPane();
                 table1 = new com.presensikeun.swing.Table();
                 labelTable = new javax.swing.JLabel();
+
+                jTextField1.setText("jTextField1");
 
                 setBackground(new java.awt.Color(250, 250, 250));
 
@@ -168,14 +235,14 @@ public final class Karyawan extends javax.swing.JPanel {
                         jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                                 .addContainerGap(22, Short.MAX_VALUE)
                                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(max, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(min, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)))
                                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18))
                 );
@@ -183,10 +250,11 @@ public final class Karyawan extends javax.swing.JPanel {
                 panelShadow1.setBackground(new java.awt.Color(252, 254, 255));
                 panelShadow1.setPreferredSize(new java.awt.Dimension(234, 72));
 
-                searchPresensi.setAnimationColor(new java.awt.Color(85, 65, 118));
-                searchPresensi.addActionListener(new java.awt.event.ActionListener() {
+                searchNama.setAnimationColor(new java.awt.Color(85, 65, 118));
+                searchNama.setHintText("Cari Nama...");
+                searchNama.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                searchPresensiActionPerformed(evt);
+                                searchNamaActionPerformed(evt);
                         }
                 });
 
@@ -197,26 +265,55 @@ public final class Karyawan extends javax.swing.JPanel {
                         }
                 });
 
+                labelTable1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+                labelTable1.setForeground(new java.awt.Color(85, 65, 118));
+                labelTable1.setText("Filter:");
+
+                jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icon/icons8-reset-24.png"))); // NOI18N
+                jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                jLabel3MouseClicked(evt);
+                        }
+                });
+
+                first.setLabeText("Jabatan");
+
+                kelas.setLabeText("Jenis Kelamin");
+                kelas.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                kelasActionPerformed(evt);
+                        }
+                });
+
                 javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
                 panelShadow1.setLayout(panelShadow1Layout);
                 panelShadow1Layout.setHorizontalGroup(
                         panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(searchPresensi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labelTable1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(first, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(kelas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(searchNama, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel2)
                                 .addContainerGap())
                 );
                 panelShadow1Layout.setVerticalGroup(
                         panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(panelShadow1Layout.createSequentialGroup()
-                                .addGroup(panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(panelShadow1Layout.createSequentialGroup()
-                                                .addComponent(searchPresensi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addGap(1, 1, 1))
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(searchNama, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(kelas, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(first, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(labelTable1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 );
 
                 panelShadow2.setBackground(new java.awt.Color(252, 254, 255));
@@ -256,7 +353,7 @@ public final class Karyawan extends javax.swing.JPanel {
                         .addGroup(panelShadow2Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1050, Short.MAX_VALUE)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 837, Short.MAX_VALUE)
                                         .addComponent(labelTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addContainerGap())
                 );
@@ -274,12 +371,12 @@ public final class Karyawan extends javax.swing.JPanel {
                 this.setLayout(layout);
                 layout.setHorizontalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1106, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 893, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(panelShadow2, javax.swing.GroupLayout.DEFAULT_SIZE, 1094, Short.MAX_VALUE)
-                                        .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, 1094, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(panelShadow2, javax.swing.GroupLayout.DEFAULT_SIZE, 881, Short.MAX_VALUE)
+                                        .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, 881, Short.MAX_VALUE))
                                 .addContainerGap())
                 );
                 layout.setVerticalGroup(
@@ -313,9 +410,9 @@ public final class Karyawan extends javax.swing.JPanel {
 		}
         }//GEN-LAST:event_table1MousePressed
 
-        private void searchPresensiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchPresensiActionPerformed
+        private void searchNamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchNamaActionPerformed
 		// TODO add your handling code here:
-        }//GEN-LAST:event_searchPresensiActionPerformed
+        }//GEN-LAST:event_searchNamaActionPerformed
 
         private void minMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minMouseClicked
 		// TODO add your handling code here:
@@ -327,18 +424,32 @@ public final class Karyawan extends javax.swing.JPanel {
 		w.setWindow("max", (JFrame) SwingUtilities.getWindowAncestor(this), max);
         }//GEN-LAST:event_maxMouseClicked
 
+        private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+		// TODO add your handling code here:
+		reset();
+        }//GEN-LAST:event_jLabel3MouseClicked
+
+        private void kelasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kelasActionPerformed
+		// TODO add your handling code here:
+        }//GEN-LAST:event_kelasActionPerformed
+
         // Variables declaration - do not modify//GEN-BEGIN:variables
+        private com.presensikeun.swing.Combobox first;
         private javax.swing.JLabel jLabel1;
         private javax.swing.JLabel jLabel2;
+        private javax.swing.JLabel jLabel3;
         private javax.swing.JPanel jPanel1;
         private javax.swing.JPanel jPanel2;
         private javax.swing.JScrollPane jScrollPane1;
+        private javax.swing.JTextField jTextField1;
+        private com.presensikeun.swing.Combobox kelas;
         private javax.swing.JLabel labelTable;
+        private javax.swing.JLabel labelTable1;
         private javax.swing.JLabel max;
         private javax.swing.JLabel min;
         private com.presensikeun.swing.PanelShadow panelShadow1;
         private com.presensikeun.swing.PanelShadow panelShadow2;
-        private com.presensikeun.swing.Searchbar searchPresensi;
+        private com.presensikeun.swing.Searchbar searchNama;
         private com.presensikeun.swing.Table table1;
         // End of variables declaration//GEN-END:variables
 }

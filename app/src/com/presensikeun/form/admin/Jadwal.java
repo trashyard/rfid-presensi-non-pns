@@ -32,6 +32,8 @@ public final class Jadwal extends javax.swing.JPanel {
 	public Jadwal() {
 		this.con = Koneksi.getKoneksi();
 		initComponents();
+
+		// initialize
 		showWinButton();
 		table1.scroll(jScrollPane1);
 		switchTable();
@@ -49,7 +51,91 @@ public final class Jadwal extends javax.swing.JPanel {
 		}
 	}
 
-	public void tableDetailJadwal() {
+	private void reset() {
+		first.setSelectedIndex(-1);
+		second.setSelectedIndex(-1);
+		resetSearchText();
+		refreshTable();
+	}
+
+	private void getMapel() {
+		first.setLabeText("Mapel");
+		first.removeAllItems();
+		try {
+			String sql = "select id from tb_mapel";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				first.addItem(rs.getString(1));
+			}
+		} catch (SQLException ex) {
+			System.out.println("error: " + ex);
+		}
+		first.setSelectedIndex(-1);
+	}
+
+	private void getHari() {
+		first.setLabeText("Hari");
+		first.removeAllItems();
+		first.addItem("Senin");
+		first.addItem("Selasa");
+		first.addItem("Rabu");
+		first.addItem("Kamis");
+		first.addItem("Jumat");
+		first.setSelectedIndex(-1);
+	}
+
+	private int getSelectedHari(String day) {
+		int hari = 0;
+
+		switch (day) {
+			case "Senin":
+				hari = 0;
+				break;
+			case "Selasa":
+				hari = 1;
+				break;
+			case "Rabu":
+				hari = 2;
+				break;
+			case "Kamis":
+				hari = 3;
+				break;
+			case "Jumat":
+				hari = 4;
+				break;
+			default:
+				break;
+		}
+		return hari;
+	}
+
+	private void getAngkatan() {
+		second.setLabeText("Angkatan");
+		second.removeAllItems();
+		second.addItem("1");
+		second.addItem("2");
+		second.addItem("3");
+		second.setSelectedIndex(-1);
+	}
+
+	private void getKelas() {
+		second.setLabeText("Kelas");
+		second.removeAllItems();
+		try {
+			String sql = "select id from tb_kelas";
+			pst = con.prepareStatement(sql);
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				second.addItem(rs.getString(1));
+			}
+		} catch (SQLException ex) {
+			System.out.println("error: " + ex);
+		}
+		second.setSelectedIndex(-1);
+	}
+
+	private void tableDetailJadwal() {
 		labelTable.setText("Detail Jadwal");
 		DefaultTableModel model = new DefaultTableModel();
 
@@ -62,7 +148,24 @@ public final class Jadwal extends javax.swing.JPanel {
 		model.addColumn("Jadwal");
 		try {
 
-			String sql = "select dj.id, dj.hari as \"Date\", dj.jam as \"Jam Mulai\", ADDTIME(dj.jam, dj.durasi) as \"Jam Selesai\", m.nama as \"Nama Mapel\", k.nama as \"Nama Guru\", j.id from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on r.id = kls.id_ruang;";
+			String sql = "select dj.id, dj.hari as \"Date\", dj.jam as \"Jam Mulai\", ADDTIME(dj.jam, dj.durasi) as \"Jam Selesai\", m.nama as \"Nama Mapel\", k.nama as \"Nama Guru\", j.id from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on r.id = kls.id_ruang";
+
+			// boolean buat field ama comboboxnya
+			Boolean searchJ = !searchJadwal.getText().contains("Guru");
+			Boolean firstJ = first.getSelectedIndex() != -1;
+			Boolean secondJ = second.getSelectedIndex() != -1;
+
+			// filtering cuy
+			if (searchJ) {
+				sql = sql + " where k.nama like '%" + searchJadwal.getText() + "%'";
+			}
+			if (firstJ) {
+				sql = sql + " && dj.hari = '" + getSelectedHari((String) first.getSelectedItem()) + "'";
+			}
+			if (secondJ) {
+				sql = sql + " && dj.id_jadwal like '%" + second.getSelectedItem() + "%'";
+			}
+
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -78,7 +181,6 @@ public final class Jadwal extends javax.swing.JPanel {
 	public void tableJadwal() {
 		DefaultTableModel model = new DefaultTableModel();
 		labelTable.setText("Jadwal");
-		int no = 1;
 
 		model.addColumn("ID");
 		model.addColumn("Kode");
@@ -88,6 +190,24 @@ public final class Jadwal extends javax.swing.JPanel {
 		try {
 
 			String sql = "select j.id, m.id, m.nama, r.nama, concat(k.id, \": Kelas \", k.angkatan, \" - \", k.nama)  from tb_jadwal as j join tb_mapel as m on j.id_mapel = m.id join tb_kelas as k on j.id_kelas = k.id join tb_ruang as r on k.id_ruang = r.id";
+
+			// boolean buat field ama comboboxnya
+			Boolean searchJ = !searchJadwal.getText().contains("Kelas");
+			Boolean firstJ = first.getSelectedIndex() != -1;
+			Boolean secondJ = second.getSelectedIndex() != -1;
+
+			// filtering cuy
+			if (searchJ) {
+				sql = sql + " where concat(k.id, k.angkatan, k.nama) like '%" + searchJadwal.getText() + "%'";
+			}
+			if (firstJ) {
+				sql = sql + " && m.id = '" + first.getSelectedItem() + "'";
+			}
+			if (secondJ) {
+				sql = sql + " && k.angkatan = " + second.getSelectedItem() + "";
+			}
+
+			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -102,17 +222,30 @@ public final class Jadwal extends javax.swing.JPanel {
 
 	private void switchTable() {
 		if (mode) {
-			tableDetailJadwal();
 			mode = false;
+			reset();
+			tableDetailJadwal();
+			getHari();
+			getKelas();
 			// abis load detail jadwal set mode ke false
 			// berarti mode false == state detail jadwal
-
 			switchBtn.setText("Ke Jadwal");
 		} else {
-			tableJadwal();
 			mode = true;
+			reset();
+			tableJadwal();
+			getMapel();
+			getAngkatan();
 			// sama, kek di atas intinya tapi jadwal hahaha
 			switchBtn.setText("Ke Detail");
+		}
+	}
+
+	private void resetSearchText() {
+		if (mode) {
+			searchJadwal.setText("Cari Kelas ...");
+		} else {
+			searchJadwal.setText("Cari Guru ...");
 		}
 	}
 
@@ -195,12 +328,13 @@ public final class Jadwal extends javax.swing.JPanel {
 	}
 
 	private void searchBar() {
-		searchPresensi.addEvent(new EventTextField() {
+		searchJadwal.addEvent(new EventTextField() {
 			@Override
 			public void onPressed(EventCallBack call) {
 				//  Test
 				try {
 					Thread.sleep(500);
+					refreshTable();
 					call.done();
 				} catch (InterruptedException e) {
 					System.err.println(e);
@@ -211,6 +345,7 @@ public final class Jadwal extends javax.swing.JPanel {
 			public void onCancel() {
 
 			}
+
 		});
 
 	}
@@ -222,15 +357,20 @@ public final class Jadwal extends javax.swing.JPanel {
                 jMenuBar1 = new javax.swing.JMenuBar();
                 jMenu1 = new javax.swing.JMenu();
                 jMenu2 = new javax.swing.JMenu();
+                jComboBox1 = new javax.swing.JComboBox<>();
                 jPanel1 = new javax.swing.JPanel();
                 jLabel1 = new javax.swing.JLabel();
                 jPanel2 = new javax.swing.JPanel();
                 min = new javax.swing.JLabel();
                 max = new javax.swing.JLabel();
                 panelShadow1 = new com.presensikeun.swing.PanelShadow();
-                searchPresensi = new com.presensikeun.swing.Searchbar();
+                searchJadwal = new com.presensikeun.swing.Searchbar();
                 jLabel2 = new javax.swing.JLabel();
                 switchBtn = new com.presensikeun.swing.Button();
+                first = new com.presensikeun.swing.Combobox();
+                second = new com.presensikeun.swing.Combobox();
+                jLabel3 = new javax.swing.JLabel();
+                labelTable1 = new javax.swing.JLabel();
                 panelShadow2 = new com.presensikeun.swing.PanelShadow();
                 jScrollPane1 = new javax.swing.JScrollPane();
                 table1 = new com.presensikeun.swing.Table();
@@ -241,6 +381,8 @@ public final class Jadwal extends javax.swing.JPanel {
 
                 jMenu2.setText("Edit");
                 jMenuBar1.add(jMenu2);
+
+                jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
                 setBackground(new java.awt.Color(250, 250, 250));
 
@@ -316,8 +458,20 @@ public final class Jadwal extends javax.swing.JPanel {
                 );
 
                 panelShadow1.setBackground(new java.awt.Color(252, 254, 255));
+                panelShadow1.setPreferredSize(new java.awt.Dimension(234, 72));
 
-                searchPresensi.setAnimationColor(new java.awt.Color(85, 65, 118));
+                searchJadwal.setAnimationColor(new java.awt.Color(85, 65, 118));
+                searchJadwal.setHintText("Cari  ...");
+                searchJadwal.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                searchJadwalMouseClicked(evt);
+                        }
+                });
+                searchJadwal.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                searchJadwalActionPerformed(evt);
+                        }
+                });
 
                 jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icon/add.png"))); // NOI18N
                 jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -336,6 +490,26 @@ public final class Jadwal extends javax.swing.JPanel {
                         }
                 });
 
+                first.setLabeText("Mata Pelajaran");
+
+                second.setLabeText("Kelas");
+                second.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                secondActionPerformed(evt);
+                        }
+                });
+
+                jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icon/icons8-reset-24.png"))); // NOI18N
+                jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                jLabel3MouseClicked(evt);
+                        }
+                });
+
+                labelTable1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+                labelTable1.setForeground(new java.awt.Color(85, 65, 118));
+                labelTable1.setText("Filter:");
+
                 javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
                 panelShadow1.setLayout(panelShadow1Layout);
                 panelShadow1Layout.setHorizontalGroup(
@@ -343,8 +517,16 @@ public final class Jadwal extends javax.swing.JPanel {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createSequentialGroup()
                                 .addGap(14, 14, 14)
                                 .addComponent(switchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(searchPresensi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(labelTable1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(first, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(second, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(searchJadwal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel2)
                                 .addContainerGap())
@@ -352,12 +534,16 @@ public final class Jadwal extends javax.swing.JPanel {
                 panelShadow1Layout.setVerticalGroup(
                         panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(panelShadow1Layout.createSequentialGroup()
-                                .addGroup(panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                .addComponent(searchPresensi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(switchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addGroup(panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(first, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                                        .addComponent(second, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(switchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(searchJadwal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(labelTable1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 );
 
                 panelShadow2.setBackground(new java.awt.Color(252, 254, 255));
@@ -396,7 +582,7 @@ public final class Jadwal extends javax.swing.JPanel {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow2Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1042, Short.MAX_VALUE)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 995, Short.MAX_VALUE)
                                         .addComponent(labelTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addContainerGap())
                 );
@@ -406,19 +592,19 @@ public final class Jadwal extends javax.swing.JPanel {
                                 .addGap(0, 0, 0)
                                 .addComponent(labelTable)
                                 .addGap(10, 10, 10)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE))
                 );
 
                 javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
                 this.setLayout(layout);
                 layout.setHorizontalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1098, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1051, Short.MAX_VALUE)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(panelShadow2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(panelShadow1, javax.swing.GroupLayout.DEFAULT_SIZE, 1039, Short.MAX_VALUE))
                                 .addContainerGap())
                 );
                 layout.setVerticalGroup(
@@ -465,9 +651,32 @@ public final class Jadwal extends javax.swing.JPanel {
 		w.setWindow("max", (JFrame) SwingUtilities.getWindowAncestor(this), max);
         }//GEN-LAST:event_maxMouseClicked
 
+        private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+		// TODO add your handling code here:
+		reset();
+        }//GEN-LAST:event_jLabel3MouseClicked
+
+        private void searchJadwalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchJadwalActionPerformed
+		// TODO add your handling code here:
+        }//GEN-LAST:event_searchJadwalActionPerformed
+
+        private void searchJadwalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchJadwalMouseClicked
+		// TODO add your handling code here:
+		if (searchJadwal.getText().contains("Guru") || searchJadwal.getText().contains("Kelas")) {
+			searchJadwal.setText("");
+		}
+        }//GEN-LAST:event_searchJadwalMouseClicked
+
+        private void secondActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_secondActionPerformed
+		// TODO add your handling code here:
+        }//GEN-LAST:event_secondActionPerformed
+
         // Variables declaration - do not modify//GEN-BEGIN:variables
+        private com.presensikeun.swing.Combobox first;
+        private javax.swing.JComboBox<String> jComboBox1;
         private javax.swing.JLabel jLabel1;
         private javax.swing.JLabel jLabel2;
+        private javax.swing.JLabel jLabel3;
         private javax.swing.JMenu jMenu1;
         private javax.swing.JMenu jMenu2;
         private javax.swing.JMenuBar jMenuBar1;
@@ -475,11 +684,13 @@ public final class Jadwal extends javax.swing.JPanel {
         private javax.swing.JPanel jPanel2;
         private javax.swing.JScrollPane jScrollPane1;
         private javax.swing.JLabel labelTable;
+        private javax.swing.JLabel labelTable1;
         private javax.swing.JLabel max;
         private javax.swing.JLabel min;
         private com.presensikeun.swing.PanelShadow panelShadow1;
         private com.presensikeun.swing.PanelShadow panelShadow2;
-        private com.presensikeun.swing.Searchbar searchPresensi;
+        private com.presensikeun.swing.Searchbar searchJadwal;
+        private com.presensikeun.swing.Combobox second;
         private com.presensikeun.swing.Button switchBtn;
         private com.presensikeun.swing.Table table1;
         // End of variables declaration//GEN-END:variables
