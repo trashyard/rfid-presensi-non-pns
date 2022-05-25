@@ -136,7 +136,7 @@ public final class Jadwal extends javax.swing.JPanel {
 	}
 
 	private void tableDetailJadwal() {
-		labelTable.setText("Detail Jadwal");
+		labelTable.setText("Detail Jadwal Guru");
 		DefaultTableModel model = new DefaultTableModel();
 
 		model.addColumn("ID");
@@ -179,8 +179,8 @@ public final class Jadwal extends javax.swing.JPanel {
 	}
 
 	public void tableJadwal() {
+		labelTable.setText("Jadwal Mata Pelajaran");
 		DefaultTableModel model = new DefaultTableModel();
-		labelTable.setText("Jadwal");
 
 		model.addColumn("ID");
 		model.addColumn("Kode");

@@ -11,6 +11,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
@@ -52,8 +55,10 @@ public final class Report extends javax.swing.JPanel {
 			notify("warning", "Mohon isi NIK");
 		} else if (dari.getText().length() == 0 || sampai.getText().length() == 0) {
 			notify("warning", "Mohon isi rentang jadwal terlebih dahulu");
+		} else if (compareDate()) {
+			notify("warning", "Tanggal lebih atau sama");
 		} else {
-			tableReport();
+			getPDF("filtered");
 		}
 
 	}
@@ -61,6 +66,7 @@ public final class Report extends javax.swing.JPanel {
 	private void getNIK() {
 		nik.setLabeText("NIK");
 		nik.removeAllItems();
+		nik.addItem("Semua");
 		try {
 			String sql = "select nik from tb_karyawan order by nik desc";
 			pst = con.prepareStatement(sql);
@@ -87,6 +93,7 @@ public final class Report extends javax.swing.JPanel {
 		try {
 
 			String sql = "select k.nik, weekday(p.tanggal), dj.jam as \"jam mulai\", addtime(dj.jam, dj.durasi) as \"jam selesai\", k.nama, m.nama as \"mapel\", r.nama as \"ruangan\", p.tanggal as \"masuk\" from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id join tb_karyawan as k on k.id = dj.id_karyawan join tb_jadwal as j on j.id = dj.id_jadwal join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on kls.id_ruang = r.id";
+			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -151,9 +158,10 @@ public final class Report extends javax.swing.JPanel {
 		panel.showNotification();
 	}
 
-	private void getPDF() {
+	private void getPDF(String type) {
 
 		String filename = null;
+		String sql = "select k.nik, weekday(p.tanggal), dj.jam as \"jam mulai\", addtime(dj.jam, dj.durasi) as \"jam selesai\", k.nama, m.nama as \"mapel\", r.nama as \"ruangan\", p.tanggal as \"masuk\" from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id join tb_karyawan as k on k.id = dj.id_karyawan join tb_jadwal as j on j.id = dj.id_jadwal join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on kls.id_ruang = r.id";
 
 		if (WhatOS.isWindows()) {
 			filename = "C:\\Documents and Settings\\" + System.getProperty("user.name") + "\\My Documents\\Presensi.csv";
@@ -180,7 +188,23 @@ public final class Report extends javax.swing.JPanel {
 				fw.append("Tanggal Masuk");
 				fw.append('\n');
 
-				String sql = "select k.nik, weekday(p.tanggal), dj.jam as \"jam mulai\", addtime(dj.jam, dj.durasi) as \"jam selesai\", k.nama, m.nama as \"mapel\", r.nama as \"ruangan\", p.tanggal as \"masuk\" from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id join tb_karyawan as k on k.id = dj.id_karyawan join tb_jadwal as j on j.id = dj.id_jadwal join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on kls.id_ruang = r.id";
+				switch (type) {
+					case "all":
+						sql = sql + " order by p.tanggal desc";
+						break;
+					case "filtered":
+						if (!nik.getSelectedItem().equals("Semua")) {
+							sql = sql + " where p.tanggal between '" + dari.getText() + "' and DATE_ADD('" + sampai.getText() + "', INTERVAL 1 DAY) and k.nik = '" + nik.getSelectedItem() + "'";
+						} else {
+							sql = sql + " where p.tanggal between '" + dari.getText() + "' and DATE_ADD('" + sampai.getText() + "', INTERVAL 1 DAY)";
+
+						}
+						break;
+					default:
+						break;
+				}
+
+				System.out.println(sql);
 				pst = con.prepareStatement(sql);
 				rs = pst.executeQuery();
 				while (rs.next()) {
@@ -205,6 +229,7 @@ public final class Report extends javax.swing.JPanel {
 			}
 			notify("success", "Tersimpan di " + filename.substring(1, 20) + "...");
 		} catch (IOException | SQLException e) {
+			notify("Warning", "Gagal Menyimpan");
 		}
 	}
 
@@ -213,26 +238,54 @@ public final class Report extends javax.swing.JPanel {
 		try {
 			switch (type) {
 				case "karyawan":
-					sql = "select k.nama, j.nama from tb_karyawan as k join tb_jabatan as j on k.id_jabatan = j.id where k.nik = " + nik.getSelectedItem();
-					pst = con.prepareStatement(sql);
-					rs = pst.executeQuery();
-					if (rs.next()) {
-						notify("info", rs.getString(1) + ": " + rs.getString(2));
+					if (!nik.getSelectedItem().equals("Semua")) {
+						sql = "select k.nama, j.nama from tb_karyawan as k join tb_jabatan as j on k.id_jabatan = j.id where k.nik = " + nik.getSelectedItem();
+						pst = con.prepareStatement(sql);
+						rs = pst.executeQuery();
+						if (rs.next()) {
+							notify("info", rs.getString(1) + ": " + rs.getString(2));
+						}
 					}
 					break;
 				default:
 					break;
 			}
-		} catch (SQLException ex) {
-			notify("info", "Mohon isi terlebih dahulu. err: " + ex.getMessage());
+		} catch (NullPointerException | SQLException ex) {
+			notify("info", "Mohon isi NIK terlebih dahulu.");
 		}
 
+	}
+
+	private void reset() {
+		dateChooser.toDay();
+		dateChooser1.toDay();
+	}
+
+	private boolean compareDate() {
+		boolean isAfter = false;
+		try {
+			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+			Date date1 = format.parse(dari.getText());
+			Date date2 = format.parse(sampai.getText());
+
+			if (date1.after(date2)) {
+				isAfter = true;
+			} else {
+				isAfter = date1.equals(date2);
+			}
+
+		} catch (ParseException ex) {
+
+		}
+		return isAfter;
 	}
 
 	@SuppressWarnings("unchecked")
         // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
         private void initComponents() {
 
+                dateChooser = new com.presensikeun.swing.datechooser.DateChooser();
+                dateChooser1 = new com.presensikeun.swing.datechooser.DateChooser();
                 jPanel1 = new javax.swing.JPanel();
                 jLabel1 = new javax.swing.JLabel();
                 jPanel2 = new javax.swing.JPanel();
@@ -247,10 +300,19 @@ public final class Report extends javax.swing.JPanel {
                 getDari = new com.presensikeun.swing.Button();
                 getSampai = new com.presensikeun.swing.Button();
                 nik = new com.presensikeun.swing.Combobox();
+                filter = new com.presensikeun.swing.Button();
                 panelShadow2 = new com.presensikeun.swing.PanelShadow();
                 jScrollPane1 = new javax.swing.JScrollPane();
                 table1 = new com.presensikeun.swing.Table();
                 labelTable = new javax.swing.JLabel();
+
+                dateChooser.setForeground(new java.awt.Color(85, 65, 118));
+                dateChooser.setDateFormat("yyyy-MM-dd");
+                dateChooser.setTextRefernce(dari);
+
+                dateChooser1.setForeground(new java.awt.Color(85, 65, 118));
+                dateChooser1.setDateFormat("yyyy-MM-dd");
+                dateChooser1.setTextRefernce(sampai);
 
                 setBackground(new java.awt.Color(250, 250, 250));
 
@@ -304,7 +366,7 @@ public final class Report extends javax.swing.JPanel {
                                                 .addContainerGap())
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addComponent(jLabel1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 685, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(min, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(max, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -329,7 +391,7 @@ public final class Report extends javax.swing.JPanel {
 
                 button2.setBackground(new java.awt.Color(51, 153, 0));
                 button2.setForeground(new java.awt.Color(255, 255, 255));
-                button2.setText("Export CSV");
+                button2.setText("Export All");
                 button2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
                 button2.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -398,6 +460,11 @@ public final class Report extends javax.swing.JPanel {
                 getSampai.setForeground(new java.awt.Color(255, 255, 255));
                 getSampai.setText("D");
                 getSampai.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                getSampai.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                getSampaiActionPerformed(evt);
+                        }
+                });
 
                 nik.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
                 nik.setLabeText("NIK");
@@ -413,6 +480,16 @@ public final class Report extends javax.swing.JPanel {
                 nik.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
                                 nikActionPerformed(evt);
+                        }
+                });
+
+                filter.setBackground(new java.awt.Color(102, 102, 0));
+                filter.setForeground(new java.awt.Color(255, 255, 255));
+                filter.setText("Export Filtered");
+                filter.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                filter.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                filterActionPerformed(evt);
                         }
                 });
 
@@ -436,6 +513,8 @@ public final class Report extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(nik, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(filter, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
                 );
@@ -443,13 +522,17 @@ public final class Report extends javax.swing.JPanel {
                         panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(labelTable1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(sampai, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                .addComponent(getDari, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(dari, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(button2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(getSampai, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(nik, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(sampai, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                        .addComponent(getDari, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(dari, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(getSampai, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(nik, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(filter, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 );
 
                 panelShadow2.setBackground(new java.awt.Color(252, 254, 255));
@@ -488,8 +571,10 @@ public final class Report extends javax.swing.JPanel {
                         .addGroup(panelShadow2Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 855, Short.MAX_VALUE)
-                                        .addComponent(labelTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 819, Short.MAX_VALUE)
+                                        .addGroup(panelShadow2Layout.createSequentialGroup()
+                                                .addComponent(labelTable, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(0, 0, Short.MAX_VALUE)))
                                 .addContainerGap())
                 );
                 panelShadow2Layout.setVerticalGroup(
@@ -505,7 +590,7 @@ public final class Report extends javax.swing.JPanel {
                 this.setLayout(layout);
                 layout.setHorizontalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 911, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 875, Short.MAX_VALUE)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -530,8 +615,7 @@ public final class Report extends javax.swing.JPanel {
 
         private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
 		// TODO add your handling code here:
-//		getPDF();
-		verifyFields();
+		getPDF("all");
         }//GEN-LAST:event_button2ActionPerformed
 
         private void maxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_maxMouseClicked
@@ -546,6 +630,7 @@ public final class Report extends javax.swing.JPanel {
 
         private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
 		// TODO add your handling code here:
+		reset();
         }//GEN-LAST:event_jLabel3MouseClicked
 
         private void dariKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dariKeyReleased
@@ -572,6 +657,7 @@ public final class Report extends javax.swing.JPanel {
 
         private void getDariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getDariActionPerformed
 		// TODO add your handling code here:
+		dateChooser.showPopup();
         }//GEN-LAST:event_getDariActionPerformed
 
         private void sampaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sampaiMouseClicked
@@ -579,9 +665,22 @@ public final class Report extends javax.swing.JPanel {
 		getSampai.doClick();
         }//GEN-LAST:event_sampaiMouseClicked
 
+        private void getSampaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getSampaiActionPerformed
+		// TODO add your handling code here:
+		dateChooser1.showPopup();
+        }//GEN-LAST:event_getSampaiActionPerformed
+
+        private void filterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterActionPerformed
+		// TODO add your handling code here:
+		verifyFields();
+        }//GEN-LAST:event_filterActionPerformed
+
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private com.presensikeun.swing.Button button2;
         private com.presensikeun.swing.TextField dari;
+        private com.presensikeun.swing.datechooser.DateChooser dateChooser;
+        private com.presensikeun.swing.datechooser.DateChooser dateChooser1;
+        private com.presensikeun.swing.Button filter;
         private com.presensikeun.swing.Button getDari;
         private com.presensikeun.swing.Button getSampai;
         private javax.swing.JLabel jLabel1;
