@@ -59,7 +59,7 @@ public class Combobox<E> extends JComboBox<E> {
 	public Combobox() {
 		UIManager.put("ComboBox.selectionBackground", new ColorUIResource(Color.WHITE));
 		setBackground(Color.WHITE);
-		setBorder(new EmptyBorder(15, 3, 5, 3));
+		setBorder(new EmptyBorder(15, 3, 10, 3));
 		setUI(new ComboUI(this));
 		setRenderer(new DefaultListCellRenderer() {
 			@Override
@@ -214,9 +214,11 @@ public class Combobox<E> extends JComboBox<E> {
 				if (show) {
 					size = 18 * (1 - location);
 				} else {
+					g2.setColor(new Color(252, 254, 255));
 					size = 18 * location;
 				}
 			} else {
+				g2.setColor(new Color(252, 254, 255));
 				size = 18;
 			}
 			g2.drawString(combo.getLabeText(), in.right, (int) (in.top + textY + ft.getAscent() - size));
