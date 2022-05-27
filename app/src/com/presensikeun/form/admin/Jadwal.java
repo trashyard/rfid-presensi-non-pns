@@ -62,7 +62,7 @@ public final class Jadwal extends javax.swing.JPanel {
 		first.setLabeText("Mapel");
 		first.removeAllItems();
 		try {
-			String sql = "select id from tb_mapel";
+			String sql = "select id from tb_mapel where nama != 'Datang' and nama != 'Pulang'";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -123,7 +123,7 @@ public final class Jadwal extends javax.swing.JPanel {
 		second.setLabeText("Kelas");
 		second.removeAllItems();
 		try {
-			String sql = "select id from tb_kelas";
+			String sql = "select id from tb_kelas where nama != 'NONE'";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -136,7 +136,7 @@ public final class Jadwal extends javax.swing.JPanel {
 	}
 
 	private void tableDetailJadwal() {
-		labelTable.setText("Detail Jadwal Guru");
+		labelTable.setText("Detail Jadwal Karyawan");
 		DefaultTableModel model = new DefaultTableModel();
 
 		model.addColumn("ID");
@@ -144,14 +144,14 @@ public final class Jadwal extends javax.swing.JPanel {
 		model.addColumn("Jam Mulai");
 		model.addColumn("Jam Selesai");
 		model.addColumn("Nama Mapel");
-		model.addColumn("Nama Guru");
+		model.addColumn("Nama Karyawan");
 		model.addColumn("Jadwal");
 		try {
 
-			String sql = "select dj.id, dj.hari as \"Date\", dj.jam as \"Jam Mulai\", ADDTIME(dj.jam, dj.durasi) as \"Jam Selesai\", m.nama as \"Nama Mapel\", k.nama as \"Nama Guru\", j.id from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on r.id = kls.id_ruang";
+			String sql = "select dj.id, dj.hari as \"Date\", dj.jam as \"Jam Mulai\", ADDTIME(dj.jam, dj.durasi) as \"Jam Selesai\", m.nama as \"Nama Mapel\", k.nama as \"Nama Karyawan\", j.id from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on r.id = kls.id_ruang ";
 
 			// boolean buat field ama comboboxnya
-			Boolean searchJ = !searchJadwal.getText().contains("Guru");
+			Boolean searchJ = !searchJadwal.getText().contains("Karyawan");
 			Boolean firstJ = first.getSelectedIndex() != -1;
 			Boolean secondJ = second.getSelectedIndex() != -1;
 
@@ -165,6 +165,8 @@ public final class Jadwal extends javax.swing.JPanel {
 			if (secondJ) {
 				sql = sql + " && dj.id_jadwal like '%" + second.getSelectedItem() + "%'";
 			}
+
+			sql = sql + " order by dj.jam asc limit 300";
 
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
@@ -245,7 +247,7 @@ public final class Jadwal extends javax.swing.JPanel {
 		if (mode) {
 			searchJadwal.setText("Cari Kelas ...");
 		} else {
-			searchJadwal.setText("Cari Guru ...");
+			searchJadwal.setText("Cari Karyawan ...");
 		}
 	}
 
@@ -585,7 +587,7 @@ public final class Jadwal extends javax.swing.JPanel {
                                 .addGroup(panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 865, Short.MAX_VALUE)
                                         .addGroup(panelShadow2Layout.createSequentialGroup()
-                                                .addComponent(labelTable, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(labelTable, javax.swing.GroupLayout.PREFERRED_SIZE, 631, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(switchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addContainerGap())
@@ -635,8 +637,10 @@ public final class Jadwal extends javax.swing.JPanel {
 			int row = table1.rowAtPoint(evt.getPoint());
 			String columnOne = table1.getValueAt(row, 0).toString();
 
-			if (evt.getClickCount() == 2 && table1.getSelectedRow() != -1) {
+			if (evt.getClickCount() == 2 && table1.getSelectedRow() != -1 && !columnOne.contains("NONE")) {
 				whichPopUpAndRefresh("edit", columnOne);
+			} else if (evt.getClickCount() == 2 && columnOne.contains("NONE")) {
+				notify("warning", "Tidak boleh diedit!");
 			}
 		} catch (ArrayIndexOutOfBoundsException ex) {
 		}
@@ -668,7 +672,7 @@ public final class Jadwal extends javax.swing.JPanel {
 
         private void searchJadwalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchJadwalMouseClicked
 		// TODO add your handling code here:
-		if (searchJadwal.getText().contains("Guru") || searchJadwal.getText().contains("Kelas")) {
+		if (searchJadwal.getText().contains("Karyawan") || searchJadwal.getText().contains("Kelas")) {
 			searchJadwal.setText("");
 		}
         }//GEN-LAST:event_searchJadwalMouseClicked

@@ -327,7 +327,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jScrollPane1" pref="865" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
-                          <Component id="labelTable" min="-2" pref="211" max="-2" attributes="0"/>
+                          <Component id="labelTable" min="-2" pref="631" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="switchBtn" min="-2" pref="94" max="-2" attributes="0"/>
                       </Group>

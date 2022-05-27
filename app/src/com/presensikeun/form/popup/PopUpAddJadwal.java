@@ -49,7 +49,7 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
 	private void getMapel() {
 		mapel.removeAllItems();
 		try {
-			String sql = "select id from tb_mapel";
+			String sql = "select id from tb_mapel where id != '001' and id != '002'";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -62,9 +62,15 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
 	}
 
 	private void getKelas(String jurusan) {
+		String sql = null;
 		kelas.removeAllItems();
 		try {
-			String sql = "select k.id from tb_kelas as k join tb_jurusan as j on k.id_jurusan = j.id where j.id_jurusan like '%" + jurusan + "%'";
+			if (jurusan != null) {
+				sql = "select k.id from tb_kelas as k join tb_jurusan as j on k.id_jurusan = j.id where k.nama like '%" + jurusan + "%' and k.nama != 'NONE';";
+			} else {
+				sql = "select k.id from tb_kelas as k join tb_jurusan as j on k.id_jurusan = j.id where k.nama != 'NONE'";
+			}
+			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -79,7 +85,7 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
 	private void getJurusan() {
 		jurusan.removeAllItems();
 		try {
-			String sql = "select id_jurusan from tb_jurusan";
+			String sql = "select id_jurusan from tb_jurusan where id_jurusan != 'NONE'";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {

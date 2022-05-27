@@ -63,9 +63,14 @@ public class PopUpAddDetailJadwal extends javax.swing.JDialog {
 	}
 
 	private void getJadwal(String kelas) {
+		String sql = null;
 		jadwal.removeAllItems();
 		try {
-			String sql = "select id from tb_jadwal where id_kelas like '%" + kelas + "%'";
+			if (kelas != null) {
+				sql = "select id from tb_jadwal where id_kelas like '%" + kelas + "%'";
+			} else {
+				sql = "select id from tb_jadwal ";
+			}
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -80,7 +85,7 @@ public class PopUpAddDetailJadwal extends javax.swing.JDialog {
 	private void getKelas() {
 		kelas.removeAllItems();
 		try {
-			String sql = "select id from tb_kelas";
+			String sql = "select id from tb_kelas where nama != 'NONE'";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
