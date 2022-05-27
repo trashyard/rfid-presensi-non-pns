@@ -33,7 +33,7 @@ public final class Report extends javax.swing.JPanel {
 		// initialize
 		showWinButton();
 		table1.scroll(jScrollPane1);
-		tableReport();
+		tableReport(null, null, null);
 
 		// get
 		getNIK();
@@ -50,7 +50,7 @@ public final class Report extends javax.swing.JPanel {
 		}
 	}
 
-	private void verifyFields() {
+	private void verifyFields(String type) {
 		if (nik.getSelectedIndex() == -1) {
 			notify("warning", "Mohon isi NIK");
 		} else if (dari.getText().length() == 0 || sampai.getText().length() == 0) {
@@ -58,7 +58,15 @@ public final class Report extends javax.swing.JPanel {
 		} else if (compareDate()) {
 			notify("warning", "Tanggal lebih atau sama");
 		} else {
-			getPDF("filtered");
+			switch (type) {
+				case "filtered":
+					getPDF("filtered");
+					break;
+				case "preview":
+					tableReport(dari.getText(), sampai.getText(), (String) nik.getSelectedItem());
+					notify("success", "Data tabel telah difilter!");
+					break;
+			}
 		}
 
 	}
@@ -80,7 +88,13 @@ public final class Report extends javax.swing.JPanel {
 		nik.setSelectedIndex(-1);
 	}
 
-	public void tableReport() {
+	public void tableReport(String dari, String sampai, String nik) {
+		String sql = "select k.nik, weekday(p.tanggal), dj.jam as \"jam mulai\", addtime(dj.jam, dj.durasi) as \"jam selesai\", k.nama, m.nama as \"mapel\", r.nama as \"ruangan\", p.tanggal as \"masuk\" from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id join tb_karyawan as k on k.id = dj.id_karyawan join tb_jadwal as j on j.id = dj.id_jadwal join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on kls.id_ruang = r.id";
+		if (dari != null && sampai != null && nik.equals("Semua")) {
+			sql = sql + " where p.tanggal between '" + dari + "' and DATE_ADD('" + sampai + "', INTERVAL 1 DAY)";
+		} else if (dari != null && sampai != null && nik != null) {
+			sql = sql + " where p.tanggal between '" + dari + "' and DATE_ADD('" + sampai + "', INTERVAL 1 DAY) and k.nik = '" + nik + "'";
+		}
 		DefaultTableModel model = new DefaultTableModel();
 		model.addColumn("NIK");
 		model.addColumn("Hari");
@@ -91,8 +105,6 @@ public final class Report extends javax.swing.JPanel {
 		model.addColumn("Ruangan");
 		model.addColumn("Masuk");
 		try {
-
-			String sql = "select k.nik, weekday(p.tanggal), dj.jam as \"jam mulai\", addtime(dj.jam, dj.durasi) as \"jam selesai\", k.nama, m.nama as \"mapel\", r.nama as \"ruangan\", p.tanggal as \"masuk\" from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id join tb_karyawan as k on k.id = dj.id_karyawan join tb_jadwal as j on j.id = dj.id_jadwal join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on kls.id_ruang = r.id";
 			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
@@ -301,6 +313,7 @@ public final class Report extends javax.swing.JPanel {
                 getSampai = new com.presensikeun.swing.Button();
                 nik = new com.presensikeun.swing.Combobox();
                 filter = new com.presensikeun.swing.Button();
+                jLabel2 = new javax.swing.JLabel();
                 panelShadow2 = new com.presensikeun.swing.PanelShadow();
                 jScrollPane1 = new javax.swing.JScrollPane();
                 table1 = new com.presensikeun.swing.Table();
@@ -493,6 +506,13 @@ public final class Report extends javax.swing.JPanel {
                         }
                 });
 
+                jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/presensikeun/images/icon/icons8-search-24.png"))); // NOI18N
+                jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                jLabel2MouseClicked(evt);
+                        }
+                });
+
                 javax.swing.GroupLayout panelShadow1Layout = new javax.swing.GroupLayout(panelShadow1);
                 panelShadow1.setLayout(panelShadow1Layout);
                 panelShadow1Layout.setHorizontalGroup(
@@ -511,11 +531,13 @@ public final class Report extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(getSampai, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(nik, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(nik, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(filter, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(filter, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
                 );
                 panelShadow1Layout.setVerticalGroup(
@@ -532,7 +554,8 @@ public final class Report extends javax.swing.JPanel {
                                         .addComponent(nik, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                 .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(filter, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                .addComponent(filter, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 );
 
                 panelShadow2.setBackground(new java.awt.Color(252, 254, 255));
@@ -571,7 +594,7 @@ public final class Report extends javax.swing.JPanel {
                         .addGroup(panelShadow2Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 819, Short.MAX_VALUE)
+                                        .addComponent(jScrollPane1)
                                         .addGroup(panelShadow2Layout.createSequentialGroup()
                                                 .addComponent(labelTable, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(0, 0, Short.MAX_VALUE)))
@@ -590,7 +613,7 @@ public final class Report extends javax.swing.JPanel {
                 this.setLayout(layout);
                 layout.setHorizontalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 875, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 837, Short.MAX_VALUE)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -672,8 +695,13 @@ public final class Report extends javax.swing.JPanel {
 
         private void filterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterActionPerformed
 		// TODO add your handling code here:
-		verifyFields();
+		verifyFields("filtered");
         }//GEN-LAST:event_filterActionPerformed
+
+        private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+		// TODO add your handling code here:
+		verifyFields("preview");
+        }//GEN-LAST:event_jLabel2MouseClicked
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private com.presensikeun.swing.Button button2;
@@ -684,6 +712,7 @@ public final class Report extends javax.swing.JPanel {
         private com.presensikeun.swing.Button getDari;
         private com.presensikeun.swing.Button getSampai;
         private javax.swing.JLabel jLabel1;
+        private javax.swing.JLabel jLabel2;
         private javax.swing.JLabel jLabel3;
         private javax.swing.JPanel jPanel1;
         private javax.swing.JPanel jPanel2;

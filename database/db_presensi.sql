@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 22, 2022 at 07:38 AM
+-- Generation Time: May 27, 2022 at 05:51 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -41,8 +41,9 @@ CREATE TABLE `tb_detail_jadwal` (
 --
 
 INSERT INTO `tb_detail_jadwal` (`id`, `hari`, `jam`, `durasi`, `id_karyawan`, `id_jadwal`) VALUES
-('JD00001', 1, '06:00:00', '02:00:00', 2, 'JBINDORPL1.1'),
-('JD00002', 6, '11:00:00', '01:00:00', 2, 'JBINDORPL1.1');
+('JD00001', 4, '20:00:00', '04:00:00', 2, 'JBINDORPL1.1'),
+('JD00002', 4, '20:00:00', '04:00:00', 2, 'JFISIKRPL1.1'),
+('JD00008', 4, '19:00:00', '04:00:00', 2, 'J00001NONE.1');
 
 --
 -- Triggers `tb_detail_jadwal`
@@ -119,6 +120,8 @@ CREATE TABLE `tb_jadwal` (
 --
 
 INSERT INTO `tb_jadwal` (`id`, `id_mapel`, `id_kelas`, `status`) VALUES
+('J00001NONE.1', '001', 'NONE.1', 'mengajar'),
+('J00002NONE.1', '002', 'NONE.1', 'mengajar'),
 ('J0ALGOTKJ1.3', 'ALGO', 'TKJ1.3', 'mengajar'),
 ('JBINDORPL1.1', 'BINDO', 'RPL1.1', 'mengajar'),
 ('JBINDOTKJ1.3', 'BINDO', 'TKJ1.3', 'mengajar'),
@@ -163,7 +166,8 @@ INSERT INTO `tb_jurusan` (`id`, `id_jurusan`, `nama`) VALUES
 (3, 'TKR', 'Teknik Kendaraan Ringan'),
 (4, 'TSM', 'Teknik Sepeda Motor'),
 (5, 'AGRH', 'Agribisnis dan Holtikutura'),
-(6, 'MM', 'Multimedia');
+(6, 'MM', 'Multimedia'),
+(7, 'NONE', '-');
 
 -- --------------------------------------------------------
 
@@ -187,14 +191,12 @@ CREATE TABLE `tb_karyawan` (
 --
 
 INSERT INTO `tb_karyawan` (`id`, `nik`, `username`, `password`, `nama`, `status`, `jenis_kelamin`, `id_jabatan`) VALUES
-(1, '3525010609510002', 'ADM001', 'admin', 'Yomama', 'admin', 'P', 'JB003'),
 (2, '3525017006750017', 'r', 'r', 'Raihan', 'admin', 'L', 'JB003'),
-(3, '3525016611770002', 'a', 'a', 'Andini', 'user', 'P', 'JB004'),
-(4, '3525016812770001', NULL, NULL, 'Azel', 'user', 'P', 'JB003'),
 (7, '3525012005596332', NULL, NULL, 'Devi', 'user', 'P', 'JB003'),
-(8, '3525012005534534', NULL, NULL, 'David', 'user', 'P', 'JB003'),
-(9, '3525012005598643', NULL, NULL, 'Akber', 'user', 'P', 'JB001'),
-(10, '3203020402492049', NULL, NULL, 'Elizabeth', 'user', 'P', 'JB003');
+(8, '3525012005534534', NULL, NULL, 'David', 'user', 'L', 'JB003'),
+(9, '3525012005598643', NULL, NULL, 'Akber', 'user', 'L', 'JB001'),
+(15, '4538495897298271', NULL, NULL, 'Gandi Geblekus', 'user', 'L', 'JB002'),
+(16, '0987654538765433', NULL, NULL, 'vinda cantik', 'user', 'P', 'JB004');
 
 -- --------------------------------------------------------
 
@@ -215,6 +217,7 @@ CREATE TABLE `tb_kelas` (
 --
 
 INSERT INTO `tb_kelas` (`id`, `nama`, `angkatan`, `id_ruang`, `id_jurusan`) VALUES
+('NONE.1', 'NONE', '1', 6, 7),
 ('RPL1.1', 'RPL 1', '1', 1, 1),
 ('TKJ1.3', 'TKJ 1', '3', 5, 2);
 
@@ -250,6 +253,8 @@ CREATE TABLE `tb_mapel` (
 --
 
 INSERT INTO `tb_mapel` (`id`, `nama`) VALUES
+('001', 'Datang'),
+('002', 'Pulang'),
 ('ALGO', 'Algoritma'),
 ('BINDO', 'Bahasa Indonesia'),
 ('FISIKA', 'Fisika'),
@@ -264,9 +269,9 @@ INSERT INTO `tb_mapel` (`id`, `nama`) VALUES
 --
 
 CREATE TABLE `tb_presensi` (
-  `id` int(11) NOT NULL,
+  `id` varchar(11) NOT NULL,
   `tanggal` datetime NOT NULL DEFAULT current_timestamp(),
-  `keterangan` enum('Hadir','Telat','Alpa','?') CHARACTER SET latin1 COLLATE latin1_general_cs NOT NULL,
+  `keterangan` enum('Hadir','Telat','Alpa','?','Izin') CHARACTER SET latin1 COLLATE latin1_general_cs NOT NULL,
   `id_detail_jadwal` varchar(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -275,21 +280,28 @@ CREATE TABLE `tb_presensi` (
 --
 
 INSERT INTO `tb_presensi` (`id`, `tanggal`, `keterangan`, `id_detail_jadwal`) VALUES
-(4, '2022-05-22 11:52:20', 'Alpa', 'JD00002');
+('P000001', '2022-05-27 22:05:57', 'Izin', 'JD00008'),
+('P000002', '2022-05-27 22:05:59', 'Alpa', 'JD00001'),
+('P000003', '2022-05-27 22:06:02', 'Alpa', 'JD00002');
 
 --
 -- Triggers `tb_presensi`
 --
 DELIMITER $$
-CREATE TRIGGER `insert_attendance` BEFORE INSERT ON `tb_presensi` FOR EACH ROW BEGIN
+CREATE TRIGGER `insert_attendance&formatId` BEFORE INSERT ON `tb_presensi` FOR EACH ROW BEGIN
 	DECLARE start_time DATETIME;
     DECLARE end_time DATETIME;
     DECLARE late_time DATETIME;
     DECLARE alpa_time DATETIME;
+    DECLARE countColumn INT;
+    DECLARE lastColumn INT;
+    SET @countColumn = (select count(*) from tb_presensi);
+	SET @lastColumn = (select REPLACE(LTRIM(REPLACE(substring((select id from tb_presensi order by id desc limit 1),3), '0', ' ')),' ', '0'));
 	SET @start_time = cast((select addtime(current_date, tb_detail_jadwal.jam) from tb_detail_jadwal where id = NEW.id_detail_jadwal) as datetime);
     SET @end_time = cast((select addtime(current_date, addtime(tb_detail_jadwal.jam, tb_detail_jadwal.durasi)) from tb_detail_jadwal where id = NEW.id_detail_jadwal) as datetime);
 	SET @late_time = cast((select addtime(current_date, addtime(tb_detail_jadwal.jam, "00:15:00")) from tb_detail_jadwal where id = NEW.id_detail_jadwal) as datetime);
 	SET @alpa_time = cast((select addtime(current_date, addtime(tb_detail_jadwal.jam, "00:45:00")) from tb_detail_jadwal where id = NEW.id_detail_jadwal) as datetime);
+    
 	IF NEW.tanggal > @start_time && NEW.tanggal < @late_time THEN
     		SET NEW.keterangan = "Hadir";
 		ELSEIF NEW.tanggal > @late_time && NEW.tanggal < @alpa_time THEN 
@@ -299,6 +311,12 @@ CREATE TRIGGER `insert_attendance` BEFORE INSERT ON `tb_presensi` FOR EACH ROW B
 		ELSE
 			SET NEW.keterangan = "?";
         END IF;
+        
+        IF @countColumn = 0 THEN
+		SET NEW.id = CONCAT("P", RIGHT(CONCAT('00000', (@countColumn + 1)),10));
+	ELSE
+		SET NEW.id = CONCAT("P", RIGHT(CONCAT('00000', @lastColumn + 1),10));
+	END IF;
 END
 $$
 DELIMITER ;
@@ -323,7 +341,8 @@ INSERT INTO `tb_ruang` (`id`, `nama`) VALUES
 (2, '3.2'),
 (3, '3.4'),
 (4, '3.5'),
-(5, '5.5');
+(5, '5.5'),
+(6, 'NONE');
 
 --
 -- Indexes for dumped tables
@@ -401,25 +420,19 @@ ALTER TABLE `tb_ruang`
 -- AUTO_INCREMENT for table `tb_jurusan`
 --
 ALTER TABLE `tb_jurusan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `tb_karyawan`
 --
 ALTER TABLE `tb_karyawan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
---
--- AUTO_INCREMENT for table `tb_presensi`
---
-ALTER TABLE `tb_presensi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `tb_ruang`
 --
 ALTER TABLE `tb_ruang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
