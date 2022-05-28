@@ -1,9 +1,9 @@
 package com.presensikeun.form.admin;
 
 import com.presensikeun.chart.ModelChart;
-import com.presensikeun.chart.ModelPolarAreaChart;
+import com.presensikeun.chart.ModelPieChart;
+import com.presensikeun.chart.PieChart;
 import com.presensikeun.controller.Koneksi;
-import com.presensikeun.main.Main;
 import com.presensikeun.model.ModelCard;
 import com.presensikeun.model.WhatOS;
 import com.presensikeun.model.WindowButton;
@@ -71,17 +71,17 @@ public final class Dashboard extends javax.swing.JPanel {
 
 		// pie chart
 		// telat hadir sakit izin alpa
-		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(227, 148, 0), "Jan - Mar", getMonth("1", "3")));
-		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(92, 204, 150), "Apr - Jun", getMonth("4", "6")));
-		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(179, 161, 230), "Jul - Sept", getMonth("7", "9")));
-		polarAreaChart1.addItem(new ModelPolarAreaChart(new Color(0, 163, 204), "Okt - Des", getMonth("10", "12")));
-		polarAreaChart1.start();
+		pieChart1.setChartType(PieChart.PeiChartType.DEFAULT);
+		pieChart1.addData(new ModelPieChart("Jan - Mar", getMonth("1", "3"), new Color(227, 148, 0)));
+		pieChart1.addData(new ModelPieChart("Apr - Jun", getMonth("4", "6"), new Color(92, 204, 150)));
+		pieChart1.addData(new ModelPieChart("Jul - Sept", getMonth("7", "9"), new Color(179, 161, 230)));
+		pieChart1.addData(new ModelPieChart("Okt - Des", getMonth("10", "12"), new Color(0, 163, 204)));
 	}
 
 	private String getTotalPresensi() {
 		String tot = "";
 		try {
-			String sql = "select count(*) from tb_presensi";
+			String sql = "select count(*) from tb_presensi where year(tanggal) = year(current_date)";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			if (rs.next()) {
@@ -125,15 +125,15 @@ public final class Dashboard extends javax.swing.JPanel {
 		return tot;
 	}
 
-	private double getMonth(String first, String second) {
-		double tot = 0;
+	private int getMonth(String first, String second) {
+		int tot = 0;
 		try {
 
-			String sql = "select count(*) from tb_presensi where month(tanggal) between " + first + " and " + second + "";
+			String sql = "select count(*) from tb_presensi where month(tanggal) between " + first + " and " + second + " && year(tanggal) = year(current_date)";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			if (rs.next()) {
-				tot = rs.getDouble(1);
+				tot = rs.getInt(1);
 			}
 		} catch (SQLException ex) {
 			tot = 0;
@@ -145,7 +145,7 @@ public final class Dashboard extends javax.swing.JPanel {
 		double tot = 0;
 		try {
 
-			String sql = "SELECT count(*) from tb_presensi where month(tanggal) = " + month + " && FLOOR((DayOfMonth(tanggal)-1)/7)+1 = " + week + "";
+			String sql = "SELECT count(*) from tb_presensi where month(tanggal) = " + month + " && FLOOR((DayOfMonth(tanggal)-1)/7)+1 = " + week + " && year(tanggal) = year(current_date)";
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			if (rs.next()) {
@@ -174,8 +174,8 @@ public final class Dashboard extends javax.swing.JPanel {
                 chart = new com.presensikeun.chart.Chart();
                 jLabel3 = new javax.swing.JLabel();
                 panelShadow2 = new com.presensikeun.swing.PanelShadow();
-                polarAreaChart1 = new com.presensikeun.chart.PolarAreaChart();
                 jLabel2 = new javax.swing.JLabel();
+                pieChart1 = new com.presensikeun.chart.PieChart();
 
                 setBackground(new java.awt.Color(250, 250, 250));
 
@@ -281,32 +281,35 @@ public final class Dashboard extends javax.swing.JPanel {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow1Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(chart, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addComponent(chart, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
                                 .addContainerGap())
                 );
 
                 panelShadow2.setBackground(new java.awt.Color(252, 254, 255));
 
-                polarAreaChart1.setPreferredSize(new java.awt.Dimension(250, 250));
-
                 jLabel2.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
                 jLabel2.setForeground(new java.awt.Color(85, 65, 118));
                 jLabel2.setText("Pie Chart");
+
+                pieChart1.setForeground(new java.awt.Color(85, 65, 118));
+                pieChart1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
 
                 javax.swing.GroupLayout panelShadow2Layout = new javax.swing.GroupLayout(panelShadow2);
                 panelShadow2.setLayout(panelShadow2Layout);
                 panelShadow2Layout.setHorizontalGroup(
                         panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(polarAreaChart1, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
+                        .addGroup(panelShadow2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(pieChart1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
                 );
                 panelShadow2Layout.setVerticalGroup(
                         panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow2Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(polarAreaChart1, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
-                                .addContainerGap())
+                                .addComponent(pieChart1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 );
 
                 javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -369,6 +372,6 @@ public final class Dashboard extends javax.swing.JPanel {
         private javax.swing.JLabel min;
         private com.presensikeun.swing.PanelShadow panelShadow1;
         private com.presensikeun.swing.PanelShadow panelShadow2;
-        private com.presensikeun.chart.PolarAreaChart polarAreaChart1;
+        private com.presensikeun.chart.PieChart pieChart1;
         // End of variables declaration//GEN-END:variables
 }
