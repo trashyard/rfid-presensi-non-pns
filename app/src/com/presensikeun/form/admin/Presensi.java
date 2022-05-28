@@ -74,7 +74,6 @@ public final class Presensi extends javax.swing.JPanel {
 
 		try {
 			String sql = "select dj.id, k.nama, dj.hari as \"Date\", dj.jam as \"Jam Mulai\", ADDTIME(dj.jam, dj.durasi) as \"Jam Selesai\", m.nama as \"Nama Mapel\" from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id where k.nik = '" + input + "' and (current_time > dj.jam && current_time < ADDTIME(dj.jam, dj.durasi) && dj.hari = WEEKDAY(CURRENT_DATE) && dj.id not in (select p.id_detail_jadwal from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id where weekday(p.tanggal) = weekday(current_date) and (current_time > dj.jam && current_time < ADDTIME(dj.jam, dj.durasi)))) order by ADDTIME(dj.jam, dj.durasi) asc limit 1";
-			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 
@@ -95,7 +94,6 @@ public final class Presensi extends javax.swing.JPanel {
 	public void submitAttendance(String id) {
 		try {
 			String sql = "INSERT INTO tb_presensi (id, tanggal, keterangan, id_detail_jadwal) VALUES (NULL, current_timestamp(), '?', '" + id + "')";
-			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			pst.executeUpdate();
 			Notification panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.SUCCESS, Notification.Location.CENTER, rs.getString(5) + ": " + rs.getString(3));
@@ -345,7 +343,8 @@ public final class Presensi extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(panelShadow1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(10, 10, 10)
-                                .addComponent(panelShadow2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(panelShadow2, javax.swing.GroupLayout.PREFERRED_SIZE, 424, Short.MAX_VALUE)
+                                .addContainerGap())
                 );
         }// </editor-fold>//GEN-END:initComponents
 

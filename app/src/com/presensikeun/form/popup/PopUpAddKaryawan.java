@@ -79,7 +79,6 @@ public class PopUpAddKaryawan extends javax.swing.JDialog {
 	private void insertAndLeave() {
 		try {
 			String sql = "insert into tb_karyawan values(null, '" + nik.getText() + "', null, null, '" + nama.getText() + "', 'user', '" + getSelectedGender() + "', (select id from tb_jabatan where nama = '" + jabatan.getSelectedItem() + "'))";
-			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			pst.executeUpdate();
 			notify("success", "Insert Berhasil!");

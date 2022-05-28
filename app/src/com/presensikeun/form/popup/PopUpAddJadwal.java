@@ -70,7 +70,6 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
 			} else {
 				sql = "select k.id from tb_kelas as k join tb_jurusan as j on k.id_jurusan = j.id where k.nama != 'NONE'";
 			}
-			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -129,7 +128,6 @@ public class PopUpAddJadwal extends javax.swing.JDialog {
 	private void insertAndLeave() {
 		try {
 			String sql = "insert into tb_jadwal values ('', '" + mapel.getSelectedItem() + "', '" + kelas.getSelectedItem() + "', 'mengajar')";
-			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			pst.executeUpdate();
 			notify("success", "Insert Berhasil!");

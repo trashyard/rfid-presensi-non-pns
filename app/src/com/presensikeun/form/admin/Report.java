@@ -105,7 +105,6 @@ public final class Report extends javax.swing.JPanel {
 		model.addColumn("Ruangan");
 		model.addColumn("Masuk");
 		try {
-			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -216,7 +215,6 @@ public final class Report extends javax.swing.JPanel {
 						break;
 				}
 
-				System.out.println(sql);
 				pst = con.prepareStatement(sql);
 				rs = pst.executeQuery();
 				while (rs.next()) {
@@ -605,7 +603,7 @@ public final class Report extends javax.swing.JPanel {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow2Layout.createSequentialGroup()
                                 .addComponent(labelTable)
                                 .addGap(10, 10, 10)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
                                 .addContainerGap())
                 );
 
@@ -628,7 +626,8 @@ public final class Report extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(panelShadow1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(10, 10, 10)
-                                .addComponent(panelShadow2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(panelShadow2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
                 );
         }// </editor-fold>//GEN-END:initComponents
 

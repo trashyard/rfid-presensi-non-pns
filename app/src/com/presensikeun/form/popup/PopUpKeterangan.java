@@ -63,7 +63,6 @@ public class PopUpKeterangan extends javax.swing.JDialog {
 
 		try {
 			String sql = "select keterangan from tb_presensi where id = '" + id + "'";
-			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			if (rs.next()) {
@@ -95,7 +94,6 @@ public class PopUpKeterangan extends javax.swing.JDialog {
 
 		try {
 			String sql = "update tb_presensi set keterangan = '" + keterangan.getSelection().getActionCommand() + "' where id = '" + id + "'";
-			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			pst.executeUpdate();
 		} catch (SQLException ex) {

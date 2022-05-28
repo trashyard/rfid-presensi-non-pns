@@ -172,7 +172,6 @@ public final class PopUpEditKaryawan extends javax.swing.JDialog {
 	private void updateAndLeave() {
 		try {
 			String sql = "update tb_karyawan set nik = '" + nik.getText() + "', nama = '" + nama.getText() + "', jenis_kelamin = '" + getSelectedGender() + "', id_jabatan = (select id from tb_jabatan where nama = '" + jabatan.getSelectedItem() + "') where id = " + this.id;
-			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			pst.executeUpdate();
 			notify("success", "Update Berhasil!");

@@ -129,7 +129,6 @@ public class PopUpAddDetailJadwal extends javax.swing.JDialog {
 	private void insertAndLeave() {
 		try {
 			String sql = "insert into tb_detail_jadwal values (null, '" + getSelectedHari((String) hari.getSelectedItem()) + "', '" + txtTime.getText() + "', '" + getDurasi((String) durasi.getSelectedItem()) + "', (select id from tb_karyawan where nik = '" + karyawan.getSelectedItem() + "'), '" + jadwal.getSelectedItem() + "')";
-			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			pst.executeUpdate();
 			notify("success", "Insert Berhasil!");

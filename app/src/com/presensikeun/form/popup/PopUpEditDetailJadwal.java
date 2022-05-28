@@ -106,7 +106,6 @@ public class PopUpEditDetailJadwal extends javax.swing.JDialog {
 	private void setJadwal() {
 		try {
 			String sql = "select j.id from tb_jadwal as j join tb_detail_jadwal as dj on j.id = dj.id_jadwal where dj.id = '" + id + "'";
-			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			if (rs.next()) {
@@ -135,7 +134,6 @@ public class PopUpEditDetailJadwal extends javax.swing.JDialog {
 	private void setHariJamAndDurasi() {
 		try {
 			String sql = "select hari,jam, hour(durasi) from tb_detail_jadwal where id = '" + id + "'";
-			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			if (rs.next()) {
@@ -180,7 +178,6 @@ public class PopUpEditDetailJadwal extends javax.swing.JDialog {
 	private void updateAndLeave() {
 		try {
 			String sql = "update tb_detail_jadwal set hari = '" + getSelectedHari((String) hari.getSelectedItem()) + "', jam = '" + txtTime.getText() + "', durasi = '" + getDurasi((String) durasi.getSelectedItem()) + "', id_karyawan = (select id from tb_karyawan where nik = '" + karyawan.getSelectedItem() + "'), id_jadwal = '" + jadwal.getSelectedItem() + "' where id = '" + id + "'";
-			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			pst.executeUpdate();
 			notify("success", "Update Berhasil!");

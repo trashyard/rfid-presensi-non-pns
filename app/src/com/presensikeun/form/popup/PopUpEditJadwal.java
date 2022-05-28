@@ -141,7 +141,6 @@ public class PopUpEditJadwal extends javax.swing.JDialog {
 	private void updateAndLeave() {
 		try {
 			String sql = "update tb_jadwal set id_mapel = '" + mapel.getSelectedItem() + "', id_kelas = '" + kelas.getSelectedItem() + "' where id = '" + id + "'";
-			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			pst.executeUpdate();
 			notify("success", "Update Berhasil!");
@@ -155,7 +154,6 @@ public class PopUpEditJadwal extends javax.swing.JDialog {
 	private void deleteAndLeave() {
 		try {
 			String sql = "delete from tb_jadwal where id = '" + id + "'";
-			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			pst.executeUpdate();
 			notify("success", "Delete Berhasil!");
@@ -174,7 +172,6 @@ public class PopUpEditJadwal extends javax.swing.JDialog {
 			} else {
 				sql = "select k.id from tb_kelas as k join tb_jurusan as j on k.id_jurusan = j.id where k.nama != 'NONE'";
 			}
-			System.out.println(sql);
 			pst = con.prepareStatement(sql);
 			rs = pst.executeQuery();
 			while (rs.next()) {
