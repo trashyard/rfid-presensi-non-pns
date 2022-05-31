@@ -1,6 +1,7 @@
 package com.presensikeun.form;
 
 import com.presensikeun.controller.Koneksi;
+import com.presensikeun.controller.User;
 import com.presensikeun.main.Main;
 import com.presensikeun.model.WhatOS;
 import com.presensikeun.model.WindowButton;
@@ -18,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class Login extends javax.swing.JFrame {
 
@@ -43,44 +45,38 @@ public class Login extends javax.swing.JFrame {
 
 	public void loginDek() {
 		try {
-			String sql = "select * from tb_karyawan where username='" + txt_user.getText() + "'and password='" + txt_pass.getText() + "'";
-			java.sql.Connection con = (Connection) Koneksi.getKoneksi();
-			java.sql.PreparedStatement pst = con.prepareCall(sql);
-			java.sql.ResultSet rs = pst.executeQuery();
+			User.setUsername(txt_user.getText());
 
-			if (rs.next()) {
+			String userPassword = User.getSome("password");
+			String userType = User.getSome("type");
 
-				if (txt_user.getText().equals("") || txt_pass.getText().equals("")) {
-					Notification panel = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_CENTER, "User atau Password Tidak Boleh Kosong");
-					panel.showNotification();
-					txt_user.setText(null);
-					txt_pass.setText(null);
-				} else if (txt_user.getText().equals(rs.getString("username")) && txt_pass.getText().equals(rs.getString("password")) && rs.getString("status").equals("admin")) {
-					Notification panel = new Notification(this, Notification.Type.SUCCESS, Notification.Location.TOP_CENTER, "Selamat datang, " + rs.getString(5) + "!");
-					panel.showNotification();
-					this.setVisible(false);
-					new Main().setVisible(true);
-				} else if (txt_user.getText().equals(rs.getString("username")) && txt_pass.getText().equals(rs.getString("password")) && rs.getString("status").equals("user")) {
-					Notification panel = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_CENTER, "Mohon maaf, Hanya admin yang dapat masuk");
-					panel.showNotification();
-					txt_user.setText("");
-					txt_pass.setText("");
-				} else {
-					Notification panel = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_CENTER, "Username atau Password salah");
-					panel.showNotification();
-					txt_user.setText("");
-					txt_pass.setText("");
+			boolean isValidated = BCrypt.checkpw(new String(txt_pass.getPassword()), userPassword);
 
-				}
-
+			if (txt_user.getText().equals("") || txt_pass.getText().equals("")) {
+				Notification panel = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_CENTER, "User atau Password Tidak Boleh Kosong");
+				panel.showNotification();
+				txt_user.setText(null);
+				txt_pass.setText(null);
+			} else if (isValidated && userType.equals("admin")) {
+				Notification panel = new Notification(this, Notification.Type.SUCCESS, Notification.Location.TOP_CENTER, "Selamat datang, " + User.getSome("name") + "!");
+				panel.showNotification();
+				this.setVisible(false);
+				new Main().setVisible(true);
+			} else if (isValidated && userType.equals("user")) {
+				Notification panel = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_CENTER, "Mohon maaf, Hanya admin yang dapat masuk");
+				panel.showNotification();
+				txt_user.setText("");
+				txt_pass.setText("");
 			} else {
-				Notification panel = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_CENTER, "Username atau Password Salah!");
+				Notification panel = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_CENTER, "Username atau Password salah");
 				panel.showNotification();
 				txt_user.setText("");
 				txt_pass.setText("");
 			}
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(this, e.getMessage());
+
+		} catch (IllegalArgumentException | NullPointerException e) {
+			Notification panel = new Notification(this, Notification.Type.WARNING, Notification.Location.TOP_CENTER, "Username atau Password salah");
+			panel.showNotification();
 		}
 	}
 
@@ -303,7 +299,7 @@ public class Login extends javax.swing.JFrame {
 
         private void closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMouseClicked
 		// TODO add your handling code here:
-		w.setWindow("close",this, null);
+		w.setWindow("close", this, null);
         }//GEN-LAST:event_closeMouseClicked
 
         private void minMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minMouseClicked
@@ -338,7 +334,7 @@ public class Login extends javax.swing.JFrame {
 		//</editor-fold>
 		//</editor-fold>
 		//</editor-fold>
-		
+
 		//</editor-fold>
 		//</editor-fold>
 		//</editor-fold>
