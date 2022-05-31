@@ -1,6 +1,7 @@
 package com.presensikeun.form;
 
 import com.presensikeun.controller.Koneksi;
+import com.presensikeun.controller.Session;
 import com.presensikeun.controller.User;
 import com.presensikeun.main.Main;
 import com.presensikeun.model.WhatOS;
@@ -60,6 +61,7 @@ public class Login extends javax.swing.JFrame {
 			} else if (isValidated && userType.equals("admin")) {
 				Notification panel = new Notification(this, Notification.Type.SUCCESS, Notification.Location.TOP_CENTER, "Selamat datang, " + User.getSome("name") + "!");
 				panel.showNotification();
+				Session.setSession(User.getSome("name"), txt_user.getText());
 				this.setVisible(false);
 				new Main().setVisible(true);
 			} else if (isValidated && userType.equals("user")) {

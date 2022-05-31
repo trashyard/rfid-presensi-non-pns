@@ -1,5 +1,6 @@
 package com.presensikeun.form;
 
+import com.presensikeun.controller.Session;
 import com.presensikeun.swing.Glass;
 import com.presensikeun.swing.Notification;
 import java.awt.Color;
@@ -30,6 +31,7 @@ public class Logout extends javax.swing.JDialog {
 	}
 
 	public void logout() {
+		Session.logout();
 		JFrame loldek = (JFrame) SwingUtilities.getWindowAncestor(this);
 		loldek.setVisible(false);
 		Notification panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.SUCCESS, Notification.Location.TOP_CENTER, "Goodbyeeeeee! :(");

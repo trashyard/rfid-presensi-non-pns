@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 27, 2022 at 05:51 PM
+-- Generation Time: May 31, 2022 at 03:23 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -42,8 +42,9 @@ CREATE TABLE `tb_detail_jadwal` (
 
 INSERT INTO `tb_detail_jadwal` (`id`, `hari`, `jam`, `durasi`, `id_karyawan`, `id_jadwal`) VALUES
 ('JD00001', 4, '20:00:00', '04:00:00', 2, 'JBINDORPL1.1'),
-('JD00002', 4, '20:00:00', '04:00:00', 2, 'JFISIKRPL1.1'),
-('JD00008', 4, '19:00:00', '04:00:00', 2, 'J00001NONE.1');
+('JD00002', 1, '19:00:00', '04:00:00', 2, 'JFISIKRPL1.1'),
+('JD00008', 4, '19:00:00', '04:00:00', 2, 'J00001NONE.1'),
+('JD00009', 0, '15:15:00', '02:00:00', 16, 'JBINDORPL1.1');
 
 --
 -- Triggers `tb_detail_jadwal`
@@ -55,9 +56,9 @@ CREATE TRIGGER `format_idDetailJadwal` BEFORE INSERT ON `tb_detail_jadwal` FOR E
     SET @countColumn = (select count(*) from tb_detail_jadwal);
 	SET @lastColumn = (select REPLACE(LTRIM(REPLACE(substring((select id from tb_detail_jadwal order by id desc limit 1),3), '0', ' ')),' ', '0'));
 	IF @countColumn = 0 THEN
-		SET NEW.id = CONCAT("JD", RIGHT(CONCAT('0000', (@countColumn + 1)),5));
+		SET NEW.id = CONCAT("JD", RIGHT(CONCAT('00000', (@countColumn + 1)),5));
 	ELSE
-		SET NEW.id = CONCAT("JD", RIGHT(CONCAT('0000', @lastColumn + 1),5));
+		SET NEW.id = CONCAT("JD", RIGHT(CONCAT('00000', @lastColumn + 1),5));
 	END IF;
 END
 $$
@@ -70,7 +71,7 @@ DELIMITER ;
 --
 
 CREATE TABLE `tb_jabatan` (
-  `id` varchar(5) NOT NULL,
+  `id` varchar(6) NOT NULL,
   `nama` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -79,10 +80,10 @@ CREATE TABLE `tb_jabatan` (
 --
 
 INSERT INTO `tb_jabatan` (`id`, `nama`) VALUES
-('JB001', 'P3K'),
-('JB002', 'Satpam'),
-('JB003', 'Non PNS'),
-('JB004', 'Pegawai');
+('JB0001', 'P3K'),
+('JB0002', 'Non-PNS'),
+('JB0003', 'Pegawai'),
+('JB0004', 'Satpam');
 
 --
 -- Triggers `tb_jabatan`
@@ -94,9 +95,9 @@ CREATE TRIGGER `format_idJabatan` BEFORE INSERT ON `tb_jabatan` FOR EACH ROW BEG
     SET @countColumn = (select count(*) from tb_jabatan);
 	SET @lastColumn = (select REPLACE(LTRIM(REPLACE(substring((select id from tb_jabatan order by id desc limit 1),3), '0', ' ')),' ', '0'));
 	IF @countColumn = 0 THEN
-		SET NEW.id = CONCAT("JB", RIGHT(CONCAT('00', (@countColumn + 1)),3));
+		SET NEW.id = CONCAT("JB", RIGHT(CONCAT('0000', (@countColumn + 1)),4));
 	ELSE
-		SET NEW.id = CONCAT("JB", RIGHT(CONCAT('00', @lastColumn + 1),3));
+		SET NEW.id = CONCAT("JB", RIGHT(CONCAT('0000', @lastColumn + 1),4));
 	END IF;
 END
 $$
@@ -126,7 +127,8 @@ INSERT INTO `tb_jadwal` (`id`, `id_mapel`, `id_kelas`, `status`) VALUES
 ('JBINDORPL1.1', 'BINDO', 'RPL1.1', 'mengajar'),
 ('JBINDOTKJ1.3', 'BINDO', 'TKJ1.3', 'mengajar'),
 ('JFISIKRPL1.1', 'FISIKA', 'RPL1.1', 'mengajar'),
-('JFISIKTKJ1.3', 'FISIKA', 'TKJ1.3', 'mengajar');
+('JFISIKTKJ1.3', 'FISIKA', 'TKJ1.3', 'mengajar'),
+('JMATDARPL1.1', 'MATDAS', 'RPL1.1', 'mengajar');
 
 --
 -- Triggers `tb_jadwal`
@@ -179,11 +181,11 @@ CREATE TABLE `tb_karyawan` (
   `id` int(11) NOT NULL,
   `nik` varchar(16) NOT NULL,
   `username` varchar(6) DEFAULT NULL,
-  `password` varchar(6) DEFAULT NULL,
+  `password` varchar(200) DEFAULT NULL,
   `nama` varchar(50) NOT NULL,
   `status` enum('admin','user') NOT NULL,
   `jenis_kelamin` enum('P','L') NOT NULL,
-  `id_jabatan` varchar(5) DEFAULT NULL
+  `id_jabatan` varchar(7) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -191,12 +193,13 @@ CREATE TABLE `tb_karyawan` (
 --
 
 INSERT INTO `tb_karyawan` (`id`, `nik`, `username`, `password`, `nama`, `status`, `jenis_kelamin`, `id_jabatan`) VALUES
-(2, '3525017006750017', 'r', 'r', 'Raihan', 'admin', 'L', 'JB003'),
-(7, '3525012005596332', NULL, NULL, 'Devi', 'user', 'P', 'JB003'),
-(8, '3525012005534534', NULL, NULL, 'David', 'user', 'L', 'JB003'),
-(9, '3525012005598643', NULL, NULL, 'Akber', 'user', 'L', 'JB001'),
-(15, '4538495897298271', NULL, NULL, 'Gandi Geblekus', 'user', 'L', 'JB002'),
-(16, '0987654538765433', NULL, NULL, 'vinda cantik', 'user', 'P', 'JB004');
+(2, '3525017006750017', 'r', '$2a$12$FkrVFEAdrpXw3n1aT3Hn5esmTPnmwEtxobt5fiY4tmot7f4nvYT5W', 'Raihan', 'admin', 'L', 'JB0001'),
+(7, '3525012005596332', 'd', '$2a$12$iR5RAZjh6OYpShaVqJ4kDOCiXbhZf4ugXmV02pcwyPmvLMKYPK6FS', 'Devi', 'admin', 'P', 'JB0003'),
+(8, '3525012005534534', NULL, NULL, 'David', 'user', 'L', 'JB0004'),
+(9, '3525012005598643', NULL, NULL, 'Akber', 'user', 'L', 'JB0004'),
+(15, '4538495897298271', NULL, NULL, 'Gandi Geblekus', 'user', 'P', 'JB0002'),
+(16, '0987654538765433', NULL, NULL, 'vinda cantik', 'user', 'P', 'JB0001'),
+(17, '2347687634563456', NULL, NULL, 'Hahahaha kamu lucu ya', 'user', 'P', 'JB0002');
 
 -- --------------------------------------------------------
 
@@ -280,21 +283,22 @@ CREATE TABLE `tb_presensi` (
 --
 
 INSERT INTO `tb_presensi` (`id`, `tanggal`, `keterangan`, `id_detail_jadwal`) VALUES
-('P000001', '2022-05-27 22:05:57', 'Izin', 'JD00008'),
-('P000002', '2022-05-27 22:05:59', 'Alpa', 'JD00001'),
-('P000003', '2022-05-27 22:06:02', 'Alpa', 'JD00002');
+('P0000000001', '2022-05-27 19:03:06', 'Hadir', 'JD00001'),
+('P0000000002', '2022-05-31 19:42:49', 'Izin', 'JD00002');
 
 --
 -- Triggers `tb_presensi`
 --
 DELIMITER $$
 CREATE TRIGGER `insert_attendance&formatId` BEFORE INSERT ON `tb_presensi` FOR EACH ROW BEGIN
+
 	DECLARE start_time DATETIME;
     DECLARE end_time DATETIME;
     DECLARE late_time DATETIME;
     DECLARE alpa_time DATETIME;
     DECLARE countColumn INT;
     DECLARE lastColumn INT;
+    
     SET @countColumn = (select count(*) from tb_presensi);
 	SET @lastColumn = (select REPLACE(LTRIM(REPLACE(substring((select id from tb_presensi order by id desc limit 1),3), '0', ' ')),' ', '0'));
 	SET @start_time = cast((select addtime(current_date, tb_detail_jadwal.jam) from tb_detail_jadwal where id = NEW.id_detail_jadwal) as datetime);
@@ -313,10 +317,11 @@ CREATE TRIGGER `insert_attendance&formatId` BEFORE INSERT ON `tb_presensi` FOR E
         END IF;
         
         IF @countColumn = 0 THEN
-		SET NEW.id = CONCAT("P", RIGHT(CONCAT('00000', (@countColumn + 1)),10));
+		SET NEW.id = CONCAT("P", RIGHT(CONCAT('0000000000', (@countColumn + 1)),10));
 	ELSE
-		SET NEW.id = CONCAT("P", RIGHT(CONCAT('00000', @lastColumn + 1),10));
+		SET NEW.id = CONCAT("P", RIGHT(CONCAT('0000000000', @lastColumn + 1),10));
 	END IF;
+    
 END
 $$
 DELIMITER ;
@@ -383,6 +388,7 @@ ALTER TABLE `tb_jurusan`
 ALTER TABLE `tb_karyawan`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `nik` (`nik`),
+  ADD UNIQUE KEY `username` (`username`),
   ADD KEY `id_jabatan` (`id_jabatan`);
 
 --
@@ -426,7 +432,7 @@ ALTER TABLE `tb_jurusan`
 -- AUTO_INCREMENT for table `tb_karyawan`
 --
 ALTER TABLE `tb_karyawan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `tb_ruang`
