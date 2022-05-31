@@ -38,8 +38,8 @@ public class User extends Koneksi {
 					break;
 			}
 
-			Connection query = getKoneksi();
-			PreparedStatement pst = query.prepareStatement(sql);
+			Connection con = getKoneksi();
+			PreparedStatement pst = con.prepareStatement(sql);
 			ResultSet rs = pst.executeQuery();
 
 			if (rs.next()) {

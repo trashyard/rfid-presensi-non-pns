@@ -1,5 +1,7 @@
 package com.presensikeun.form.admin;
 
+import com.presensikeun.controller.DataDetailJadwal;
+import com.presensikeun.controller.DataJadwal;
 import com.presensikeun.controller.Koneksi;
 import com.presensikeun.event.EventCallBack;
 import com.presensikeun.event.EventTextField;
@@ -17,7 +19,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableModel;
 
 public final class Jadwal extends javax.swing.JPanel {
 
@@ -54,35 +55,9 @@ public final class Jadwal extends javax.swing.JPanel {
 	private void reset() {
 		first.setSelectedIndex(-1);
 		second.setSelectedIndex(-1);
+
 		resetSearchText();
 		refreshTable();
-	}
-
-	private void getMapel() {
-		first.setLabeText("Mapel");
-		first.removeAllItems();
-		try {
-			String sql = "select id from tb_mapel where nama != 'Datang' and nama != 'Pulang'";
-			pst = con.prepareStatement(sql);
-			rs = pst.executeQuery();
-			while (rs.next()) {
-				first.addItem(rs.getString(1));
-			}
-		} catch (SQLException ex) {
-			System.out.println("error: " + ex);
-		}
-		first.setSelectedIndex(-1);
-	}
-
-	private void getHari() {
-		first.setLabeText("Hari");
-		first.removeAllItems();
-		first.addItem("Senin");
-		first.addItem("Selasa");
-		first.addItem("Rabu");
-		first.addItem("Kamis");
-		first.addItem("Jumat");
-		first.setSelectedIndex(-1);
 	}
 
 	private int getSelectedHari(String day) {
@@ -110,115 +85,58 @@ public final class Jadwal extends javax.swing.JPanel {
 		return hari;
 	}
 
-	private void getAngkatan() {
-		second.setLabeText("Angkatan");
-		second.removeAllItems();
-		second.addItem("1");
-		second.addItem("2");
-		second.addItem("3");
-		second.setSelectedIndex(-1);
-	}
-
-	private void getKelas() {
-		second.setLabeText("Kelas");
-		second.removeAllItems();
-		try {
-			String sql = "select id from tb_kelas where nama != 'NONE'";
-			pst = con.prepareStatement(sql);
-			rs = pst.executeQuery();
-			while (rs.next()) {
-				second.addItem(rs.getString(1));
-			}
-		} catch (SQLException ex) {
-			System.out.println("error: " + ex);
-		}
-		second.setSelectedIndex(-1);
-	}
-
 	private void tableDetailJadwal() {
 		labelTable.setText("Detail Jadwal Karyawan");
-		DefaultTableModel model = new DefaultTableModel();
 
-		model.addColumn("ID");
-		model.addColumn("Hari");
-		model.addColumn("Jam Mulai");
-		model.addColumn("Jam Selesai");
-		model.addColumn("Nama Mapel");
-		model.addColumn("Nama Karyawan");
-		model.addColumn("Jadwal");
-		try {
+		//set 
+		DataDetailJadwal.setTable(table1);
 
-			String sql = "select dj.id, dj.hari as \"Date\", dj.jam as \"Jam Mulai\", ADDTIME(dj.jam, dj.durasi) as \"Jam Selesai\", m.nama as \"Nama Mapel\", k.nama as \"Nama Karyawan\", j.id from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on r.id = kls.id_ruang ";
+		// boolean buat field ama comboboxnya
+		Boolean searchJ = !searchJadwal.getText().contains("Karyawan");
+		Boolean firstJ = first.getSelectedIndex() != -1;
+		Boolean secondJ = second.getSelectedIndex() != -1;
 
-			// boolean buat field ama comboboxnya
-			Boolean searchJ = !searchJadwal.getText().contains("Karyawan");
-			Boolean firstJ = first.getSelectedIndex() != -1;
-			Boolean secondJ = second.getSelectedIndex() != -1;
-
-			// filtering cuy
-			if (searchJ) {
-				sql = sql + " where k.nama like '%" + searchJadwal.getText() + "%'";
-			}
-			if (firstJ) {
-				sql = sql + " && dj.hari = '" + getSelectedHari((String) first.getSelectedItem()) + "'";
-			}
-			if (secondJ) {
-				sql = sql + " && dj.id_jadwal like '%" + second.getSelectedItem() + "%'";
-			}
-
-			sql = sql + " order by dj.jam asc limit 300";
-
-			pst = con.prepareStatement(sql);
-			rs = pst.executeQuery();
-			while (rs.next()) {
-				model.addRow(new Object[]{rs.getString(1), getDay(rs.getInt(2)), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)});
-			}
-			table1.setModel(model);
-		} catch (SQLException ex) {
-			model.addRow(new Object[]{});
-			table1.setModel(model);
+		// filtering cuy
+		if (searchJ) {
+			DataDetailJadwal.addTableQuery(" where k.nama like '%" + searchJadwal.getText() + "%'");
 		}
+		if (firstJ) {
+			DataDetailJadwal.addTableQuery(" && dj.hari = '" + getSelectedHari((String) first.getSelectedItem()) + "'");
+		}
+		if (secondJ) {
+			DataDetailJadwal.addTableQuery(" && dj.id_jadwal like '%" + second.getSelectedItem() + "%'");
+		}
+
+		DataDetailJadwal.addTableQuery(" order by dj.jam asc limit 300");
+
+		DataDetailJadwal.getTable();
+		DataDetailJadwal.resetQuery();
 	}
 
 	public void tableJadwal() {
 		labelTable.setText("Jadwal Mata Pelajaran");
-		DefaultTableModel model = new DefaultTableModel();
 
-		model.addColumn("ID");
-		model.addColumn("Kode");
-		model.addColumn("Nama Mapel");
-		model.addColumn("Ruangan");
-		model.addColumn("Kelas");
-		try {
+		// set base table
+		DataJadwal.setTable(table1);
 
-			String sql = "select j.id, m.id, m.nama, r.nama, concat(k.id, \": Kelas \", k.angkatan, \" - \", k.nama)  from tb_jadwal as j join tb_mapel as m on j.id_mapel = m.id join tb_kelas as k on j.id_kelas = k.id join tb_ruang as r on k.id_ruang = r.id";
+		// boolean buat field ama comboboxnya
+		Boolean searchJ = !searchJadwal.getText().contains("Kelas");
+		Boolean firstJ = first.getSelectedIndex() != -1;
+		Boolean secondJ = second.getSelectedIndex() != -1;
 
-			// boolean buat field ama comboboxnya
-			Boolean searchJ = !searchJadwal.getText().contains("Kelas");
-			Boolean firstJ = first.getSelectedIndex() != -1;
-			Boolean secondJ = second.getSelectedIndex() != -1;
-
-			// filtering cuy
-			if (searchJ) {
-				sql = sql + " where concat(k.id, k.angkatan, k.nama) like '%" + searchJadwal.getText() + "%'";
-			}
-			if (firstJ) {
-				sql = sql + " && m.id = '" + first.getSelectedItem() + "'";
-			}
-			if (secondJ) {
-				sql = sql + " && k.angkatan = " + second.getSelectedItem() + "";
-			}
-
-			pst = con.prepareStatement(sql);
-			rs = pst.executeQuery();
-			while (rs.next()) {
-				model.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)});
-			}
-			table1.setModel(model);
-		} catch (SQLException ex) {
-			model.addRow(new Object[]{});
-			table1.setModel(model);
+		// filtering cuy"
+		if (searchJ) {
+			DataJadwal.addTableQuery(" where concat(k.id, k.angkatan, k.nama) like '%" + searchJadwal.getText() + "%'");
 		}
+		if (firstJ) {
+			DataJadwal.addTableQuery(" && m.id = '" + first.getSelectedItem() + "'");
+		}
+		if (secondJ) {
+			DataJadwal.addTableQuery(" && k.angkatan = " + second.getSelectedItem() + "");
+		}
+
+		DataJadwal.getTable();
+		DataJadwal.resetQuery();
 	}
 
 	private void switchTable() {
@@ -226,8 +144,8 @@ public final class Jadwal extends javax.swing.JPanel {
 			mode = false;
 			reset();
 			tableDetailJadwal();
-			getHari();
-			getKelas();
+			DataDetailJadwal.getHari(first);
+			DataDetailJadwal.getKelas(second);
 			// abis load detail jadwal set mode ke false
 			// berarti mode false == state detail jadwal
 			switchBtn.setText("Ke Jadwal");
@@ -235,8 +153,8 @@ public final class Jadwal extends javax.swing.JPanel {
 			mode = true;
 			reset();
 			tableJadwal();
-			getMapel();
-			getAngkatan();
+			DataJadwal.getMapel(first);
+			DataJadwal.getAngkatan(second);
 			// sama, kek di atas intinya tapi jadwal hahaha
 			switchBtn.setText("Ke Detail");
 		}
@@ -251,12 +169,14 @@ public final class Jadwal extends javax.swing.JPanel {
 	}
 
 	private void refreshTable() {
+
 		// self-explanatory ngabs
 		if (mode) {
 			tableJadwal();
 		} else {
 			tableDetailJadwal();
 		}
+
 	}
 
 	private void whichPopUpAndRefresh(String which, String addValue) {
@@ -293,39 +213,6 @@ public final class Jadwal extends javax.swing.JPanel {
 			panel = new Notification((Frame) SwingUtilities.getWindowAncestor(this), Notification.Type.WARNING, Notification.Location.TOP_CENTER, msg);
 		}
 		panel.showNotification();
-	}
-
-	private String getDay(int day) {
-		String string;
-
-		switch (day) {
-			case 0:
-				string = "Senin";
-				break;
-			case 1:
-				string = "Selasa";
-				break;
-			case 2:
-				string = "Rabu";
-				break;
-			case 3:
-				string = "Kamis";
-				break;
-			case 4:
-				string = "Jumat";
-				break;
-			case 5:
-				string = "Sabtu";
-				break;
-			case 6:
-				string = "Minggu";
-				break;
-			default:
-				string = "?";
-				break;
-		}
-
-		return string;
 	}
 
 	private void searchBar() {
