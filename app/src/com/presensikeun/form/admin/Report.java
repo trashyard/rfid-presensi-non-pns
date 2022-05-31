@@ -218,7 +218,7 @@ public final class Report extends javax.swing.JPanel {
 				pst = con.prepareStatement(sql);
 				rs = pst.executeQuery();
 				while (rs.next()) {
-					fw.append(rs.getString(1));
+					fw.append("'" + rs.getString(1) + "'");
 					fw.append(',');
 					fw.append(getDay(rs.getInt(2)));
 					fw.append(',');
