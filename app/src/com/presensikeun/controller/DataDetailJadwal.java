@@ -35,7 +35,7 @@ public class DataDetailJadwal extends Koneksi {
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
-				model.addRow(new Object[]{rs.getString(1), getDay(rs.getInt(2)), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)});
+				model.addRow(new Object[]{rs.getString(1), DoStuff.getDay(rs.getInt(2)), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)});
 			}
 
 			table.setModel(model);
@@ -54,39 +54,6 @@ public class DataDetailJadwal extends Koneksi {
 
 	public static void resetQuery() {
 		query = "select dj.id, dj.hari as \"Date\", dj.jam as \"Jam Mulai\", ADDTIME(dj.jam, dj.durasi) as \"Jam Selesai\", m.nama as \"Nama Mapel\", k.nama as \"Nama Karyawan\", j.id from tb_detail_jadwal as dj join tb_jadwal as j on dj.id_jadwal = j.id join tb_karyawan as k on dj.id_karyawan = k.id join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on r.id = kls.id_ruang ";
-	}
-
-	private static String getDay(int day) {
-		String string;
-
-		switch (day) {
-			case 0:
-				string = "Senin";
-				break;
-			case 1:
-				string = "Selasa";
-				break;
-			case 2:
-				string = "Rabu";
-				break;
-			case 3:
-				string = "Kamis";
-				break;
-			case 4:
-				string = "Jumat";
-				break;
-			case 5:
-				string = "Sabtu";
-				break;
-			case 6:
-				string = "Minggu";
-				break;
-			default:
-				string = "?";
-				break;
-		}
-
-		return string;
 	}
 
 	public static void getHari(Combobox c) {

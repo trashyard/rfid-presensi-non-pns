@@ -1,5 +1,6 @@
 package com.presensikeun.form.admin;
 
+import com.presensikeun.controller.DataKaryawan;
 import com.presensikeun.controller.Koneksi;
 import com.presensikeun.event.EventCallBack;
 import com.presensikeun.event.EventTextField;
@@ -10,10 +11,8 @@ import com.presensikeun.model.WindowButton;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableModel;
 
 public final class Karyawan extends javax.swing.JPanel {
 
@@ -31,9 +30,14 @@ public final class Karyawan extends javax.swing.JPanel {
 		showWinButton();
 		searchBar();
 		table1.scroll(jScrollPane1);
-		getJabatan();
-		getGender();
-		tableKaryawan("");
+
+		// set tabel karyawan
+		DataKaryawan.setTable(table1);
+
+		// get tabel lah intinya
+		DataKaryawan.getJabatan(first);
+		DataKaryawan.getGender(second);
+		tableKaryawan();
 	}
 
 	private void showWinButton() {
@@ -49,23 +53,16 @@ public final class Karyawan extends javax.swing.JPanel {
 
 	private void reset() {
 		first.setSelectedIndex(-1);
-		kelas.setSelectedIndex(-1);
-		kelas.setSelectedIndex(-1);
+		second.setSelectedIndex(-1);
+		second.setSelectedIndex(-1);
 		searchNama.setText("");
 
-		tableKaryawan("");
-	}
-
-	private void getGender() {
-		kelas.removeAllItems();
-		kelas.addItem("Laki-Laki");
-		kelas.addItem("Perempuan");
-		kelas.setSelectedIndex(-1);
+		tableKaryawan();
 	}
 
 	private String getSelectedGender() {
 		String selected = "";
-		if (kelas.getSelectedItem().equals("Laki-Laki")) {
+		if (second.getSelectedItem().equals("Laki-Laki")) {
 			selected = "L";
 		} else {
 			selected = "P";
@@ -73,54 +70,27 @@ public final class Karyawan extends javax.swing.JPanel {
 		return selected;
 	}
 
-	private void getJabatan() {
-		first.removeAllItems();
-		try {
-			String sql = "select nama from tb_jabatan";
-			pst = con.prepareStatement(sql);
-			rs = pst.executeQuery();
-			while (rs.next()) {
-				first.addItem(rs.getString(1));
-			}
-		} catch (SQLException ex) {
-			System.out.println("error: " + ex);
-		}
-		first.setSelectedIndex(-1);
-	}
-
-	public void tableKaryawan(String src) {
-		String sql = "select tbk.nik, tbk.nama, jenis_kelamin, tbj.nama as jabatan from tb_karyawan as tbk join tb_jabatan as tbj on tbk.id_jabatan = tbj.id where tbk.nama like '%" + src + "%'";
-		DefaultTableModel model = new DefaultTableModel();
-		model.addColumn("NIK");
-		model.addColumn("Nama");
-		model.addColumn("Jenis Kelamin");
-		model.addColumn("Jabatan");
+	public void tableKaryawan() {
 
 		// all if elses kalo pas jabatan check, jenis kelamin check, ama dua duanya
 		if (first.getSelectedIndex() != -1) {
-			sql = sql + "&& tbj.id = (select id from tb_jabatan where nama = '" + first.getSelectedItem() + "')";
+			DataKaryawan.addTableQuery("&& tbj.id = (select id from tb_jabatan where nama = '" + first.getSelectedItem() + "')");
 		}
-		if (kelas.getSelectedIndex() != -1) {
-			sql = sql + "&& tbk.jenis_kelamin = '" + getSelectedGender() + "'";
+
+		if (second.getSelectedIndex() != -1) {
+			DataKaryawan.addTableQuery("&& tbk.jenis_kelamin = '" + getSelectedGender() + "'");
 		}
-		if (first.getSelectedIndex() != -1 && kelas.getSelectedIndex() != -1) {
-			sql = sql + "&& tbk.jenis_kelamin = '" + getSelectedGender() + "' && tbj.id = (select id from tb_jabatan where nama = '" + first.getSelectedItem() + "')";
+
+		if (searchNama.getText() != null) {
+			DataKaryawan.addTableQuery("&& tbk.nama like '%" + searchNama.getText() + "%'");
 		}
 
 		// order by nik dari bawah
-		sql = sql + " order by tbk.nik desc";
+		DataKaryawan.addTableQuery(" order by tbk.nik desc");
 
-		try {
-			pst = con.prepareStatement(sql);
-			rs = pst.executeQuery();
-			while (rs.next()) {
-				model.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)});
-			}
-			table1.setModel(model);
-		} catch (SQLException ex) {
-			model.addRow(new Object[]{});
-			table1.setModel(model);
-		}
+		// ya biasalah tau kan
+		DataKaryawan.getTable();
+		DataKaryawan.resetQuery();
 	}
 
 	private void searchBar() {
@@ -130,8 +100,8 @@ public final class Karyawan extends javax.swing.JPanel {
 				//  Test
 				try {
 					Thread.sleep(500);
+					tableKaryawan();
 					call.done();
-					searchStuff();
 				} catch (InterruptedException e) {
 					System.err.println(e);
 				}
@@ -143,10 +113,6 @@ public final class Karyawan extends javax.swing.JPanel {
 			}
 		});
 
-	}
-
-	private void searchStuff() {
-		tableKaryawan(searchNama.getText());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -165,7 +131,7 @@ public final class Karyawan extends javax.swing.JPanel {
                 labelTable1 = new javax.swing.JLabel();
                 jLabel3 = new javax.swing.JLabel();
                 first = new com.presensikeun.swing.Combobox();
-                kelas = new com.presensikeun.swing.Combobox();
+                second = new com.presensikeun.swing.Combobox();
                 panelShadow2 = new com.presensikeun.swing.PanelShadow();
                 jScrollPane1 = new javax.swing.JScrollPane();
                 table1 = new com.presensikeun.swing.Table();
@@ -277,10 +243,10 @@ public final class Karyawan extends javax.swing.JPanel {
 
                 first.setLabeText("Jabatan");
 
-                kelas.setLabeText("Jenis Kelamin");
-                kelas.addActionListener(new java.awt.event.ActionListener() {
+                second.setLabeText("Jenis Kelamin");
+                second.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                kelasActionPerformed(evt);
+                                secondActionPerformed(evt);
                         }
                 });
 
@@ -296,7 +262,7 @@ public final class Karyawan extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(first, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(kelas, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(second, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(searchNama, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
                                 .addGap(6, 6, 6)
@@ -311,7 +277,7 @@ public final class Karyawan extends javax.swing.JPanel {
                                 .addGroup(panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                 .addGroup(panelShadow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(kelas, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(second, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(first, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
                                         .addComponent(searchNama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -397,7 +363,7 @@ public final class Karyawan extends javax.swing.JPanel {
 		// TODO add your handling code here:
 		PopUpAddKaryawan p = new PopUpAddKaryawan((JFrame) SwingUtilities.getWindowAncestor(this));
 		p.showMessage(null);
-		tableKaryawan("");
+		tableKaryawan();
         }//GEN-LAST:event_jLabel2MousePressed
 
         private void table1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table1MousePressed
@@ -409,7 +375,7 @@ public final class Karyawan extends javax.swing.JPanel {
 			// your valueChanged overridden method 
 			PopUpEditKaryawan p = new PopUpEditKaryawan((JFrame) SwingUtilities.getWindowAncestor(this), nik);
 			p.showMessage(null);
-			tableKaryawan("");
+			tableKaryawan();
 		}
         }//GEN-LAST:event_table1MousePressed
 
@@ -432,9 +398,9 @@ public final class Karyawan extends javax.swing.JPanel {
 		reset();
         }//GEN-LAST:event_jLabel3MouseClicked
 
-        private void kelasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kelasActionPerformed
+        private void secondActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_secondActionPerformed
 		// TODO add your handling code here:
-        }//GEN-LAST:event_kelasActionPerformed
+        }//GEN-LAST:event_secondActionPerformed
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private com.presensikeun.swing.Combobox first;
@@ -445,7 +411,6 @@ public final class Karyawan extends javax.swing.JPanel {
         private javax.swing.JPanel jPanel2;
         private javax.swing.JScrollPane jScrollPane1;
         private javax.swing.JTextField jTextField1;
-        private com.presensikeun.swing.Combobox kelas;
         private javax.swing.JLabel labelTable;
         private javax.swing.JLabel labelTable1;
         private javax.swing.JLabel max;
@@ -453,6 +418,7 @@ public final class Karyawan extends javax.swing.JPanel {
         private com.presensikeun.swing.PanelShadow panelShadow1;
         private com.presensikeun.swing.PanelShadow panelShadow2;
         private com.presensikeun.swing.Searchbar searchNama;
+        private com.presensikeun.swing.Combobox second;
         private com.presensikeun.swing.Table table1;
         // End of variables declaration//GEN-END:variables
 }

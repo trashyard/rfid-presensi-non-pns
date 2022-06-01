@@ -1,12 +1,12 @@
 package com.presensikeun.form.admin;
 
+import com.presensikeun.controller.DataReport;
 import com.presensikeun.controller.Koneksi;
+import com.presensikeun.controller.ReportCSV;
 import com.presensikeun.model.WhatOS;
 import com.presensikeun.model.WindowButton;
 import com.presensikeun.swing.Notification;
 import java.awt.Frame;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableModel;
 
 public final class Report extends javax.swing.JPanel {
 
@@ -33,10 +32,11 @@ public final class Report extends javax.swing.JPanel {
 		// initialize
 		showWinButton();
 		table1.scroll(jScrollPane1);
+		DataReport.setTable(table1);
 		tableReport(null, null, null);
 
 		// get
-		getNIK();
+		DataReport.getNIK(nik);
 	}
 
 	private void showWinButton() {
@@ -50,104 +50,17 @@ public final class Report extends javax.swing.JPanel {
 		}
 	}
 
-	private void verifyFields(String type) {
-		if (nik.getSelectedIndex() == -1) {
-			notify("warning", "Mohon isi NIK");
-		} else if (dari.getText().length() == 0 || sampai.getText().length() == 0) {
-			notify("warning", "Mohon isi rentang jadwal terlebih dahulu");
-		} else if (compareDate()) {
-			notify("warning", "Tanggal lebih atau sama");
-		} else {
-			switch (type) {
-				case "filtered":
-					getPDF("filtered");
-					break;
-				case "preview":
-					tableReport(dari.getText(), sampai.getText(), (String) nik.getSelectedItem());
-					notify("success", "Data tabel telah difilter!");
-					break;
-			}
-		}
-
-	}
-
-	private void getNIK() {
-		nik.setLabeText("NIK");
-		nik.removeAllItems();
-		nik.addItem("Semua");
-		try {
-			String sql = "select nik from tb_karyawan order by nik desc";
-			pst = con.prepareStatement(sql);
-			rs = pst.executeQuery();
-			while (rs.next()) {
-				nik.addItem(rs.getString(1));
-			}
-		} catch (SQLException ex) {
-			System.out.println("error: " + ex);
-		}
-		nik.setSelectedIndex(-1);
-	}
-
 	public void tableReport(String dari, String sampai, String nik) {
-		String sql = "select k.nik, weekday(p.tanggal), dj.jam as \"jam mulai\", addtime(dj.jam, dj.durasi) as \"jam selesai\", k.nama, m.nama as \"mapel\", r.nama as \"ruangan\", p.tanggal as \"masuk\" from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id join tb_karyawan as k on k.id = dj.id_karyawan join tb_jadwal as j on j.id = dj.id_jadwal join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on kls.id_ruang = r.id";
+
+		// filter cuy
 		if (dari != null && sampai != null && nik.equals("Semua")) {
-			sql = sql + " where p.tanggal between '" + dari + "' and DATE_ADD('" + sampai + "', INTERVAL 1 DAY)";
+			DataReport.addTableQuery(" where p.tanggal between '" + dari + "' and DATE_ADD('" + sampai + "', INTERVAL 1 DAY)");
 		} else if (dari != null && sampai != null && nik != null) {
-			sql = sql + " where p.tanggal between '" + dari + "' and DATE_ADD('" + sampai + "', INTERVAL 1 DAY) and k.nik = '" + nik + "'";
-		}
-		DefaultTableModel model = new DefaultTableModel();
-		model.addColumn("NIK");
-		model.addColumn("Hari");
-		model.addColumn("Jam Mulai");
-		model.addColumn("Jam Selesai");
-		model.addColumn("Nama");
-		model.addColumn("Mapel");
-		model.addColumn("Ruangan");
-		model.addColumn("Masuk");
-		try {
-			pst = con.prepareStatement(sql);
-			rs = pst.executeQuery();
-			while (rs.next()) {
-				model.addRow(new Object[]{rs.getString(1), getDay(rs.getInt(2)), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8)});
-			}
-			table1.setModel(model);
-		} catch (SQLException ex) {
-			model.addRow(new Object[]{});
-			table1.setModel(model);
-		}
-	}
-
-	private String getDay(int day) {
-		String string;
-
-		switch (day) {
-			case 0:
-				string = "Senin";
-				break;
-			case 1:
-				string = "Selasa";
-				break;
-			case 2:
-				string = "Rabu";
-				break;
-			case 3:
-				string = "Kamis";
-				break;
-			case 4:
-				string = "Jumat";
-				break;
-			case 5:
-				string = "Sabtu";
-				break;
-			case 6:
-				string = "Minggu";
-				break;
-			default:
-				string = "?";
-				break;
+			DataReport.addTableQuery(" where p.tanggal between '" + dari + "' and DATE_ADD('" + sampai + "', INTERVAL 1 DAY) and k.nik = '" + nik + "'");
 		}
 
-		return string;
+		DataReport.getTable(dari, sampai, nik);
+		DataReport.resetQuery();
 	}
 
 	private void notify(String version, String msg) {
@@ -167,80 +80,6 @@ public final class Report extends javax.swing.JPanel {
 				break;
 		}
 		panel.showNotification();
-	}
-
-	private void getPDF(String type) {
-
-		String filename = null;
-		String sql = "select k.nik, weekday(p.tanggal), dj.jam as \"jam mulai\", addtime(dj.jam, dj.durasi) as \"jam selesai\", k.nama, m.nama as \"mapel\", r.nama as \"ruangan\", p.tanggal as \"masuk\" from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id join tb_karyawan as k on k.id = dj.id_karyawan join tb_jadwal as j on j.id = dj.id_jadwal join tb_mapel as m on j.id_mapel = m.id join tb_kelas as kls on kls.id = j.id_kelas join tb_ruang as r on kls.id_ruang = r.id";
-
-		if (WhatOS.isWindows()) {
-			filename = "C:\\Users\\" + System.getProperty("user.name") + "\\Documents\\Presensi.csv";
-		} else if (WhatOS.isUnix()) {
-			filename = "/home/" + System.getProperty("user.name") + "/Documents/Presensi.csv";
-		}
-
-		try {
-			try ( FileWriter fw = new FileWriter(filename)) {
-				fw.append("NIK");
-				fw.append(',');
-				fw.append("Hari");
-				fw.append(',');
-				fw.append("Jam Mulai");
-				fw.append(',');
-				fw.append("Jam Selesai");
-				fw.append(',');
-				fw.append("Nama");
-				fw.append(',');
-				fw.append("Mata Pelajaran");
-				fw.append(',');
-				fw.append("Ruangan");
-				fw.append(',');
-				fw.append("Tanggal Masuk");
-				fw.append('\n');
-
-				switch (type) {
-					case "all":
-						sql = sql + " order by p.tanggal desc";
-						break;
-					case "filtered":
-						if (!nik.getSelectedItem().equals("Semua")) {
-							sql = sql + " where p.tanggal between '" + dari.getText() + "' and DATE_ADD('" + sampai.getText() + "', INTERVAL 1 DAY) and k.nik = '" + nik.getSelectedItem() + "'";
-						} else {
-							sql = sql + " where p.tanggal between '" + dari.getText() + "' and DATE_ADD('" + sampai.getText() + "', INTERVAL 1 DAY)";
-
-						}
-						break;
-					default:
-						break;
-				}
-
-				pst = con.prepareStatement(sql);
-				rs = pst.executeQuery();
-				while (rs.next()) {
-					fw.append("'" + rs.getString(1) + "'");
-					fw.append(',');
-					fw.append(getDay(rs.getInt(2)));
-					fw.append(',');
-					fw.append(rs.getString(3));
-					fw.append(',');
-					fw.append(rs.getString(4));
-					fw.append(',');
-					fw.append(rs.getString(5));
-					fw.append(',');
-					fw.append(rs.getString(6));
-					fw.append(',');
-					fw.append(rs.getString(7));
-					fw.append(',');
-					fw.append(rs.getString(8));
-					fw.append('\n');
-				}
-				fw.flush();
-			}
-			notify("success", "Tersimpan di " + filename.substring(1, 20) + "...");
-		} catch (IOException | SQLException e) {
-			notify("Warning", "Gagal Menyimpan");
-		}
 	}
 
 	private void getInfo(String type) {
@@ -273,21 +112,58 @@ public final class Report extends javax.swing.JPanel {
 
 	private boolean compareDate() {
 		boolean isAfter = false;
+
 		try {
-			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			Date date1 = format.parse(dari.getText());
 			Date date2 = format.parse(sampai.getText());
 
-			if (date1.after(date2)) {
-				isAfter = true;
-			} else {
-				isAfter = date1.equals(date2);
-			}
+			// ngereturn boolean kalo date1 itu sama apa ngga sama date2 atau lebih dari
+			isAfter = date1.equals(date2) || date1.after(date2);
 
 		} catch (ParseException ex) {
 
 		}
 		return isAfter;
+	}
+
+	private void verifyFields(String type) {
+		if (nik.getSelectedIndex() == -1) {
+			notify("warning", "Mohon isi NIK");
+		} else if (dari.getText().length() == 0 || sampai.getText().length() == 0) {
+			notify("warning", "Mohon isi rentang jadwal terlebih dahulu");
+		} else if (compareDate()) {
+			notify("warning", "Tanggal lebih atau sama");
+		} else {
+			switch (type) {
+				case "filtered":
+					getPDF("filtered");
+					break;
+				case "preview":
+					tableReport(dari.getText(), sampai.getText(), (String) nik.getSelectedItem());
+					notify("success", "Data tabel telah difilter!");
+					break;
+			}
+		}
+
+	}
+
+	private void getPDF(String type) {
+		try {
+			switch (type) {
+				case "filtered":
+					ReportCSV.getPDF("filtered", dari.getText(), sampai.getText(), (String) nik.getSelectedItem());
+					break;
+				case "all":
+					ReportCSV.getPDF("all", null, null, null);
+					break;
+				default:
+					break;
+			}
+			notify("success", "Tersimpan!");
+		} catch (Exception ex) {
+			notify("warning", "Gagal Menyimpan");
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -529,7 +405,7 @@ public final class Report extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(getSampai, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(nik, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                                .addComponent(nik, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -611,7 +487,7 @@ public final class Report extends javax.swing.JPanel {
                 this.setLayout(layout);
                 layout.setHorizontalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 837, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 844, Short.MAX_VALUE)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

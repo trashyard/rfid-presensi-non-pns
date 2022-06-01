@@ -1,5 +1,6 @@
 package com.presensikeun.form.admin;
 
+import com.presensikeun.controller.DataPresensi;
 import com.presensikeun.controller.Koneksi;
 import com.presensikeun.form.popup.PopUpKeterangan;
 import com.presensikeun.model.WhatOS;
@@ -48,26 +49,8 @@ public final class Presensi extends javax.swing.JPanel {
 	}
 
 	public void tablePresensi(String query) {
-		DefaultTableModel model = new DefaultTableModel();
-		model.addColumn("NIK");
-		model.addColumn("Nama");
-		model.addColumn("ID Presensi");
-		model.addColumn("Keterangan");
-		model.addColumn("Mata Pelajaran");
-		model.addColumn("Tanggal");
-		try {
-
-			String sql = "select k.nik, k.nama, p.id, p.keterangan, mp.nama, p.tanggal from tb_presensi as p join tb_detail_jadwal as dj on p.id_detail_jadwal = dj.id join tb_jadwal as j on j.id = dj.id_jadwal join tb_mapel as mp on j.id_mapel = mp.id join tb_karyawan as k on dj.id_karyawan = k.id where k.nama like '%" + query + "%' and date(p.tanggal) = current_date order by p.tanggal desc";
-			pst = con.prepareStatement(sql);
-			rs = pst.executeQuery();
-			while (rs.next()) {
-				model.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)});
-			}
-			table1.setModel(model);
-		} catch (SQLException ex) {
-			model.addRow(new Object[]{});
-			table1.setModel(model);
-		}
+		DataPresensi.setTable(table1);
+		DataPresensi.getTable();
 	}
 
 	public void automaticAttendance(String input) {

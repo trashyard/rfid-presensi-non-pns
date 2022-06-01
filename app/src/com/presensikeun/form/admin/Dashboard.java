@@ -3,6 +3,7 @@ package com.presensikeun.form.admin;
 import com.presensikeun.chart.ModelChart;
 import com.presensikeun.chart.ModelPieChart;
 import com.presensikeun.chart.PieChart;
+import com.presensikeun.controller.DataDashboard;
 import com.presensikeun.controller.Koneksi;
 import com.presensikeun.model.ModelCard;
 import com.presensikeun.model.WhatOS;
@@ -46,9 +47,9 @@ public final class Dashboard extends javax.swing.JPanel {
 
 	public void setData() {
 		// card
-		card1.setData(new ModelCard(new ImageIcon(getClass().getResource("/com/presensikeun/images/icon/presensi.png")), "Total Presensi", getTotalPresensi()));
-		card2.setData(new ModelCard(new ImageIcon(getClass().getResource("/com/presensikeun/images/icon/karyawan.png")), "Karyawan", getKaryawan()));
-		card3.setData(new ModelCard(new ImageIcon(getClass().getResource("/com/presensikeun/images/icon/admin.png")), "Admin", getAdmin()));
+		card1.setData(new ModelCard(new ImageIcon(getClass().getResource("/com/presensikeun/images/icon/presensi.png")), "Total Presensi", DataDashboard.getTotalPresensi()));
+		card2.setData(new ModelCard(new ImageIcon(getClass().getResource("/com/presensikeun/images/icon/karyawan.png")), "Karyawan", DataDashboard.getUser("user")));
+		card3.setData(new ModelCard(new ImageIcon(getClass().getResource("/com/presensikeun/images/icon/admin.png")), "Admin", DataDashboard.getUser("admin")));
 		// diagram chart 
 		chart.addLegend("Minggu 1", new Color(245, 189, 135));
 		chart.addLegend("Minggu 2", new Color(135, 189, 245));
@@ -56,105 +57,26 @@ public final class Dashboard extends javax.swing.JPanel {
 		chart.addLegend("Minggu 4", new Color(245, 135, 189));
 
 		// ^ data
-		chart.addData(new ModelChart("Jan", new double[]{getWeekly(1, 1), getWeekly(1, 2), getWeekly(1, 3), getWeekly(1, 4)}));
-		chart.addData(new ModelChart("Feb", new double[]{getWeekly(2, 1), getWeekly(2, 2), getWeekly(2, 3), getWeekly(2, 4)}));
-		chart.addData(new ModelChart("Mar", new double[]{getWeekly(3, 1), getWeekly(3, 2), getWeekly(3, 3), getWeekly(3, 4)}));
-		chart.addData(new ModelChart("Apr", new double[]{getWeekly(4, 1), getWeekly(4, 2), getWeekly(4, 3), getWeekly(4, 4)}));
-		chart.addData(new ModelChart("Mei", new double[]{getWeekly(5, 1), getWeekly(5, 2), getWeekly(5, 3), getWeekly(5, 4)}));
-		chart.addData(new ModelChart("Juni", new double[]{getWeekly(6, 1), getWeekly(6, 2), getWeekly(6, 3), getWeekly(6, 4)}));
-		chart.addData(new ModelChart("Juli", new double[]{getWeekly(7, 1), getWeekly(7, 2), getWeekly(7, 3), getWeekly(7, 4)}));
-		chart.addData(new ModelChart("Agu", new double[]{getWeekly(8, 1), getWeekly(8, 2), getWeekly(8, 3), getWeekly(8, 4)}));
-		chart.addData(new ModelChart("Sep", new double[]{getWeekly(9, 1), getWeekly(9, 2), getWeekly(9, 3), getWeekly(9, 4)}));
-		chart.addData(new ModelChart("Okt", new double[]{getWeekly(10, 1), getWeekly(10, 2), getWeekly(10, 3), getWeekly(10, 4)}));
-		chart.addData(new ModelChart("Nov", new double[]{getWeekly(11, 1), getWeekly(11, 2), getWeekly(11, 3), getWeekly(11, 4)}));
-		chart.addData(new ModelChart("Des", new double[]{getWeekly(12, 1), getWeekly(12, 2), getWeekly(12, 3), getWeekly(12, 4)}));
+		chart.addData(new ModelChart("Jan", new double[]{DataDashboard.getWeekly(1, 1), DataDashboard.getWeekly(1, 2), DataDashboard.getWeekly(1, 3), DataDashboard.getWeekly(1, 4)}));
+		chart.addData(new ModelChart("Feb", new double[]{DataDashboard.getWeekly(2, 1), DataDashboard.getWeekly(2, 2), DataDashboard.getWeekly(2, 3), DataDashboard.getWeekly(2, 4)}));
+		chart.addData(new ModelChart("Mar", new double[]{DataDashboard.getWeekly(3, 1), DataDashboard.getWeekly(3, 2), DataDashboard.getWeekly(3, 3), DataDashboard.getWeekly(3, 4)}));
+		chart.addData(new ModelChart("Apr", new double[]{DataDashboard.getWeekly(4, 1), DataDashboard.getWeekly(4, 2), DataDashboard.getWeekly(4, 3), DataDashboard.getWeekly(4, 4)}));
+		chart.addData(new ModelChart("Mei", new double[]{DataDashboard.getWeekly(5, 1), DataDashboard.getWeekly(5, 2), DataDashboard.getWeekly(5, 3), DataDashboard.getWeekly(5, 4)}));
+		chart.addData(new ModelChart("Juni", new double[]{DataDashboard.getWeekly(6, 1), DataDashboard.getWeekly(6, 2), DataDashboard.getWeekly(6, 3), DataDashboard.getWeekly(6, 4)}));
+		chart.addData(new ModelChart("Juli", new double[]{DataDashboard.getWeekly(7, 1), DataDashboard.getWeekly(7, 2), DataDashboard.getWeekly(7, 3), DataDashboard.getWeekly(7, 4)}));
+		chart.addData(new ModelChart("Agu", new double[]{DataDashboard.getWeekly(8, 1), DataDashboard.getWeekly(8, 2), DataDashboard.getWeekly(8, 3), DataDashboard.getWeekly(8, 4)}));
+		chart.addData(new ModelChart("Sep", new double[]{DataDashboard.getWeekly(9, 1), DataDashboard.getWeekly(9, 2), DataDashboard.getWeekly(9, 3), DataDashboard.getWeekly(9, 4)}));
+		chart.addData(new ModelChart("Okt", new double[]{DataDashboard.getWeekly(10, 1), DataDashboard.getWeekly(10, 2), DataDashboard.getWeekly(10, 3), DataDashboard.getWeekly(10, 4)}));
+		chart.addData(new ModelChart("Nov", new double[]{DataDashboard.getWeekly(11, 1), DataDashboard.getWeekly(11, 2), DataDashboard.getWeekly(11, 3), DataDashboard.getWeekly(11, 4)}));
+		chart.addData(new ModelChart("Des", new double[]{DataDashboard.getWeekly(12, 1), DataDashboard.getWeekly(12, 2), DataDashboard.getWeekly(12, 3), DataDashboard.getWeekly(12, 4)}));
 
 		// pie chart
 		// telat hadir sakit izin alpa
 		pieChart1.setChartType(PieChart.PeiChartType.DEFAULT);
-		pieChart1.addData(new ModelPieChart("Jan - Mar", getMonth("1", "3"), new Color(227, 148, 0)));
-		pieChart1.addData(new ModelPieChart("Apr - Jun", getMonth("4", "6"), new Color(92, 204, 150)));
-		pieChart1.addData(new ModelPieChart("Jul - Sept", getMonth("7", "9"), new Color(179, 161, 230)));
-		pieChart1.addData(new ModelPieChart("Okt - Des", getMonth("10", "12"), new Color(0, 163, 204)));
-	}
-
-	private String getTotalPresensi() {
-		String tot = "";
-		try {
-			String sql = "select count(*) from tb_presensi where year(tanggal) = year(current_date)";
-			pst = con.prepareStatement(sql);
-			rs = pst.executeQuery();
-			if (rs.next()) {
-				tot = rs.getString(1);
-			}
-		} catch (SQLException ex) {
-			tot = "0";
-		}
-		return tot;
-	}
-
-	private String getKaryawan() {
-		String tot = "";
-		try {
-
-			String sql = "select count(*) from tb_karyawan where status != 'admin'";
-			pst = con.prepareStatement(sql);
-			rs = pst.executeQuery();
-			if (rs.next()) {
-				tot = rs.getString(1);
-			}
-		} catch (SQLException ex) {
-			tot = "0";
-		}
-		return tot;
-	}
-
-	private String getAdmin() {
-		String tot = "";
-		try {
-
-			String sql = "select count(*) from tb_karyawan where status = 'admin'";
-			pst = con.prepareStatement(sql);
-			rs = pst.executeQuery();
-			if (rs.next()) {
-				tot = rs.getString(1);
-			}
-		} catch (SQLException ex) {
-			tot = "0";
-		}
-		return tot;
-	}
-
-	private int getMonth(String first, String second) {
-		int tot = 0;
-		try {
-
-			String sql = "select count(*) from tb_presensi where month(tanggal) between " + first + " and " + second + " && year(tanggal) = year(current_date)";
-			pst = con.prepareStatement(sql);
-			rs = pst.executeQuery();
-			if (rs.next()) {
-				tot = rs.getInt(1);
-			}
-		} catch (SQLException ex) {
-			tot = 0;
-		}
-		return tot;
-	}
-
-	private double getWeekly(int month, int week) {
-		double tot = 0;
-		try {
-
-			String sql = "SELECT count(*) from tb_presensi where month(tanggal) = " + month + " && FLOOR((DayOfMonth(tanggal)-1)/7)+1 = " + week + " && year(tanggal) = year(current_date)";
-			pst = con.prepareStatement(sql);
-			rs = pst.executeQuery();
-			if (rs.next()) {
-				tot = rs.getDouble(1);
-			}
-		} catch (SQLException ex) {
-			tot = 0;
-		}
-		return tot;
+		pieChart1.addData(new ModelPieChart("Jan - Mar", DataDashboard.getMonth("1", "3"), new Color(227, 148, 0)));
+		pieChart1.addData(new ModelPieChart("Apr - Jun", DataDashboard.getMonth("4", "6"), new Color(92, 204, 150)));
+		pieChart1.addData(new ModelPieChart("Jul - Sept", DataDashboard.getMonth("7", "9"), new Color(179, 161, 230)));
+		pieChart1.addData(new ModelPieChart("Okt - Des", DataDashboard.getMonth("10", "12"), new Color(0, 163, 204)));
 	}
 
 //	public void get 

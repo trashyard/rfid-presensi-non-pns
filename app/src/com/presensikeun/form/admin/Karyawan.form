@@ -192,7 +192,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="first" min="-2" pref="120" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="kelas" min="-2" pref="130" max="-2" attributes="0"/>
+                  <Component id="second" min="-2" pref="130" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="searchNama" pref="540" max="32767" attributes="0"/>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
@@ -209,7 +209,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="kelas" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="second" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                               <Component id="first" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jLabel2" pref="40" max="32767" attributes="0"/>
@@ -269,12 +269,12 @@
             <Property name="labeText" type="java.lang.String" value="Jabatan"/>
           </Properties>
         </Component>
-        <Component class="com.presensikeun.swing.Combobox" name="kelas">
+        <Component class="com.presensikeun.swing.Combobox" name="second">
           <Properties>
             <Property name="labeText" type="java.lang.String" value="Jenis Kelamin"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="kelasActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="secondActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

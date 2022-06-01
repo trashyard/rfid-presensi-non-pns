@@ -16,7 +16,6 @@ import java.awt.Frame;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -135,18 +134,20 @@ public final class Jadwal extends javax.swing.JPanel {
 			DataJadwal.addTableQuery(" && k.angkatan = " + second.getSelectedItem() + "");
 		}
 
+		// get isi tabel abis di filter atas
 		DataJadwal.getTable();
 		DataJadwal.resetQuery();
 	}
 
 	private void switchTable() {
 		if (mode) {
+			// abis load detail jadwal set mode ke false
 			mode = false;
 			reset();
 			tableDetailJadwal();
 			DataDetailJadwal.getHari(first);
 			DataDetailJadwal.getKelas(second);
-			// abis load detail jadwal set mode ke false
+
 			// berarti mode false == state detail jadwal
 			switchBtn.setText("Ke Jadwal");
 		} else {
@@ -155,6 +156,7 @@ public final class Jadwal extends javax.swing.JPanel {
 			tableJadwal();
 			DataJadwal.getMapel(first);
 			DataJadwal.getAngkatan(second);
+
 			// sama, kek di atas intinya tapi jadwal hahaha
 			switchBtn.setText("Ke Detail");
 		}
