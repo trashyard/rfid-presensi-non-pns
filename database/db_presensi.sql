@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: May 31, 2022 at 03:23 PM
--- Server version: 10.4.22-MariaDB
--- PHP Version: 8.1.1
+-- Host: localhost:3306
+-- Generation Time: Jun 21, 2022 at 09:08 AM
+-- Server version: 5.7.33
+-- PHP Version: 7.4.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -198,8 +198,7 @@ INSERT INTO `tb_karyawan` (`id`, `nik`, `username`, `password`, `nama`, `status`
 (8, '3525012005534534', NULL, NULL, 'David', 'user', 'L', 'JB0004'),
 (9, '3525012005598643', NULL, NULL, 'Akber', 'user', 'L', 'JB0004'),
 (15, '4538495897298271', NULL, NULL, 'Gandi Geblekus', 'user', 'P', 'JB0002'),
-(16, '0987654538765433', NULL, NULL, 'vinda cantik', 'user', 'P', 'JB0001'),
-(17, '2347687634563456', NULL, NULL, 'Hahahaha kamu lucu ya', 'user', 'P', 'JB0002');
+(16, '0987654538765433', NULL, NULL, 'Vinda Rosi', 'user', 'P', 'JB0001');
 
 -- --------------------------------------------------------
 
@@ -273,7 +272,7 @@ INSERT INTO `tb_mapel` (`id`, `nama`) VALUES
 
 CREATE TABLE `tb_presensi` (
   `id` varchar(11) NOT NULL,
-  `tanggal` datetime NOT NULL DEFAULT current_timestamp(),
+  `tanggal` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `keterangan` enum('Hadir','Telat','Alpa','?','Izin') CHARACTER SET latin1 COLLATE latin1_general_cs NOT NULL,
   `id_detail_jadwal` varchar(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -284,7 +283,28 @@ CREATE TABLE `tb_presensi` (
 
 INSERT INTO `tb_presensi` (`id`, `tanggal`, `keterangan`, `id_detail_jadwal`) VALUES
 ('P0000000001', '2022-05-27 19:03:06', 'Hadir', 'JD00001'),
-('P0000000002', '2022-05-31 19:42:49', 'Izin', 'JD00002');
+('P0000000002', '2022-05-31 19:42:49', 'Izin', 'JD00002'),
+('P0000000003', '2022-06-20 11:24:32', 'Telat', 'JD00002'),
+('P0000000004', '2022-06-20 11:24:39', 'Telat', 'JD00002'),
+('P0000000005', '2022-06-20 11:24:39', 'Telat', 'JD00002'),
+('P0000000006', '2022-06-20 11:24:39', '?', 'JD00002'),
+('P0000000007', '2022-06-20 11:24:39', '?', 'JD00002'),
+('P0000000008', '2022-06-20 11:24:39', '?', 'JD00002'),
+('P0000000009', '2022-06-20 11:24:39', '?', 'JD00002'),
+('P0000000010', '2022-06-20 11:24:39', '?', 'JD00002'),
+('P0000000011', '2022-06-20 11:24:39', '?', 'JD00002'),
+('P0000000012', '2022-06-20 11:24:39', '?', 'JD00002'),
+('P0000000013', '2022-03-01 11:31:17', '?', 'JD00001'),
+('P0000000014', '2022-03-01 11:31:17', '?', 'JD00001'),
+('P0000000015', '2022-03-01 11:31:17', '?', 'JD00001'),
+('P0000000016', '2022-03-01 11:31:17', '?', 'JD00001'),
+('P0000000017', '2022-03-01 11:31:17', '?', 'JD00001'),
+('P0000000018', '2022-03-01 11:31:17', '?', 'JD00001'),
+('P0000000019', '2022-04-23 11:31:43', '?', 'JD00008'),
+('P0000000020', '2022-04-23 11:31:43', '?', 'JD00008'),
+('P0000000021', '2022-04-23 11:31:43', '?', 'JD00008'),
+('P0000000022', '2022-04-23 11:31:43', '?', 'JD00008'),
+('P0000000023', '2022-04-23 11:31:43', '?', 'JD00008');
 
 --
 -- Triggers `tb_presensi`
@@ -432,7 +452,7 @@ ALTER TABLE `tb_jurusan`
 -- AUTO_INCREMENT for table `tb_karyawan`
 --
 ALTER TABLE `tb_karyawan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `tb_ruang`
