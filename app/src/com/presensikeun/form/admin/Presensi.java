@@ -354,16 +354,16 @@ public final class Presensi extends javax.swing.JPanel {
         private void nikKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nikKeyReleased
 		// TODO add your handling code here:
 		if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-			// your code is scanned and you can access it using frame.getBarCode()
-			// now clean the bar code so the next one can be read
+			// filter pisah, ngambil nomor aja
 			Pattern p = Pattern.compile("-?\\d+");
 			Matcher m = p.matcher(getBarcode());
+			// abis difilter gabungin semua jadi satu
 			while (m.find()) {
 				setBarcode(m.group());
 			}
 			afterEnter();
 		} else {
-			// some character has been read, append it to your "barcode cache"
+			// ambil barcodenya pas ngetik
 			setBarcode(getBarcode() + evt.getKeyChar());
 		}
         }//GEN-LAST:event_nikKeyReleased

@@ -5,6 +5,7 @@ import com.presensikeun.controller.Koneksi;
 import com.presensikeun.event.EventCallBack;
 import com.presensikeun.event.EventTextField;
 import com.presensikeun.form.popup.PopUpAddKaryawan;
+import com.presensikeun.form.popup.PopUpDenda;
 import com.presensikeun.form.popup.PopUpEditKaryawan;
 import com.presensikeun.model.WhatOS;
 import com.presensikeun.model.WindowButton;
@@ -74,19 +75,19 @@ public final class Karyawan extends javax.swing.JPanel {
 
 		// all if elses kalo pas jabatan check, jenis kelamin check, ama dua duanya
 		if (first.getSelectedIndex() != -1) {
-			DataKaryawan.addTableQuery("&& tbj.id = (select id from tb_jabatan where nama = '" + first.getSelectedItem() + "')");
+			DataKaryawan.addTableQuery("&& j.id = (select id from tb_jabatan where nama = '" + first.getSelectedItem() + "')");
 		}
 
 		if (second.getSelectedIndex() != -1) {
-			DataKaryawan.addTableQuery("&& tbk.jenis_kelamin = '" + getSelectedGender() + "'");
+			DataKaryawan.addTableQuery("&& k.jenis_kelamin = '" + getSelectedGender() + "'");
 		}
 
 		if (searchNama.getText() != null) {
-			DataKaryawan.addTableQuery("&& tbk.nama like '%" + searchNama.getText() + "%'");
+			DataKaryawan.addTableQuery("&& k.nama like '%" + searchNama.getText() + "%'");
 		}
 
 		// order by nik dari bawah
-		DataKaryawan.addTableQuery(" order by tbk.nik desc");
+		DataKaryawan.addTableQuery(" order by k.nik desc");
 
 		// ya biasalah tau kan
 		DataKaryawan.getTable();
@@ -136,6 +137,7 @@ public final class Karyawan extends javax.swing.JPanel {
                 jScrollPane1 = new javax.swing.JScrollPane();
                 table1 = new com.presensikeun.swing.Table();
                 labelTable = new javax.swing.JLabel();
+                switchBtn3 = new com.presensikeun.swing.Button();
 
                 jTextField1.setText("jTextField1");
 
@@ -191,7 +193,7 @@ public final class Karyawan extends javax.swing.JPanel {
                                                 .addContainerGap())
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addComponent(jLabel1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 743, Short.MAX_VALUE)
                                                 .addComponent(min, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(max, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -314,6 +316,16 @@ public final class Karyawan extends javax.swing.JPanel {
                 labelTable.setForeground(new java.awt.Color(85, 65, 118));
                 labelTable.setText("Karyawan");
 
+                switchBtn3.setBackground(new java.awt.Color(85, 65, 118));
+                switchBtn3.setForeground(new java.awt.Color(255, 255, 255));
+                switchBtn3.setText("Lihat Denda");
+                switchBtn3.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+                switchBtn3.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                switchBtn3ActionPerformed(evt);
+                        }
+                });
+
                 javax.swing.GroupLayout panelShadow2Layout = new javax.swing.GroupLayout(panelShadow2);
                 panelShadow2.setLayout(panelShadow2Layout);
                 panelShadow2Layout.setHorizontalGroup(
@@ -321,17 +333,22 @@ public final class Karyawan extends javax.swing.JPanel {
                         .addGroup(panelShadow2Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane1)
-                                        .addComponent(labelTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 944, Short.MAX_VALUE)
+                                        .addGroup(panelShadow2Layout.createSequentialGroup()
+                                                .addComponent(labelTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(switchBtn3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addContainerGap())
                 );
                 panelShadow2Layout.setVerticalGroup(
                         panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelShadow2Layout.createSequentialGroup()
                                 .addGap(0, 0, 0)
-                                .addComponent(labelTable)
+                                .addGroup(panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(switchBtn3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(labelTable))
                                 .addGap(10, 10, 10)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
                                 .addContainerGap())
                 );
 
@@ -402,6 +419,12 @@ public final class Karyawan extends javax.swing.JPanel {
 		// TODO add your handling code here:
         }//GEN-LAST:event_secondActionPerformed
 
+        private void switchBtn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_switchBtn3ActionPerformed
+		// TODO add your handling code here:
+		PopUpDenda d = new PopUpDenda((JFrame) SwingUtilities.getWindowAncestor(this));
+		d.showMessage();
+        }//GEN-LAST:event_switchBtn3ActionPerformed
+
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private com.presensikeun.swing.Combobox first;
         private javax.swing.JLabel jLabel1;
@@ -419,6 +442,10 @@ public final class Karyawan extends javax.swing.JPanel {
         private com.presensikeun.swing.PanelShadow panelShadow2;
         private com.presensikeun.swing.Searchbar searchNama;
         private com.presensikeun.swing.Combobox second;
+        private com.presensikeun.swing.Button switchBtn;
+        private com.presensikeun.swing.Button switchBtn1;
+        private com.presensikeun.swing.Button switchBtn2;
+        private com.presensikeun.swing.Button switchBtn3;
         private com.presensikeun.swing.Table table1;
         // End of variables declaration//GEN-END:variables
 }

@@ -9,10 +9,6 @@ public class User extends Koneksi {
 
 	public static String username = null;
 
-	public static void login() {
-
-	}
-
 	public static void setUsername(String text) {
 		username = text;
 	}

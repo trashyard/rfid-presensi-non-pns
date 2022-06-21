@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 public class DataKaryawan extends Koneksi {
 
 	public static Connection con = getKoneksi();
-	public static String query = "select tbk.nik, tbk.nama, jenis_kelamin, tbj.nama as jabatan from tb_karyawan as tbk join tb_jabatan as tbj on tbk.id_jabatan = tbj.id ";
+	public static String query = "select k.nik, k.nama, k.jenis_kelamin, j.nama as jabatan from tb_karyawan as k join tb_jabatan as j on k.id_jabatan = j.id ";
 	public static JTable table = null;
 
 	public static void setTable(JTable t) {
@@ -25,7 +25,7 @@ public class DataKaryawan extends Koneksi {
 		model.addColumn("NIK");
 		model.addColumn("Nama");
 		model.addColumn("Jenis Kelamin");
-		model.addColumn("Jabatan");
+		model.addColumn("Status Kepegawaian");
 
 		try {
 
@@ -35,11 +35,11 @@ public class DataKaryawan extends Koneksi {
 			while (rs.next()) {
 				model.addRow(new Object[]{rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)});
 			}
-
-			table.setModel(model);
+table.setModel(model);
 
 		} catch (SQLException ex) {
 
+			System.out.println(ex.getMessage());
 			model.addRow(new Object[]{});
 			table.setModel(model);
 
@@ -51,7 +51,7 @@ public class DataKaryawan extends Koneksi {
 	}
 
 	public static void resetQuery() {
-		query = "select tbk.nik, tbk.nama, jenis_kelamin, tbj.nama as jabatan from tb_karyawan as tbk join tb_jabatan as tbj on tbk.id_jabatan = tbj.id ";
+		query = "select k.nik, k.nama, k.jenis_kelamin, j.nama as jabatan from tb_karyawan as k join tb_jabatan as j on k.id_jabatan = j.id ";
 	}
 
 	public static void getGender(Combobox c) {
