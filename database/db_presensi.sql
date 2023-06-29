@@ -194,7 +194,7 @@ CREATE TABLE `tb_karyawan` (
 
 INSERT INTO `tb_karyawan` (`id`, `nik`, `username`, `password`, `nama`, `status`, `jenis_kelamin`, `id_jabatan`) VALUES
 (2, '3525017006750017', 'r', '$2a$12$FkrVFEAdrpXw3n1aT3Hn5esmTPnmwEtxobt5fiY4tmot7f4nvYT5W', 'Raihan', 'admin', 'L', 'JB0001'),
-(7, '3525012005596332', 'd', '$2a$12$iR5RAZjh6OYpShaVqJ4kDOCiXbhZf4ugXmV02pcwyPmvLMKYPK6FS', 'Devi', 'admin', 'P', 'JB0003'),
+(7, '3525012005596332', 'd', '$2a$12$iR5RAZjh6OYpShaVqJ4kDOCiXbhZf4ugXmV02pcwyPmvLMKYPK6FS', 'Clara', 'admin', 'P', 'JB0003'),
 (8, '3525012005534534', NULL, NULL, 'David', 'user', 'L', 'JB0004'),
 (9, '3525012005598643', NULL, NULL, 'Akber', 'user', 'L', 'JB0004'),
 (15, '4538495897298271', NULL, NULL, 'Gandi Geblekus', 'user', 'P', 'JB0002'),
